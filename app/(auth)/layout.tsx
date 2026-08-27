@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             відповідне меню викладача або адміністратора.
           </p>
         </div>
-        <span className="auth-note">Clerk · захищена сесія</span>
+        <span className="auth-note">Захищена сесія · контроль доступу</span>
       </section>
       <section className="auth-form-area">{children}</section>
     </main>

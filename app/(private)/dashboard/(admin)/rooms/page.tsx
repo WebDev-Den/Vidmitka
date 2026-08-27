@@ -1,17 +1,19 @@
-import { Building2 } from "lucide-react";
+import { PageIntro } from "@/components/page-intro";
+import { listRooms } from "@/lib/rooms/repository";
 
-import { DirectoryPage } from "@/components/private/directory-page";
+import { RoomManager } from "./room-manager";
 
-export default function RoomsPage() {
+export default async function RoomsPage() {
+  const rooms = await listRooms();
+
   return (
-    <DirectoryPage
-      eyebrow="ДОВІДНИКИ"
-      title="Аудиторії"
-      description="Перелік доступних приміщень для перевірки зайнятості."
-      emptyTitle="Аудиторій ще немає"
-      emptyDescription="Додайте аудиторії, перш ніж створювати навчальні заняття."
-      icon={Building2}
-      createLabel="Додати аудиторію"
-    />
+    <section>
+      <PageIntro
+        eyebrow="ДОВІДНИКИ"
+        title="Аудиторії"
+        description="Активні аудиторії доступні для створення та імпорту навчальних занять."
+      />
+      <RoomManager rooms={rooms} />
+    </section>
   );
 }

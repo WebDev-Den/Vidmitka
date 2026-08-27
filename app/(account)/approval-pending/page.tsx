@@ -1,10 +1,10 @@
-import { UserButton } from "@clerk/nextjs";
-import { Clock3, ExternalLink } from "lucide-react";
+import { Clock3, ExternalLink, LogOut } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Brand } from "@/components/brand";
+import { signOutAction } from "@/app/(auth)/actions";
 import { getAuthenticatedAppUser } from "@/lib/auth/session";
 
 export const metadata: Metadata = { title: "Очікування підтвердження" };
@@ -18,7 +18,11 @@ export default async function ApprovalPendingPage() {
     <main className="approval-shell">
       <header className="approval-header">
         <Brand />
-        <UserButton />
+        <form action={signOutAction}>
+          <button className="button button-light" type="submit">
+            <LogOut size={16} /> Вийти
+          </button>
+        </form>
       </header>
 
       <section className="approval-card">

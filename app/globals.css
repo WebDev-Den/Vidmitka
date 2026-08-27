@@ -25,6 +25,18 @@
   box-sizing: border-box;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -781,19 +793,100 @@ textarea:focus-visible {
   background: var(--paper);
 }
 
-.clerk-root,
-.clerk-card-box {
+.auth-card {
+  display: grid;
   width: min(100%, 440px);
+  padding: 32px;
+  gap: 28px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 
-.cl-card {
-  border: 1px solid var(--line) !important;
-  box-shadow: var(--shadow) !important;
+.auth-card-heading {
+  display: grid;
+  gap: 10px;
 }
 
-.clerk-avatar {
-  width: 36px !important;
-  height: 36px !important;
+.auth-card-heading h2,
+.auth-card-heading p,
+.auth-switch,
+.auth-message {
+  margin: 0;
+}
+
+.auth-card-heading h2 {
+  font-size: 30px;
+  letter-spacing: -0.04em;
+}
+
+.auth-card-heading p,
+.auth-switch {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.auth-form {
+  display: grid;
+  gap: 18px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 13px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.auth-form input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.auth-field-error,
+.auth-message.is-error {
+  color: var(--danger);
+}
+
+.auth-field-hint {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.auth-message {
+  padding: 12px 14px;
+  background: #fff1f2;
+  border: 1px solid #f0c7cc;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.auth-submit {
+  width: 100%;
+}
+
+.auth-switch {
+  padding-top: 20px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+
+.auth-switch a {
+  color: var(--accent-strong);
+  font-weight: 800;
 }
 
 /* Account approval */
@@ -1377,7 +1470,9 @@ textarea:focus-visible {
   font-weight: 800;
 }
 
-.lesson-editor select {
+.lesson-editor select,
+.lesson-editor input[type="date"],
+.lesson-editor input[type="text"] {
   width: 100%;
   min-height: 46px;
   padding: 0 12px;
@@ -1385,6 +1480,30 @@ textarea:focus-visible {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 10px;
+}
+
+.settings-form-heading {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 8px;
+}
+
+.settings-form-heading h2,
+.settings-form-heading p {
+  margin: 0;
+}
+
+.settings-form-heading h2 {
+  font-size: 20px;
+}
+
+.settings-form-heading p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.settings-explanation {
+  margin-top: 24px;
 }
 
 .lesson-editor fieldset {
@@ -1479,6 +1598,389 @@ textarea:focus-visible {
   line-height: 1.65;
 }
 
+.semester-end-panel {
+  display: grid;
+  max-width: 920px;
+  margin-top: 24px;
+  padding: 28px;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.semester-end-panel h2,
+.semester-end-panel p {
+  margin: 0;
+}
+
+.semester-end-panel h2 {
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.semester-end-panel p {
+  max-width: 720px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.semester-end-panel > .period-action-message {
+  margin: 0;
+}
+
+.subject-manager,
+.student-manager {
+  display: grid;
+  max-width: 980px;
+  gap: 28px;
+}
+
+.subject-create-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 24px;
+  align-items: end;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.subject-create-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.subject-create-form input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.subject-create-form > .period-action-message {
+  grid-column: 1 / -1;
+}
+
+.subject-list,
+.student-list,
+.student-list-section {
+  display: grid;
+}
+
+.subject-row,
+.student-row {
+  display: grid;
+  padding: 18px 20px;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+}
+
+.subject-row:first-child,
+.student-row:first-child {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.subject-row:last-child,
+.student-row:last-child {
+  border-bottom: 1px solid var(--line);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.subject-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.subject-row > div,
+.student-identity {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.subject-row span,
+.student-identity span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.student-list-section {
+  gap: 16px;
+}
+
+.student-row {
+  grid-template-columns: auto minmax(0, 1fr) minmax(140px, 0.7fr) auto;
+}
+
+.student-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.student-subject {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.period-manager {
+  display: grid;
+  gap: 32px;
+}
+
+.period-summary {
+  display: flex;
+  min-height: 72px;
+  padding: 16px 20px;
+  align-items: center;
+  gap: 14px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border: 1px solid #b8d9d3;
+  border-radius: var(--radius-md);
+}
+
+.period-summary > svg {
+  flex: 0 0 auto;
+}
+
+.period-summary > div {
+  display: grid;
+  gap: 4px;
+}
+
+.period-summary strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.period-summary span {
+  color: #55716c;
+  font-size: 13px;
+}
+
+.period-create-form {
+  display: grid;
+  padding: 28px;
+  gap: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.period-create-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.period-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-radius: 12px;
+}
+
+.period-create-heading h2,
+.period-list-heading h2 {
+  margin: 0;
+  font-size: 21px;
+  letter-spacing: -0.025em;
+}
+
+.period-create-heading p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.period-fields {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.65fr) repeat(2, minmax(150px, 1fr)) auto;
+  align-items: end;
+  gap: 16px;
+}
+
+.period-fields label,
+.period-row label {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.period-fields input,
+.period-row input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.period-fields input:hover,
+.period-row input:hover {
+  border-color: #b8b4a9;
+}
+
+.period-create-button {
+  white-space: nowrap;
+}
+
+.period-list-section {
+  display: grid;
+  gap: 16px;
+}
+
+.period-list-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.period-list-heading > div {
+  display: grid;
+  gap: 8px;
+}
+
+.period-list-heading > span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.period-list {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.period-row {
+  display: grid;
+  grid-template-columns:
+    minmax(118px, 0.62fr)
+    minmax(130px, 0.8fr)
+    minmax(130px, 0.8fr)
+    minmax(90px, 0.55fr)
+    minmax(268px, auto);
+  min-height: 96px;
+  padding: 16px 18px;
+  align-items: end;
+  gap: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.period-row:last-child {
+  border-bottom: 0;
+}
+
+.period-number-input {
+  position: relative;
+  display: block;
+}
+
+.period-number-input input {
+  padding-right: 54px;
+}
+
+.period-number-input small {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.period-status-cell {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+}
+
+.period-status {
+  display: inline-flex;
+  min-height: 30px;
+  padding: 0 10px;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.period-status.is-active {
+  color: var(--success);
+  background: #e4f3ec;
+}
+
+.period-status.is-inactive {
+  color: var(--muted);
+  background: var(--surface-soft);
+}
+
+.period-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.period-row-actions .button {
+  min-height: 44px;
+  padding-inline: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.period-action-message {
+  display: flex;
+  grid-column: 1 / -1;
+  margin: 0;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.period-action-message.is-success {
+  color: var(--success);
+}
+
+.period-action-message.is-error {
+  color: var(--danger);
+}
+
 .mobile-menu-button,
 .mobile-close,
 .mobile-backdrop {
@@ -1515,6 +2017,28 @@ textarea:focus-visible {
 
   .metric-strip > div:nth-child(-n + 2) {
     border-bottom: 1px solid var(--line);
+  }
+
+  .period-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .period-create-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .period-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .period-status-cell {
+    align-items: flex-start;
+  }
+
+  .period-row-actions {
+    grid-column: 2 / -1;
+    justify-content: flex-end;
   }
 }
 
@@ -1673,6 +2197,11 @@ textarea:focus-visible {
   .teacher-row form,
   .teacher-approved-note {
     grid-column: 2 / -1;
+  }
+
+  .period-row-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
   }
 }
 
@@ -1890,6 +2419,70 @@ textarea:focus-visible {
 
   .schedule-filter-note {
     align-items: flex-start;
+  }
+
+  .period-manager {
+    gap: 24px;
+  }
+
+  .period-summary {
+    align-items: flex-start;
+  }
+
+  .period-create-form {
+    padding: 20px;
+  }
+
+  .period-fields,
+  .period-row {
+    grid-template-columns: 1fr;
+  }
+
+  .period-create-button,
+  .period-row-actions,
+  .period-row-actions .button {
+    width: 100%;
+  }
+
+  .period-create-button,
+  .period-row-actions,
+  .period-status-cell {
+    grid-column: 1;
+  }
+
+  .period-row {
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .period-row-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .period-list-heading {
+    align-items: flex-start;
+  }
+
+  .subject-create-form,
+  .student-row {
+    grid-template-columns: 1fr;
+  }
+
+  .subject-create-form .button,
+  .subject-row .button,
+  .student-row .button,
+  .semester-end-panel .button {
+    width: 100%;
+  }
+
+  .student-avatar {
+    display: none;
+  }
+
+  .student-subject {
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
   }
 }
 

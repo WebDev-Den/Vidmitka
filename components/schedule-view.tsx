@@ -1,8 +1,19 @@
 import { CalendarDays, CircleDot, Filter } from "lucide-react";
 
 import { PageIntro } from "@/components/page-intro";
+import { getScheduleWeekSettings } from "@/lib/schedule-week/repository";
+import {
+  formatWeekTypeLabel,
+  getDateKeyInTimeZone,
+  getWeekTypeForDate,
+} from "@/lib/schedule-week/rules";
 
-export function ScheduleView({ privateView = false }: { privateView?: boolean }) {
+export async function ScheduleView({ privateView = false }: { privateView?: boolean }) {
+  const settings = await getScheduleWeekSettings();
+  const currentWeekType = settings
+    ? getWeekTypeForDate(getDateKeyInTimeZone(new Date()), settings)
+    : null;
+
   return (
     <section className="schedule-view">
       <PageIntro
@@ -17,14 +28,21 @@ export function ScheduleView({ privateView = false }: { privateView?: boolean })
 
       <div className="schedule-toolbar" aria-label="Фільтри розкладу">
         <div className="week-legend" aria-label="Типи навчального тижня">
-          <span className="week-chip is-active">
-            <CircleDot size={14} /> Чисельник
+          <span className={`week-chip${currentWeekType === "numerator" ? " is-active" : ""}`}>
+            {currentWeekType === "numerator" ? <CircleDot size={14} /> : null}
+            Чисельник
           </span>
-          <span className="week-chip">Знаменник</span>
+          <span className={`week-chip${currentWeekType === "denominator" ? " is-active" : ""}`}>
+            {currentWeekType === "denominator" ? <CircleDot size={14} /> : null}
+            Знаменник
+          </span>
           <span className="week-chip">Обидва тижні</span>
         </div>
         <div className="schedule-filter-note">
-          <Filter size={16} /> Фільтри стануть доступними після додавання довідників
+          <Filter size={16} />
+          {currentWeekType
+            ? `Поточний тиждень: ${formatWeekTypeLabel(currentWeekType)}`
+            : "Адміністратор ще не налаштував чергування тижнів"}
         </div>
       </div>
 

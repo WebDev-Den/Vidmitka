@@ -11,7 +11,7 @@ export default async function ProfilePage() {
       <PageIntro
         eyebrow="ОБЛІКОВИЙ ЗАПИС"
         title="Профіль"
-        description="Дані, отримані з вашого захищеного облікового запису Clerk."
+        description="Дані вашого захищеного облікового запису в системі."
       />
       <div className="profile-summary">
         <span className="profile-avatar"><CircleUserRound size={28} /></span>

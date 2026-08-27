@@ -1,11 +1,11 @@
-import { auth } from "@clerk/nextjs/server";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 import { Brand } from "@/components/brand";
+import { getOptionalAppUser } from "@/lib/auth/session";
 
 export async function PublicHeader() {
-  const { userId } = await auth();
+  const user = await getOptionalAppUser();
 
   return (
     <header className="public-header">
@@ -17,9 +17,9 @@ export async function PublicHeader() {
         </nav>
         <Link
           className="button button-light header-action"
-          href={userId ? "/dashboard" : "/sign-in"}
+          href={user ? "/dashboard" : "/sign-in"}
         >
-          {userId ? "Відкрити кабінет" : "Увійти"}
+          {user ? "Відкрити кабінет" : "Увійти"}
           <ArrowUpRight size={17} />
         </Link>
       </div>

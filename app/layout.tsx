@@ -1,18 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
-import { ukUA } from "@clerk/localizations";
-import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-
-const ukrainianLocalization = {
-  ...ukUA,
-  formFieldInputPlaceholder__emailAddress: "Введіть адресу електронної пошти",
-  formFieldInputPlaceholder__emailAddress_username:
-    "Введіть адресу електронної пошти або ім’я користувача",
-  formFieldInputPlaceholder__password: "Введіть пароль",
-  formFieldInputPlaceholder__signUpPassword: "Створіть пароль",
-  formFieldInputPlaceholder__username: "Введіть ім’я користувача",
-};
 
 export const metadata: Metadata = {
   title: {
@@ -40,17 +28,8 @@ export default function RootLayout({
   return (
     <html lang="uk" data-scroll-behavior="smooth">
       <body>
-        <ClerkProvider
-          localization={ukrainianLocalization}
-          signInUrl="/sign-in"
-          signUpUrl="/sign-up"
-          signInFallbackRedirectUrl="/dashboard"
-          signUpFallbackRedirectUrl="/dashboard"
-          afterSignOutUrl="/"
-        >
-          {children}
-          {process.env.VERCEL === "1" && <Analytics />}
-        </ClerkProvider>
+        {children}
+        {process.env.VERCEL === "1" && <Analytics />}
       </body>
     </html>
   );

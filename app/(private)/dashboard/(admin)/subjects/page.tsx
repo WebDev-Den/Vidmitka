@@ -1,17 +1,19 @@
-import { BookOpen } from "lucide-react";
+import { PageIntro } from "@/components/page-intro";
+import { listSubjects } from "@/lib/subjects/repository";
 
-import { DirectoryPage } from "@/components/private/directory-page";
+import { SubjectManager } from "./subject-manager";
 
-export default function SubjectsPage() {
+export default async function SubjectsPage() {
+  const subjects = await listSubjects();
+
   return (
-    <DirectoryPage
-      eyebrow="ДОВІДНИКИ"
-      title="Навчальні предмети"
-      description="Назви предметів, які можна використовувати під час створення занять."
-      emptyTitle="Предметів ще немає"
-      emptyDescription="Додайте перший предмет, щоб викладачі могли створювати заняття."
-      icon={BookOpen}
-      createLabel="Додати предмет"
-    />
+    <section>
+      <PageIntro
+        eyebrow="ДОВІДНИКИ"
+        title="Навчальні предмети"
+        description="Активні предмети доступні викладачам для формування власних списків студентів."
+      />
+      <SubjectManager subjects={subjects} />
+    </section>
   );
 }

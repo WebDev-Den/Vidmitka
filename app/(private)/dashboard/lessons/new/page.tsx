@@ -2,10 +2,12 @@ import { CircleAlert } from "lucide-react";
 
 import { PageIntro } from "@/components/page-intro";
 import { requireAppUser } from "@/lib/auth/session";
+import { listClassPeriods } from "@/lib/class-periods/repository";
 
 export default async function NewLessonPage() {
   const user = await requireAppUser();
   const isAdministrator = user.role === "administrator";
+  const periods = await listClassPeriods({ activeOnly: true });
 
   return (
     <section>
@@ -60,15 +62,20 @@ export default async function NewLessonPage() {
         </label>
         <label>
           Номер пари
-          <select disabled>
-            <option>Немає налаштованих пар</option>
+          <select defaultValue="">
+            <option value="" disabled>Оберіть пару</option>
+            {periods.map((period) => (
+              <option key={period.id} value={period.id}>
+                {period.label}
+              </option>
+            ))}
           </select>
         </label>
         <fieldset>
           <legend>Тип навчального тижня</legend>
-          <label><input type="radio" name="weekType" defaultChecked /> Чисельник</label>
-          <label><input type="radio" name="weekType" /> Знаменник</label>
-          <label><input type="radio" name="weekType" /> Обидва тижні</label>
+          <label><input type="radio" name="weekType" value="numerator" defaultChecked /> Чисельник</label>
+          <label><input type="radio" name="weekType" value="denominator" /> Знаменник</label>
+          <label><input type="radio" name="weekType" value="both" /> Обидва тижні</label>
         </fieldset>
         <button className="button button-primary" type="button" disabled>
           Створити заняття

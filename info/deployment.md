@@ -10,7 +10,7 @@
 - Custom domain verification: підтверджено
 - DNS provider: Cloudflare
 - DNS route: `web-dev.pp.ua` → `76.76.21.21`
-- Authentication integration: Clerk (`vidmitka-auth`), підключено для Production, Preview і Development.
+- Authentication: власні облікові записи та сесії в Neon; зовнішня auth-інтеграція не використовується.
 - Database integration: Neon (`vidmitka-db`), підключено для Production, Preview і Development.
 
 Перший production deployment виконано 27 серпня 2026 року. Домен було без простою перенесено з попереднього Vercel-проєкту `my-schedule` до `vidmitka` після перевірки нового deployment на окремій адресі.

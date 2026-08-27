@@ -7,6 +7,8 @@ describe("getRoleNavigation", () => {
     const ids = getRoleNavigation("teacher").map((item) => item.id);
 
     expect(ids).toContain("my-lessons");
+    expect(ids).toContain("import-schedule");
+    expect(ids).toContain("students");
     expect(ids).toContain("create-lesson");
     expect(ids).not.toContain("teachers");
     expect(ids).not.toContain("settings");
@@ -19,7 +21,10 @@ describe("getRoleNavigation", () => {
     expect(ids).toContain("teachers");
     expect(ids).toContain("subjects");
     expect(ids).toContain("rooms");
+    expect(ids).toContain("periods");
     expect(ids).toContain("settings");
+    expect(ids).not.toContain("students");
+    expect(ids).not.toContain("import-schedule");
   });
 
   it("залишає перегляд розкладу всередині приватного кабінету", () => {

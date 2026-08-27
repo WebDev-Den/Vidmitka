@@ -1,18 +1,21 @@
 "use client";
 
-import { UserButton } from "@clerk/nextjs";
 import {
   BookOpen,
   Building2,
   CalendarDays,
+  Clock3,
   ChevronRight,
   CircleUserRound,
+  GraduationCap,
   LayoutDashboard,
+  LogOut,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
   Plus,
   Settings2,
+  Upload,
   UsersRound,
   X,
   type LucideIcon,
@@ -22,6 +25,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { Brand } from "@/components/brand";
+import { signOutAction } from "@/app/(auth)/actions";
 import type { AppUser } from "@/lib/auth/session";
 import {
   getRoleNavigation,
@@ -32,10 +36,13 @@ const iconByName: Record<NavigationIcon, LucideIcon> = {
   overview: LayoutDashboard,
   schedule: CalendarDays,
   lessons: BookOpen,
+  import: Upload,
   create: Plus,
   teachers: UsersRound,
   subjects: BookOpen,
   rooms: Building2,
+  periods: Clock3,
+  students: GraduationCap,
   profile: CircleUserRound,
   settings: Settings2,
 };
@@ -161,9 +168,11 @@ export function PrivateShell({
           </div>
           <div className="topbar-actions">
             <span className={`role-badge role-${user.role}`}>{user.roleLabel}</span>
-            <UserButton
-              appearance={{ elements: { avatarBox: "clerk-avatar" } }}
-            />
+            <form action={signOutAction}>
+              <button className="icon-control" type="submit" aria-label="Вийти">
+                <LogOut size={19} />
+              </button>
+            </form>
           </div>
         </header>
         <main className="private-content">{children}</main>

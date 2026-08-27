@@ -4,10 +4,13 @@ export type NavigationIcon =
   | "overview"
   | "schedule"
   | "lessons"
+  | "import"
   | "create"
   | "teachers"
   | "subjects"
   | "rooms"
+  | "periods"
+  | "students"
   | "profile"
   | "settings";
 
@@ -31,6 +34,18 @@ const teacherNavigation: readonly NavigationItem[] = [
     label: "Загальний розклад",
     href: "/dashboard/schedule",
     icon: "schedule",
+  },
+  {
+    id: "import-schedule",
+    label: "Імпорт розкладу",
+    href: "/dashboard/import-schedule",
+    icon: "import",
+  },
+  {
+    id: "students",
+    label: "Мої студенти",
+    href: "/dashboard/students",
+    icon: "students",
   },
   {
     id: "create-lesson",
@@ -77,6 +92,12 @@ const administratorNavigation: readonly NavigationItem[] = [
     label: "Аудиторії",
     href: "/dashboard/rooms",
     icon: "rooms",
+  },
+  {
+    id: "periods",
+    label: "Пари та час",
+    href: "/dashboard/periods",
+    icon: "periods",
   },
   {
     id: "settings",

@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "db:check": "node --env-file=.env.local scripts/check-db.mjs"
+    "db:check": "node --env-file=.env.local scripts/check-db.mjs",
+    "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "db:verify-semester": "node --env-file=.env.local scripts/verify-student-semester.mjs",
+    "db:verify-import": "node --env-file=.env.local scripts/verify-schedule-import.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
-    "@clerk/localizations": "^4.15.7",
-    "@clerk/nextjs": "^7.8.2",
     "@neondatabase/serverless": "^1.1.0",
     "@vercel/analytics": "1.6.1",
     "class-variance-authority": "^0.7.1",

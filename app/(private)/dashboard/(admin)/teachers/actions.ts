@@ -1,9 +1,8 @@
 "use server";
 
-import { clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
-import { resolveRole } from "@/lib/auth/roles";
+import { approveTeacherAccount } from "@/lib/auth/repository";
 import { requireAdministrator } from "@/lib/auth/session";
 
 export async function approveTeacher(formData: FormData): Promise<void> {
@@ -14,23 +13,8 @@ export async function approveTeacher(formData: FormData): Promise<void> {
     throw new Error("Не вказано обліковий запис викладача.");
   }
 
-  const client = await clerkClient();
-  const teacher = await client.users.getUser(userId);
-  const primaryEmail = teacher.emailAddresses.find(
-    (email) => email.id === teacher.primaryEmailAddressId,
-  )?.emailAddress;
-
-  if (!primaryEmail || resolveRole(primaryEmail) !== "teacher") {
-    throw new Error("Схвалювати можна лише облікові записи викладачів.");
-  }
-
-  await client.users.updateUserMetadata(userId, {
-    privateMetadata: {
-      approved: true,
-      approvedAt: new Date().toISOString(),
-      approvedBy: administrator.id,
-    },
-  });
+  const approved = await approveTeacherAccount(userId, administrator.id);
+  if (!approved) throw new Error("Обліковий запис викладача не знайдено.");
 
   revalidatePath("/dashboard/teachers");
 }

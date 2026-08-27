@@ -6,7 +6,8 @@ export type ScheduleWeekSettings = Readonly<{
   anchorWeekType: AlternatingWeekType;
 }>;
 
-const MILLISECONDS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+const MILLISECONDS_PER_WEEK = 7 * MILLISECONDS_PER_DAY;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 
 export type ScheduleWeekSettingsValidation =
@@ -17,12 +18,31 @@ function dateValue(date: string): number {
   return Date.parse(`${date}T00:00:00.000Z`);
 }
 
+export function getWeekStartDate(date: string): string {
+  const value = dateValue(date);
+  const daysSinceMonday = (new Date(value).getUTCDay() + 6) % 7;
+  return new Date(value - daysSinceMonday * MILLISECONDS_PER_DAY)
+    .toISOString()
+    .slice(0, 10);
+}
+
+export function getNumeratorAnchorDate(settings: ScheduleWeekSettings): string {
+  if (settings.anchorWeekType === "numerator") return settings.anchorDate;
+
+  // Старе налаштування могло починатися зі знаменника: наступний тиждень
+  // дає еквівалентну дату чисельника без зміни календарного чергування.
+  return new Date(dateValue(settings.anchorDate) + MILLISECONDS_PER_WEEK)
+    .toISOString()
+    .slice(0, 10);
+}
+
 export function getWeekTypeForDate(
   date: string,
   settings: ScheduleWeekSettings,
 ): AlternatingWeekType {
   const weeksFromAnchor = Math.floor(
-    (dateValue(date) - dateValue(settings.anchorDate)) / MILLISECONDS_PER_WEEK,
+    (dateValue(getWeekStartDate(date)) - dateValue(getWeekStartDate(settings.anchorDate))) /
+      MILLISECONDS_PER_WEEK,
   );
   const isEvenWeek = ((weeksFromAnchor % 2) + 2) % 2 === 0;
 
@@ -38,34 +58,22 @@ export function lessonAppliesToWeek(
 }
 
 export function validateScheduleWeekSettings(input: {
-  anchorDate: FormDataEntryValue | null;
-  anchorWeekType: FormDataEntryValue | null;
+  numeratorDate: FormDataEntryValue | null;
 }): ScheduleWeekSettingsValidation {
   const anchorDate =
-    typeof input.anchorDate === "string" ? input.anchorDate.trim() : "";
-  const anchorWeekType = input.anchorWeekType;
+    typeof input.numeratorDate === "string" ? input.numeratorDate.trim() : "";
   const parsedDate = dateValue(anchorDate);
 
   if (
     !DATE_PATTERN.test(anchorDate) ||
+    anchorDate.startsWith("0000-") ||
     !Number.isFinite(parsedDate) ||
     new Date(parsedDate).toISOString().slice(0, 10) !== anchorDate
   ) {
-    return { ok: false, message: "Вкажіть коректну опорну дату." };
+    return { ok: false, message: "Вкажіть коректну дату тижня-чисельника." };
   }
 
-  if (new Date(parsedDate).getUTCDay() !== 1) {
-    return { ok: false, message: "Опорна дата має бути понеділком." };
-  }
-
-  if (anchorWeekType !== "numerator" && anchorWeekType !== "denominator") {
-    return {
-      ok: false,
-      message: "Оберіть чисельник або знаменник для опорного тижня.",
-    };
-  }
-
-  return { ok: true, value: { anchorDate, anchorWeekType } };
+  return { ok: true, value: { anchorDate, anchorWeekType: "numerator" } };
 }
 
 export function formatWeekTypeLabel(type: AlternatingWeekType): string {

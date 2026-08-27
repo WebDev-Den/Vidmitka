@@ -59,6 +59,7 @@ export async function importScheduleAction(
   if (result.success) {
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/my-lessons");
+    revalidatePath("/dashboard/journal");
     revalidatePath("/dashboard/schedule");
     revalidatePath("/schedule");
   }

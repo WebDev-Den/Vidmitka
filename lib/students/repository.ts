@@ -3,12 +3,14 @@ import "server-only";
 import { getDb } from "@/lib/db";
 
 import { validateStudentAssignment } from "./rules";
+import { validateGroupSelection } from "@/lib/groups/rules";
 
 export type TeacherStudent = Readonly<{
   enrollmentId: string;
   studentId: string;
   fullName: string;
   groupName: string;
+  subgroup: string;
   subjectId: string;
   subjectName: string;
 }>;
@@ -23,6 +25,7 @@ type TeacherStudentRow = {
   student_id: string | number;
   full_name: string;
   group_name: string;
+  subgroup: string;
   subject_id: string | number;
   subject_name: string;
 };
@@ -37,6 +40,7 @@ export async function listTeacherStudents(
       st.id AS student_id,
       st.full_name,
       st.group_name,
+      ss.subgroup,
       s.id AS subject_id,
       s.name AS subject_name
     FROM subject_students ss
@@ -52,6 +56,7 @@ export async function listTeacherStudents(
     studentId: String(row.student_id),
     fullName: row.full_name,
     groupName: row.group_name,
+    subgroup: row.subgroup,
     subjectId: String(row.subject_id),
     subjectName: row.subject_name,
   }));
@@ -60,15 +65,22 @@ export async function listTeacherStudents(
 export async function addStudentToTeacherSubject(input: {
   teacherUserId: string;
   fullName: FormDataEntryValue | null;
-  groupName: FormDataEntryValue | null;
+  groupMode: FormDataEntryValue | null;
+  existingGroupName: FormDataEntryValue | null;
+  newGroupName: FormDataEntryValue | null;
   subjectId: FormDataEntryValue | null;
+  subgroup?: FormDataEntryValue | null;
 }): Promise<StudentMutationResult> {
-  const validation = validateStudentAssignment(input);
+  const group = validateGroupSelection({ mode: input.groupMode, existingName: input.existingGroupName, newName: input.newGroupName });
+  if (!group.ok) return { success: false, message: group.message };
+  const validation = validateStudentAssignment({ ...input, groupName: group.name });
   if (!validation.ok) {
     return { success: false, message: validation.message };
   }
 
   const { fullName, groupName, subjectId } = validation.value;
+  const subgroup = typeof input.subgroup === "string" ? input.subgroup.trim().replace(/\s+/gu, " ") : "";
+  if (subgroup.length > 100) return { success: false, message: "Підгрупа має містити до 100 символів." };
   const sql = getDb();
 
   try {
@@ -77,6 +89,7 @@ export async function addStudentToTeacherSubject(input: {
         SELECT id
         FROM subjects
         WHERE id = ${subjectId} AND is_active = TRUE
+          AND (NOT ${group.mustExist} OR EXISTS (SELECT 1 FROM student_groups WHERE name = ${groupName}))
       ),
       saved_student AS (
         INSERT INTO students (full_name, group_name)
@@ -94,8 +107,8 @@ export async function addStudentToTeacherSubject(input: {
         SET teacher_user_id = EXCLUDED.teacher_user_id
         RETURNING id
       )
-      INSERT INTO subject_students (teacher_subject_id, student_id)
-      SELECT owned_subject.id, saved_student.id
+      INSERT INTO subject_students (teacher_subject_id, student_id, subgroup)
+      SELECT owned_subject.id, saved_student.id, ${subgroup}
       FROM owned_subject
       CROSS JOIN saved_student
       ON CONFLICT (teacher_subject_id, student_id) DO NOTHING
@@ -108,7 +121,7 @@ export async function addStudentToTeacherSubject(input: {
       `) as unknown as Array<{ id: string | number }>;
 
       return subject
-        ? { success: false, message: "Цей студент уже доданий до предмета." }
+        ? { success: false, message: "Студент уже доданий до предмета або вибрану групу не знайдено." }
         : { success: false, message: "Активний предмет не знайдено." };
     }
   } catch (error) {

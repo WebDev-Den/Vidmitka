@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
+    "icons:generate": "node info/scripts/generate-icons.mjs",
+    "icons:check": "node info/scripts/generate-icons.mjs --check",
     "db:check": "node --env-file=.env.local scripts/check-db.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "db:verify-semester": "node --env-file=.env.local scripts/verify-student-semester.mjs",

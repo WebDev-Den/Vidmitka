@@ -22,7 +22,7 @@ export type NavigationItem = Readonly<{
 }>;
 
 const teacherNavigation: readonly NavigationItem[] = [
-  { id: "overview", label: "Огляд", href: "/dashboard", icon: "overview" },
+  { id: "journal", label: "Журнал занять", href: "/dashboard/journal", icon: "lessons" },
   {
     id: "my-lessons",
     label: "Мої заняття",

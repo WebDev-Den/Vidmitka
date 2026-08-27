@@ -13,19 +13,14 @@ export type ScheduleWeekSettingsResult = Readonly<{
 }>;
 
 type SettingsRow = {
-  anchor_date: string | Date;
+  anchor_date: string;
   anchor_week_type: "numerator" | "denominator";
 };
-
-function normalizeDate(value: string | Date): string {
-  if (value instanceof Date) return value.toISOString().slice(0, 10);
-  return value.slice(0, 10);
-}
 
 export async function getScheduleWeekSettings(): Promise<ScheduleWeekSettings | null> {
   const sql = getDb();
   const rows = (await sql`
-    SELECT anchor_date, anchor_week_type
+    SELECT anchor_date::text AS anchor_date, anchor_week_type
     FROM schedule_week_settings
     WHERE id = 1
   `) as unknown as SettingsRow[];
@@ -34,14 +29,13 @@ export async function getScheduleWeekSettings(): Promise<ScheduleWeekSettings | 
   if (!settings) return null;
 
   return {
-    anchorDate: normalizeDate(settings.anchor_date),
+    anchorDate: settings.anchor_date,
     anchorWeekType: settings.anchor_week_type,
   };
 }
 
 export async function saveScheduleWeekSettings(input: {
-  anchorDate: FormDataEntryValue | null;
-  anchorWeekType: FormDataEntryValue | null;
+  numeratorDate: FormDataEntryValue | null;
 }): Promise<ScheduleWeekSettingsResult> {
   const validation = validateScheduleWeekSettings(input);
   if (!validation.ok) {
@@ -63,6 +57,6 @@ export async function saveScheduleWeekSettings(input: {
 
   return {
     success: true,
-    message: "Чергування чисельника і знаменника збережено.",
+    message: "Дату чисельника збережено. Наступні тижні чергуються автоматично.",
   };
 }

@@ -4,10 +4,8 @@ import { CalendarX2 } from "lucide-react";
 import { useActionState } from "react";
 import type { FormEvent } from "react";
 
-import {
-  endSemesterAction,
-  initialSemesterEndActionState,
-} from "./actions";
+import { endSemesterAction } from "./actions";
+import { initialSemesterEndActionState } from "./form-state";
 
 export function SemesterEndForm() {
   const [state, formAction, pending] = useActionState(

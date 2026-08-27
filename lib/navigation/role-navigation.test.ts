@@ -9,6 +9,8 @@ describe("getRoleNavigation", () => {
     expect(ids).toContain("my-lessons");
     expect(ids).toContain("import-schedule");
     expect(ids).toContain("students");
+    expect(ids).toContain("journal");
+    expect(getRoleNavigation("teacher")[0].href).toBe("/dashboard/journal");
     expect(ids).toContain("create-lesson");
     expect(ids).not.toContain("teachers");
     expect(ids).not.toContain("settings");

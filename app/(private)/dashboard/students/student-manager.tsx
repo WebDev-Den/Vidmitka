@@ -1,29 +1,33 @@
 "use client";
 
 import { GraduationCap, Plus, UserMinus } from "lucide-react";
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 
 import type { Subject } from "@/lib/subjects/repository";
 import type { TeacherStudent } from "@/lib/students/repository";
+import type { StudentGroup } from "@/lib/groups/repository";
 
 import {
   addStudentAction,
-  initialStudentActionState,
   removeStudentAction,
 } from "./actions";
+import { initialStudentActionState } from "./form-state";
 
 export function StudentManager({
   subjects,
   students,
+  groups,
 }: {
   subjects: Subject[];
   students: TeacherStudent[];
+  groups: StudentGroup[];
 }) {
   const [state, formAction, pending] = useActionState(
     addStudentAction,
     initialStudentActionState,
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const [groupMode, setGroupMode] = useState(groups.length ? "existing" : "new");
 
   useEffect(() => {
     if (state.success) formRef.current?.reset();
@@ -34,15 +38,30 @@ export function StudentManager({
       <form ref={formRef} action={formAction} className="lesson-editor">
         <div className="settings-form-heading">
           <h2>Додати студента до предмета</h2>
-          <p>Студент буде доступний лише у ваших списках вибраного предмета.</p>
+          <p>Студента буде додано до вашого предмета. ПІБ і група також доступні в спільному каталозі для формування занять.</p>
         </div>
         <label>
           ПІБ студента
           <input name="fullName" type="text" maxLength={200} required />
         </label>
         <label>
-          Навчальна група
-          <input name="groupName" type="text" maxLength={100} required />
+          Спосіб вибору групи
+          <select name="groupMode" value={groupMode} onChange={(event) => setGroupMode(event.target.value)}>
+            <option value="existing" disabled={!groups.length}>Наявна група</option>
+            <option value="new">Нова група</option>
+          </select>
+        </label>
+        {groupMode === "existing" ? <label>Навчальна група
+          <select name="existingGroupName" defaultValue="" required>
+            <option value="" disabled>Оберіть наявну групу</option>
+            {groups.map((group) => <option key={group.name} value={group.name}>{group.name}</option>)}
+          </select>
+        </label> : <label>Назва нової групи
+          <input name="newGroupName" type="text" minLength={2} maxLength={100} required />
+        </label>}
+        <label>
+          Підгрупа (необов’язково)
+          <input name="subgroup" type="text" maxLength={100} />
         </label>
         <label>
           Навчальний предмет
@@ -105,7 +124,7 @@ export function StudentManager({
                   </span>
                   <div className="student-identity">
                     <strong>{student.fullName}</strong>
-                    <span>{student.groupName}</span>
+                    <span>{student.groupName}{student.subgroup ? ` · підгрупа ${student.subgroup}` : ""}</span>
                   </div>
                   <span className="student-subject">{student.subjectName}</span>
                   <form action={removeAction}>

@@ -6,25 +6,7 @@ import { requireAdministrator } from "@/lib/auth/session";
 import { saveScheduleWeekSettings } from "@/lib/schedule-week/repository";
 import { endSemester } from "@/lib/semesters/repository";
 
-export type WeekSettingsActionState = Readonly<{
-  success: boolean;
-  message: string;
-}>;
-
-export const initialWeekSettingsActionState: WeekSettingsActionState = {
-  success: false,
-  message: "",
-};
-
-export type SemesterEndActionState = Readonly<{
-  success: boolean;
-  message: string;
-}>;
-
-export const initialSemesterEndActionState: SemesterEndActionState = {
-  success: false,
-  message: "",
-};
+import type { SemesterEndActionState, WeekSettingsActionState } from "./form-state";
 
 export async function saveWeekSettingsAction(
   _previousState: WeekSettingsActionState,
@@ -32,14 +14,22 @@ export async function saveWeekSettingsAction(
 ): Promise<WeekSettingsActionState> {
   await requireAdministrator();
 
-  const result = await saveScheduleWeekSettings({
-    anchorDate: formData.get("anchorDate"),
-    anchorWeekType: formData.get("anchorWeekType"),
-  });
+  let result: WeekSettingsActionState;
+  try {
+    result = await saveScheduleWeekSettings({
+      numeratorDate: formData.get("numeratorDate"),
+    });
+  } catch {
+    return {
+      success: false,
+      message: "Не вдалося зберегти дату чисельника. Спробуйте ще раз.",
+    };
+  }
 
   if (result.success) {
     revalidatePath("/dashboard/settings");
     revalidatePath("/dashboard/schedule");
+    revalidatePath("/dashboard/journal");
     revalidatePath("/schedule");
   }
 
@@ -54,6 +44,8 @@ export async function endSemesterAction(
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/schedule");
+  revalidatePath("/dashboard/journal");
+  revalidatePath("/dashboard/my-lessons");
   revalidatePath("/schedule");
 
   return result;

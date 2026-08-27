@@ -13,6 +13,9 @@
 - [design-system.md](design-system.md) — обов’язковий візуальний канон, палітра та незмінний початковий логотип.
 - [development-plan.md](development-plan.md) — поетапний план розробки з результатами та критеріями приймання.
 - [schedule-import.md](schedule-import.md) — формат JSON/CSV, приклади та правила атомарного імпорту розкладу викладача.
+- [schedule-weeks.md](schedule-weeks.md) — дата чисельника, автоматичне чергування, права доступу та функціональні перевірки.
+- [attendance.md](attendance.md) — журнал за датами, імпорт студентів CSV/JSON, підгрупи та правила відвідування.
+- [groups-and-lesson-rosters.md](groups-and-lesson-rosters.md) — вибір / створення груп та прив’язка конкретних студентів до заняття.
 - [deployment.md](deployment.md) — поточна Vercel-конфігурація, результат першого deployment і стан автоматизації.
 - [agent.md](agent.md) — розширений довідник робочих правил проєкту.
 

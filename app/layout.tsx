@@ -10,8 +10,12 @@ export const metadata: Metadata = {
   description:
     "Єдиний простір для перегляду та керування розкладом навчальних занять.",
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    apple: "/apple-icon.png",
+    icon: [
+      { url: "/favicon.ico?v=vidmitka-1", type: "image/x-icon", sizes: "16x16 32x32 48x48" },
+      { url: "/icon.svg?v=vidmitka-1", type: "image/svg+xml", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico?v=vidmitka-1",
+    apple: [{ url: "/apple-icon.png?v=vidmitka-1", type: "image/png", sizes: "180x180" }],
   },
 };
 

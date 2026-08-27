@@ -2486,6 +2486,19 @@ textarea:focus-visible {
   }
 }
 
+.journal-page > * + *, .journal-form > * + * { margin-top: 20px; }
+.journal-wide { grid-column: 1 / -1; }
+.journal-import { margin-block: 20px; }
+.journal-import summary { cursor: pointer; color: var(--accent-strong); font-weight: 600; }
+.journal-table td { padding: 16px; border-bottom: 1px solid var(--line); }
+.journal-table select { min-width: 215px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: inherit; }
+.journal-table { min-width: 650px; }
+.journal-controls { margin-bottom: 0; }
+.lesson-editor .lesson-group-picker, .lesson-editor .lesson-student-picker { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+.lesson-group-students { display: grid; gap: 12px; padding-block: 12px; border-top: 1px solid var(--line); }
+.lesson-group-students h3 { margin: 0; }
+.lesson-group-students > .button { justify-self: start; }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

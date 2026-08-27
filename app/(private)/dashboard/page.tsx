@@ -6,6 +6,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { PageIntro } from "@/components/page-intro";
 import { EmptyState } from "@/components/private/empty-state";
@@ -13,6 +14,7 @@ import { requireAppUser } from "@/lib/auth/session";
 
 export default async function DashboardPage() {
   const user = await requireAppUser();
+  if (user.role === "teacher") redirect("/dashboard/journal");
   const isAdministrator = user.role === "administrator";
 
   return (

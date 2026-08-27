@@ -59,6 +59,7 @@ export default async function MyLessonsPage() {
                 <th>Предмет</th>
                 <th>Аудиторія</th>
                 <th>Тиждень</th>
+                <th>Студенти / групи</th>
               </tr>
             </thead>
             <tbody>
@@ -69,6 +70,9 @@ export default async function MyLessonsPage() {
                   <td><strong>{lesson.subjectName}</strong></td>
                   <td>{lesson.roomName}</td>
                   <td>{WEEK_LABELS[lesson.weekType]}</td>
+                  <td>{lesson.studentCount} · {lesson.groupNames.join(", ") || "без студентів"}<br />
+                    <small>{lesson.rosterMode === "selected" ? "Окремий список заняття" : "Список предмета"}</small>
+                  </td>
                 </tr>
               ))}
             </tbody>

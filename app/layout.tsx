@@ -1,37 +1,35 @@
 import { Analytics } from "@vercel/analytics/next";
+import { ukUA } from "@clerk/localizations";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+const ukrainianLocalization = {
+  ...ukUA,
+  formFieldInputPlaceholder__emailAddress: "Введіть адресу електронної пошти",
+  formFieldInputPlaceholder__emailAddress_username:
+    "Введіть адресу електронної пошти або ім’я користувача",
+  formFieldInputPlaceholder__password: "Введіть пароль",
+  formFieldInputPlaceholder__signUpPassword: "Створіть пароль",
+  formFieldInputPlaceholder__username: "Введіть ім’я користувача",
+};
+
 export const metadata: Metadata = {
-  title: "Відмітка — журнал відвідуваності",
+  title: {
+    default: "Відмітка — розклад навчальних занять",
+    template: "%s · Відмітка",
+  },
   description:
-    "Простий цифровий журнал відвідуваності для викладачів і студентів.",
-  generator: "v0.app",
+    "Єдиний простір для перегляду та керування розкладом навчальних занять.",
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: "/apple-icon.png",
   },
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light dark",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+  colorScheme: "light",
+  themeColor: "#f5f2eb",
 };
 
 export default function RootLayout({
@@ -40,10 +38,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="uk" className="bg-background">
-      <body className="antialiased">
-        {children}
-        {process.env.VERCEL === "1" && <Analytics />}
+    <html lang="uk" data-scroll-behavior="smooth">
+      <body>
+        <ClerkProvider
+          localization={ukrainianLocalization}
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+          signInFallbackRedirectUrl="/dashboard"
+          signUpFallbackRedirectUrl="/dashboard"
+          afterSignOutUrl="/"
+        >
+          {children}
+          {process.env.VERCEL === "1" && <Analytics />}
+        </ClerkProvider>
       </body>
     </html>
   );

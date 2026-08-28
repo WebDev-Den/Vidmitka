@@ -3,19 +3,19 @@
 import { Download, FileJson2, FileSpreadsheet, Upload } from "lucide-react";
 import { useActionState, useEffect, useRef } from "react";
 
-import {
-  importScheduleAction,
-  initialImportScheduleActionState,
-} from "./actions";
+import { importScheduleAction } from "./actions";
+import { initialImportScheduleActionState } from "./form-state";
 
 export function ImportScheduleForm({
   subjects,
   rooms,
   periods,
+  lessonTypes,
 }: {
   subjects: string[];
   rooms: string[];
   periods: string[];
+  lessonTypes: string[];
 }) {
   const [state, formAction, pending] = useActionState(
     importScheduleAction,
@@ -73,6 +73,7 @@ export function ImportScheduleForm({
             Збережіть структуру колонок і замініть демонстраційні значення на
             точні назви з активних довідників системи.
           </p>
+          <p>Тип заняття: поле <code>lessonType</code> у JSON або «тип заняття» у CSV. Старі файли без цього поля сумісні; у них тип залишиться невказаним.</p>
         </div>
         <div className="page-actions">
           <a className="button button-light" href="/examples/schedule-import-example.json" download>
@@ -90,6 +91,7 @@ export function ImportScheduleForm({
           <p><strong>Предмети:</strong> {subjects.join(", ") || "не додано"}</p>
           <p><strong>Аудиторії:</strong> {rooms.join(", ") || "не додано"}</p>
           <p><strong>Пари:</strong> {periods.join(", ") || "не додано"}</p>
+          <p><strong>Типи занять:</strong> {lessonTypes.join(", ") || "не додано"}</p>
         </div>
       </details>
     </div>

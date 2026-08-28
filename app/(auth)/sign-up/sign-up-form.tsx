@@ -2,16 +2,39 @@
 
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState, type FormEvent } from "react";
+
+import {
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  validateRegistrationForm,
+  type AuthFieldErrors,
+} from "@/lib/auth/validation";
 
 import { signUpAction } from "../actions";
 import { initialAuthActionState } from "../form-state";
 
-export function SignUpForm() {
+export function SignUpForm({ showAdministratorCode }: { showAdministratorCode: boolean }) {
   const [state, formAction, pending] = useActionState(
     signUpAction,
     initialAuthActionState,
   );
+  const [clientErrors, setClientErrors] = useState<AuthFieldErrors | null>(null);
+  const fieldErrors = clientErrors ?? state.fieldErrors;
+
+  function validateBeforeSubmit(event: FormEvent<HTMLFormElement>) {
+    const validation = validateRegistrationForm(new FormData(event.currentTarget));
+    if (!validation.ok) {
+      event.preventDefault();
+      setClientErrors(validation.fieldErrors);
+      const firstInvalidField = event.currentTarget.elements.namedItem(
+        Object.keys(validation.fieldErrors)[0],
+      );
+      if (firstInvalidField instanceof HTMLElement) firstInvalidField.focus();
+      return;
+    }
+    setClientErrors(null);
+  }
 
   return (
     <div className="auth-card">
@@ -21,7 +44,12 @@ export function SignUpForm() {
         <p>Новий викладач отримує доступ після підтвердження адміністратором.</p>
       </div>
 
-      <form action={formAction} className="auth-form">
+      <form
+        action={formAction}
+        onSubmit={validateBeforeSubmit}
+        onInput={() => setClientErrors({})}
+        className="auth-form"
+      >
         <label>
           ПІБ
           <input
@@ -31,11 +59,11 @@ export function SignUpForm() {
             minLength={3}
             maxLength={200}
             defaultValue={state.values.fullName}
-            aria-invalid={Boolean(state.fieldErrors.fullName)}
+            aria-invalid={Boolean(fieldErrors.fullName)}
             required
           />
-          {state.fieldErrors.fullName ? (
-            <small className="auth-field-error">{state.fieldErrors.fullName}</small>
+          {fieldErrors.fullName ? (
+            <small className="auth-field-error">{fieldErrors.fullName}</small>
           ) : null}
         </label>
 
@@ -46,49 +74,61 @@ export function SignUpForm() {
             type="email"
             autoComplete="email"
             defaultValue={state.values.email}
-            aria-invalid={Boolean(state.fieldErrors.email)}
+            aria-invalid={Boolean(fieldErrors.email)}
             required
           />
-          {state.fieldErrors.email ? (
-            <small className="auth-field-error">{state.fieldErrors.email}</small>
+          {fieldErrors.email ? (
+            <small className="auth-field-error">{fieldErrors.email}</small>
           ) : null}
         </label>
 
-        <label>
+        <label htmlFor="registration-password">
           Пароль
           <input
+            id="registration-password"
             name="password"
             type="password"
             autoComplete="new-password"
-            minLength={15}
-            maxLength={128}
-            aria-invalid={Boolean(state.fieldErrors.password)}
+            minLength={PASSWORD_MIN_LENGTH}
+            maxLength={PASSWORD_MAX_LENGTH}
+            aria-invalid={Boolean(fieldErrors.password)}
+            aria-describedby={fieldErrors.password
+              ? "registration-password-hint registration-password-error"
+              : "registration-password-hint"}
             required
           />
-          {state.fieldErrors.password ? (
-            <small className="auth-field-error">{state.fieldErrors.password}</small>
-          ) : (
-            <small className="auth-field-hint">Від 15 символів. Можна використати довгу фразу.</small>
-          )}
-        </label>
-
-        <label>
-          Повторіть пароль
-          <input
-            name="passwordConfirmation"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={Boolean(state.fieldErrors.passwordConfirmation)}
-            required
-          />
-          {state.fieldErrors.passwordConfirmation ? (
-            <small className="auth-field-error">
-              {state.fieldErrors.passwordConfirmation}
+          <small id="registration-password-hint" className="auth-field-hint">
+            Від 6 до 128 символів: щонайменше одна велика літера, цифра та спецсимвол (наприклад !, @ або #).
+          </small>
+          {fieldErrors.password ? (
+            <small id="registration-password-error" className="auth-field-error" role="alert">
+              {fieldErrors.password}
             </small>
           ) : null}
         </label>
 
-        <label>
+        <label htmlFor="registration-password-confirmation">
+          Повторіть пароль
+          <input
+            id="registration-password-confirmation"
+            name="passwordConfirmation"
+            type="password"
+            autoComplete="new-password"
+            maxLength={PASSWORD_MAX_LENGTH}
+            aria-invalid={Boolean(fieldErrors.passwordConfirmation)}
+            aria-describedby={fieldErrors.passwordConfirmation
+              ? "registration-password-confirmation-error"
+              : undefined}
+            required
+          />
+          {fieldErrors.passwordConfirmation ? (
+            <small id="registration-password-confirmation-error" className="auth-field-error" role="alert">
+              {fieldErrors.passwordConfirmation}
+            </small>
+          ) : null}
+        </label>
+
+        {(state.administratorRegistrationOpen ?? showAdministratorCode) ? <label>
           Код адміністратора
           <input
             name="administratorCode"
@@ -96,9 +136,9 @@ export function SignUpForm() {
             autoComplete="off"
           />
           <small className="auth-field-hint">
-            Заповнює лише адміністратор. Викладач залишає це поле порожнім.
+            Лише для першої реєстрації адміністратора. Викладач залишає поле порожнім.
           </small>
-        </label>
+        </label> : null}
 
         {state.message ? (
           <p className="auth-message is-error" role="alert">

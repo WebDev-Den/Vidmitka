@@ -1,7 +1,9 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { Brand } from "@/components/brand";
+import { DayTimelineMessage, PublicDayTimeline } from "@/components/public-day-timeline";
 import { getOptionalAppUser } from "@/lib/auth/session";
 
 export async function PublicHeader() {
@@ -23,6 +25,9 @@ export async function PublicHeader() {
           <ArrowUpRight size={17} />
         </Link>
       </div>
+      <Suspense fallback={<DayTimelineMessage>Завантажуємо сітку пар…</DayTimelineMessage>}>
+        <PublicDayTimeline />
+      </Suspense>
     </header>
   );
 }

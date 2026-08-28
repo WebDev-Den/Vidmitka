@@ -1,7 +1,10 @@
+import { parsePeriodColor, type PeriodColor } from "./colors";
+
 export type ClassPeriodInput = Readonly<{
   number: FormDataEntryValue | null;
   startTime: FormDataEntryValue | null;
   endTime: FormDataEntryValue | null;
+  color: FormDataEntryValue | null;
 }>;
 
 export type ComparableClassPeriod = Readonly<{
@@ -16,6 +19,7 @@ export type ClassPeriodDraft = Readonly<{
   number: number;
   startMinute: number;
   endMinute: number;
+  color: PeriodColor;
 }>;
 
 export type ClassPeriodValidation =
@@ -72,6 +76,11 @@ export function validateClassPeriod(
     };
   }
 
+  const color = parsePeriodColor(input.color);
+  if (!color) {
+    return { ok: false, message: "Оберіть колір пари з палітри сайту." };
+  }
+
   const comparable = existingPeriods.filter((period) => period.id !== excludedId);
   const duplicate = comparable.find((period) => period.number === number);
 
@@ -100,6 +109,6 @@ export function validateClassPeriod(
 
   return {
     ok: true,
-    value: { number, startMinute, endMinute },
+    value: { number, startMinute, endMinute, color },
   };
 }

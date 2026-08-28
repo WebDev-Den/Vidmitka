@@ -25,7 +25,7 @@ beforeEach(() => {
 });
 
 describe("збереження дати чисельника", () => {
-  it("перевіряє адміністратора, зберігає дату та оновлює обидва розклади", async () => {
+  it("перевіряє адміністратора, зберігає дату та оновлює головну, розклади й журнал", async () => {
     const form = new FormData();
     form.set("numeratorDate", "2026-09-06");
     form.set("anchorWeekType", "denominator");
@@ -37,6 +37,7 @@ describe("збереження дати чисельника", () => {
     expect(sql).toHaveBeenCalledExactlyOnceWith(expect.any(Array), "2026-09-06", "numerator");
     expect(authorize.mock.invocationCallOrder[0]).toBeLessThan(sql.mock.invocationCallOrder[0]);
     expect(revalidate.mock.calls).toEqual([
+      ["/"],
       ["/dashboard/settings"],
       ["/dashboard/schedule"],
       ["/dashboard/journal"],

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageIntro } from "@/components/page-intro";
+import { ScheduleDayNotice } from "@/components/schedule-day-notice";
 import { StudentImportForm } from "@/components/private/student-import-form";
 import { requireTeacher } from "@/lib/auth/session";
 import { listJournalLessons, listJournalStudents } from "@/lib/attendance/repository";
@@ -17,7 +18,7 @@ export default async function JournalPage({ searchParams }: {
   const today = getDateKeyInTimeZone(now);
   const invalidDate = params.date !== undefined && (typeof params.date !== "string" || !isJournalDate(params.date));
   const date = !invalidDate && params.date ? params.date : today;
-  const { lessons, weekType } = await listJournalLessons(teacher.id, date);
+  const { lessons, weekType, day } = await listJournalLessons(teacher.id, date);
   const scheduled = lessons.filter((lesson) => !lesson.archived);
   const suggestedKey = suggestedLessonId(scheduled.length ? scheduled : lessons, date === today ? kyivMinute(now) : 0);
   const selected = lessons.find((lesson) => lesson.key === params.lesson)
@@ -33,12 +34,13 @@ export default async function JournalPage({ searchParams }: {
         <button className="button button-light" type="submit">Показати заняття</button>
         <p className="journal-wide">{weekType ? formatWeekTypeLabel(weekType) : "Адміністратор ще не встановив дату чисельника. Показано лише заняття обох тижнів та збережені журнали."}</p>
       </form>
+      {day && <ScheduleDayNotice day={day} />}
       {lessons.length > 0 ? <form method="get" className="lesson-editor" key={date}>
         <input type="hidden" name="date" value={date} />
         <label>Заняття за розкладом
           <select name="lesson" defaultValue={selected?.key}>
             {lessons.map((lesson) => <option key={lesson.key} value={lesson.key}>
-              {lesson.periodNumber} пара · {formatMinute(lesson.startMinute)}–{formatMinute(lesson.endMinute)} · {lesson.subjectName} · {lesson.roomName}{lesson.archived ? " · Архів" : ""}
+              {lesson.periodNumber} пара · {formatMinute(lesson.startMinute)}–{formatMinute(lesson.endMinute)} · {lesson.subjectName} · {lesson.lessonTypeName ?? "Тип не вказано"} · {lesson.roomName}{lesson.archived ? " · Архів" : ""}
             </option>)}
           </select>
         </label>
@@ -46,11 +48,12 @@ export default async function JournalPage({ searchParams }: {
       </form> : <div className="empty-state"><h2>На цю дату занять немає</h2><p>Оберіть іншу дату або імпортуйте власний розклад.</p></div>}
       {selected && <>
         <h2>{selected.subjectName} · {selected.periodNumber} пара · {selected.roomName}</h2>
+        <p>{selected.lessonTypeName ?? "Тип не вказано"}</p>
         {selected.version > 0 && <p role="status">Журнал збережено · версія {selected.version}. Нижче показано збережені відмітки.</p>}
         {selected.archived && <p className="notice">Збережений журнал. Заняття вже відсутнє в актуальному розкладі; історію збережено.</p>}
         {!selected.archived && selected.lessonId && <StudentImportForm key={selected.key} lessonId={selected.lessonId} />}
-        {students.length ? <JournalForm key={`${selected.key}:${date}:${selected.version}:${students.map((student) => student.studentId).join(",")}`}
-          students={students} date={date} lessonKey={selected.key} version={selected.version} future={date > today} />
+        {students.length && day ? <JournalForm key={`${selected.key}:${date}:${selected.version}:${day.token}:${students.map((student) => student.studentId).join(",")}`}
+          students={students} date={date} lessonKey={selected.key} version={selected.version} calendarToken={day.token} future={date > today} />
           : <p className="notice">До предмета ще не додано студентів. Імпортуйте CSV/JSON або додайте їх у розділі <Link href="/dashboard/students">«Мої студенти»</Link>.</p>}
       </>}
     </section>

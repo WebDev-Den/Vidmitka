@@ -16,7 +16,7 @@ beforeEach(() => {
 });
 function form() {
   const data = new FormData();
-  for (const [key, value] of Object.entries({ teacherId: "other", subjectId: "1", roomId: "1", classPeriodId: "1", dayOfWeek: "1", weekType: "both" })) data.set(key, value);
+  for (const [key, value] of Object.entries({ teacherId: "other", subjectId: "1", roomId: "1", classPeriodId: "1", lessonTypeId: "1", dayOfWeek: "1", weekType: "both" })) data.set(key, value);
   data.append("groupNames", "КН-21"); data.append("studentIds", "1"); data.append("studentIds", "2");
   return data;
 }

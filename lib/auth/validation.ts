@@ -21,6 +21,9 @@ export type ValidationResult<T> =
   | Readonly<{ ok: true; value: T }>
   | Readonly<{ ok: false; message: string; fieldErrors: AuthFieldErrors }>;
 
+export const PASSWORD_MIN_LENGTH = 6;
+export const PASSWORD_MAX_LENGTH = 128;
+
 function stringValue(value: FormDataEntryValue | null): string {
   return typeof value === "string" ? value : "";
 }
@@ -55,8 +58,14 @@ export function validateRegistrationForm(
   if (!isEmail(email)) {
     fieldErrors.email = "Вкажіть коректну адресу електронної пошти.";
   }
-  if (password.length < 15 || password.length > 128) {
-    fieldErrors.password = "Пароль має містити від 15 до 128 символів.";
+  if (password.length < PASSWORD_MIN_LENGTH || password.length > PASSWORD_MAX_LENGTH) {
+    fieldErrors.password = "Пароль має містити від 6 до 128 символів.";
+  } else if (!/\p{Lu}/u.test(password)) {
+    fieldErrors.password = "Додайте до пароля щонайменше одну велику літеру.";
+  } else if (!/[0-9]/u.test(password)) {
+    fieldErrors.password = "Додайте до пароля щонайменше одну цифру.";
+  } else if (!/[\p{P}\p{S}]/u.test(password)) {
+    fieldErrors.password = "Додайте до пароля щонайменше один спецсимвол, наприклад !, @ або #.";
   }
   if (password !== passwordConfirmation) {
     fieldErrors.passwordConfirmation = "Паролі не збігаються.";

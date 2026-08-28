@@ -13,10 +13,11 @@ export async function createLessonAction(_previous: LessonActionState, data: For
     const result = await createLesson(user.id, teacherId, {
       subjectId: data.get("subjectId"), roomId: data.get("roomId"), classPeriodId: data.get("classPeriodId"),
       dayOfWeek: data.get("dayOfWeek"), weekType: data.get("weekType"),
+      lessonTypeId: data.get("lessonTypeId"),
       groupNames: data.getAll("groupNames"), studentIds: data.getAll("studentIds"),
     });
     if (result.success) {
-      for (const path of ["/dashboard/lessons/new", "/dashboard/my-lessons", "/dashboard/journal", "/dashboard/students", "/dashboard/schedule", "/schedule"]) revalidatePath(path);
+      for (const path of ["/", "/dashboard/lessons/new", "/dashboard/my-lessons", "/dashboard/journal", "/dashboard/students", "/dashboard/schedule", "/schedule"]) revalidatePath(path);
     }
     return result;
   } catch {

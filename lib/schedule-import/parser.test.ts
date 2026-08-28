@@ -4,6 +4,21 @@ import { readFileSync } from "node:fs";
 import { parseScheduleImport } from "./parser";
 
 describe("parseScheduleImport", () => {
+  it("читає власний тип заняття з JSON незалежно від типу тижня", () => {
+    const result = parseScheduleImport({ fileName: "schedule.json", content: JSON.stringify([
+      { subject: "Математика", room: "101", day: 1, period: 1, weekType: "both", lessonType: "  Індивідуальна   консультація " },
+    ]) });
+    expect(result).toMatchObject({ ok: true, rows: [{ lessonTypeName: "Індивідуальна консультація", weekType: "both" }] });
+  });
+  it("читає окремі колонки типу заняття і тижня з CSV", () => {
+    expect(parseScheduleImport({ fileName: "schedule.csv", content: "предмет;аудиторія;день;пара;тиждень;тип заняття\nМатематика;101;1;1;Чисельник;Практична" }))
+      .toMatchObject({ ok: true, rows: [{ lessonTypeName: "Практична", weekType: "numerator" }] });
+  });
+  it.each([42, {}, "x".repeat(101), "   "])("відхиляє некоректно переданий тип заняття %#", (lessonType) => {
+    expect(parseScheduleImport({ fileName: "schedule.json", content: JSON.stringify([
+      { subject: "Математика", room: "101", day: 1, period: 1, weekType: "both", lessonType },
+    ]) }).ok).toBe(false);
+  });
   it("нормалізує JSON-розклад із українськими значеннями", () => {
     const result = parseScheduleImport({
       fileName: "schedule.json",

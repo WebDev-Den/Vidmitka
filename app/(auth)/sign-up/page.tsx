@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { getOptionalAppUser } from "@/lib/auth/session";
+import { isAdministratorRegistrationOpen } from "@/lib/auth/repository";
 
 import { SignUpForm } from "./sign-up-form";
 
@@ -13,5 +14,5 @@ export default async function SignUpPage() {
     redirect(user.approval === "approved" ? "/dashboard" : "/approval-pending");
   }
 
-  return <SignUpForm />;
+  return <SignUpForm showAdministratorCode={await isAdministratorRegistrationOpen()} />;
 }

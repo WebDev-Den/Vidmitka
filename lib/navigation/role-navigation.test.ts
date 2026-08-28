@@ -14,6 +14,7 @@ describe("getRoleNavigation", () => {
     expect(ids).toContain("create-lesson");
     expect(ids).not.toContain("teachers");
     expect(ids).not.toContain("settings");
+    expect(ids).not.toContain("lesson-types");
   });
 
   it("показує адміністратору довідники та керування", () => {
@@ -24,9 +25,14 @@ describe("getRoleNavigation", () => {
     expect(ids).toContain("subjects");
     expect(ids).toContain("rooms");
     expect(ids).toContain("periods");
+    expect(ids).toContain("lesson-types");
     expect(ids).toContain("settings");
-    expect(ids).not.toContain("students");
-    expect(ids).not.toContain("import-schedule");
+    expect(ids).toContain("students");
+    expect(ids).toContain("import-schedule");
+    expect(ids).toContain("journal");
+    expect(ids).toContain("my-lessons");
+    expect(ids).toContain("profile");
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it("залишає перегляд розкладу всередині приватного кабінету", () => {

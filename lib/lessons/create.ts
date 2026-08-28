@@ -15,11 +15,12 @@ export async function createLesson(actorUserId: string, teacherUserId: string, i
           AND id IN (SELECT value::BIGINT FROM JSONB_ARRAY_ELEMENTS_TEXT(${JSON.stringify(draft.studentIds)}::JSONB))
           AND group_name IN (SELECT value FROM JSONB_ARRAY_ELEMENTS_TEXT(${JSON.stringify(draft.groupNames)}::JSONB))
       ), valid AS (
-        SELECT s.id AS subject_id, r.id AS room_id, p.id AS period_id, u.id AS teacher_id
-        FROM subjects s CROSS JOIN rooms r CROSS JOIN class_periods p CROSS JOIN app_users u
+        SELECT s.id AS subject_id, r.id AS room_id, p.id AS period_id, u.id AS teacher_id, t.id AS lesson_type_id
+        FROM subjects s CROSS JOIN rooms r CROSS JOIN class_periods p CROSS JOIN app_users u CROSS JOIN lesson_types t
         WHERE s.id = ${draft.subjectId}::BIGINT AND s.is_active AND r.id = ${draft.roomId}::BIGINT AND r.is_active
           AND p.id = ${draft.classPeriodId}::BIGINT AND p.is_active
-          AND u.id = ${teacherUserId} AND u.role = 'teacher' AND u.approval_status = 'approved'
+          AND t.id = ${draft.lessonTypeId}::BIGINT AND t.is_active
+          AND u.id = ${teacherUserId} AND u.role IN ('teacher', 'administrator') AND u.approval_status = 'approved'
           AND (u.id = ${actorUserId} OR EXISTS (SELECT 1 FROM app_users actor WHERE actor.id = ${actorUserId}
             AND actor.role = 'administrator' AND actor.approval_status = 'approved'))
           AND (SELECT COUNT(*) FROM selected) = ${draft.studentIds.length}
@@ -36,9 +37,9 @@ export async function createLesson(actorUserId: string, teacherUserId: string, i
         ON CONFLICT (teacher_subject_id, student_id) DO NOTHING RETURNING student_id
       ), created AS (
         INSERT INTO lessons (teacher_subject_id, teacher_user_id, room_id, class_period_id,
-          day_of_week, week_type, created_by_user_id, roster_mode)
+          day_of_week, week_type, created_by_user_id, roster_mode, lesson_type_id)
         SELECT owned.id, valid.teacher_id, valid.room_id, valid.period_id,
-          ${draft.dayOfWeek}, ${draft.weekType}, ${actorUserId}, 'selected'
+          ${draft.dayOfWeek}, ${draft.weekType}, ${actorUserId}, 'selected', valid.lesson_type_id
         FROM owned CROSS JOIN valid RETURNING id
       ), linked AS (
         INSERT INTO lesson_students (lesson_id, student_id)

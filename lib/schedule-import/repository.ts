@@ -21,6 +21,8 @@ type ResolvedRow = {
   class_period_id: string | number | null;
   day_of_week: number;
   week_type: ScheduleImportRow["weekType"];
+  lesson_type_name: string | null;
+  lesson_type_id: string | number | null;
 };
 
 type ConflictRow = {
@@ -38,6 +40,7 @@ function inputJson(rows: ScheduleImportRow[]): string {
       day_of_week: row.dayOfWeek,
       period_number: row.periodNumber,
       week_type: row.weekType,
+      lesson_type_name: row.lessonTypeName ?? null,
     })),
   );
 }
@@ -60,6 +63,9 @@ function referenceErrors(rows: ResolvedRow[]): string[] {
       errors.push(
         `Рядок ${row.row_number}: активну пару №${row.period_number} не знайдено.`,
       );
+    }
+    if (row.lesson_type_name !== null && row.lesson_type_id === null) {
+      errors.push(`Рядок ${row.row_number}: активний тип заняття «${row.lesson_type_name}» не знайдено.`);
     }
 
     return errors;
@@ -90,7 +96,8 @@ export async function importTeacherSchedule(
         room_name TEXT,
         day_of_week SMALLINT,
         period_number SMALLINT,
-        week_type TEXT
+        week_type TEXT,
+        lesson_type_name TEXT
       )
     )
     SELECT
@@ -100,6 +107,8 @@ export async function importTeacherSchedule(
       imported.period_number,
       imported.day_of_week,
       imported.week_type,
+      imported.lesson_type_name,
+      lesson_type.id AS lesson_type_id,
       subject.id AS subject_id,
       room.id AS room_id,
       period.id AS class_period_id
@@ -110,6 +119,8 @@ export async function importTeacherSchedule(
       ON room.name = imported.room_name AND room.is_active = TRUE
     LEFT JOIN class_periods AS period
       ON period.number = imported.period_number AND period.is_active = TRUE
+    LEFT JOIN lesson_types AS lesson_type
+      ON LOWER(lesson_type.name) = LOWER(imported.lesson_type_name) AND lesson_type.is_active
     ORDER BY imported.row_number
   `) as unknown as ResolvedRow[];
   const missingReferences = referenceErrors(resolvedRows);
@@ -186,7 +197,9 @@ export async function importTeacherSchedule(
           room_id BIGINT,
           class_period_id BIGINT,
           day_of_week SMALLINT,
-          week_type TEXT
+          week_type TEXT,
+          lesson_type_id BIGINT,
+          lesson_type_name TEXT
         )
       ),
       validated AS (
@@ -198,6 +211,9 @@ export async function importTeacherSchedule(
           ON room.id = imported.room_id AND room.is_active = TRUE
         JOIN class_periods AS period
           ON period.id = imported.class_period_id AND period.is_active = TRUE
+        LEFT JOIN lesson_types AS lesson_type ON lesson_type.id = imported.lesson_type_id AND lesson_type.is_active
+          AND LOWER(lesson_type.name) = LOWER(imported.lesson_type_name)
+        WHERE imported.lesson_type_id IS NULL OR lesson_type.id IS NOT NULL
       ),
       complete_import AS (
         SELECT
@@ -221,7 +237,8 @@ export async function importTeacherSchedule(
         class_period_id,
         day_of_week,
         week_type,
-        created_by_user_id
+        created_by_user_id,
+        lesson_type_id
       )
       SELECT
         owned_subjects.id,
@@ -230,7 +247,8 @@ export async function importTeacherSchedule(
         imported.class_period_id,
         imported.day_of_week,
         imported.week_type,
-        ${teacherUserId}
+        ${teacherUserId},
+        imported.lesson_type_id
       FROM validated AS imported
       JOIN owned_subjects ON owned_subjects.subject_id = imported.subject_id
       CROSS JOIN complete_import

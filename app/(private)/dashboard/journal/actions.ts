@@ -37,13 +37,20 @@ export async function saveAttendanceAction(_previous: JournalActionState, data: 
   const key = data.get("lessonKey");
   const serialized = data.get("marks");
   const rawVersion = data.get("version");
+  const calendarToken = data.get("calendarToken");
   if (typeof date !== "string" || typeof key !== "string" || typeof serialized !== "string"
     || serialized.length > 512 * 1024 || typeof rawVersion !== "string" || !/^\d{1,9}$/u.test(rawVersion)) {
     return { success: false, message: "Некоректні дані журналу." };
   }
+  if (typeof calendarToken !== "string" || !calendarToken || calendarToken.length > 100) {
+    return { success: false, message: "Оновіть сторінку, щоб завантажити актуальний календар розкладу." };
+  }
   try {
-    const result = await saveAttendance(teacher.id, { date, key, version: Number(rawVersion), marks: JSON.parse(serialized) });
-    if (result.success) revalidatePath("/dashboard/journal");
+    const result = await saveAttendance(teacher.id, { date, key, version: Number(rawVersion), calendarToken, marks: JSON.parse(serialized) });
+    if (result.success) {
+      revalidatePath("/dashboard/journal");
+      revalidatePath("/dashboard/settings");
+    }
     return result;
   } catch {
     return { success: false, message: "Не вдалося зберегти відмітки. Зміни залишаються у формі; спробуйте ще раз." };

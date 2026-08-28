@@ -9,17 +9,7 @@ import {
   updateClassPeriod,
 } from "@/lib/class-periods/repository";
 
-export type PeriodActionState = Readonly<{
-  success: boolean;
-  message: string;
-  submittedAt: number;
-}>;
-
-export const initialPeriodActionState: PeriodActionState = {
-  success: false,
-  message: "",
-  submittedAt: 0,
-};
+import type { PeriodActionState } from "./form-state";
 
 function stateFromResult(result: {
   success: boolean;
@@ -38,9 +28,12 @@ export async function createClassPeriodAction(
     number: formData.get("number"),
     startTime: formData.get("startTime"),
     endTime: formData.get("endTime"),
+    color: formData.get("color"),
   });
 
   if (result.success) {
+    revalidatePath("/");
+    revalidatePath("/schedule");
     revalidatePath("/dashboard/periods");
     revalidatePath("/dashboard/lessons/new");
   }
@@ -62,9 +55,15 @@ export async function updateClassPeriodAction(
           number: formData.get("number"),
           startTime: formData.get("startTime"),
           endTime: formData.get("endTime"),
+          color: formData.get("color"),
         });
 
   if (result.success) {
+    revalidatePath("/");
+    revalidatePath("/schedule");
+    revalidatePath("/dashboard/schedule");
+    revalidatePath("/dashboard/journal");
+    revalidatePath("/dashboard/my-lessons");
     revalidatePath("/dashboard/periods");
     revalidatePath("/dashboard/lessons/new");
   }

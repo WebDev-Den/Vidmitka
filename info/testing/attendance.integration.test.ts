@@ -45,7 +45,7 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("ізольована Б
   await importTeacherStudents("teacher", { lessonId: lesson.lessonId! }, [{ ...parsed.rows[0], subgroup: null }]);
   expect((await listJournalStudents("teacher", lesson))[0].subgroup).toBe("1");
   const selected = applyAudience(students, "КН-21", "1").map((row) => ({ ...row, status: row.status === "not_required" ? row.status : "present" as const }));
-  const input = { date, key: lesson.key, version: 0, marks: selected.map(({ studentId, status }) => ({ studentId, status })) };
+  const input = { date, key: lesson.key, version: 0, calendarToken: initial.day!.token, marks: selected.map(({ studentId, status }) => ({ studentId, status })) };
   expect((await saveAttendance("other-teacher", input)).success).toBe(false);
   expect((await saveAttendance("teacher", { ...input, marks: [...input.marks, { studentId: "999999", status: "absent" }] })).success).toBe(false);
   expect((await saveAttendance("teacher", { ...input, date: futureDate })).success).toBe(false);

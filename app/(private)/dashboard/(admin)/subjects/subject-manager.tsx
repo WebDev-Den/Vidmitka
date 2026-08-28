@@ -7,9 +7,9 @@ import type { Subject } from "@/lib/subjects/repository";
 
 import {
   createSubjectAction,
-  initialSubjectActionState,
   toggleSubjectAction,
 } from "./actions";
+import { initialSubjectActionState } from "./form-state";
 
 export function SubjectManager({ subjects }: { subjects: Subject[] }) {
   const [state, formAction, pending] = useActionState(

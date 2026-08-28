@@ -108,8 +108,7 @@ export async function requireAdministrator(): Promise<AppUser> {
 }
 
 export async function requireTeacher(): Promise<AppUser> {
-  const user = await requireAppUser();
-
-  if (user.role !== "teacher") redirect("/dashboard?access=denied");
-  return user;
+  // Обидві ролі мають власний викладацький простір. Власника даних
+  // сторінки та дії визначають за id цієї сесії, а не за даними форми.
+  return requireAppUser();
 }

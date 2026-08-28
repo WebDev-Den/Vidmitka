@@ -3,7 +3,7 @@ import { randomBytes, scryptSync } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { neon } from "@neondatabase/serverless";
 
-export async function createAttendanceTestDatabase() {
+export async function createAttendanceTestDatabase({ seedAdministrator = true, legacyAdministrator = false } = {}) {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
   const source = neon(process.env.DATABASE_URL);
   const schema = `codex_attendance_test_${randomBytes(8).toString("hex")}`;
@@ -26,6 +26,8 @@ export async function createAttendanceTestDatabase() {
     const tables = ["app_users", "auth_sessions", "class_periods", "schedule_week_settings", "subjects", "rooms", "students", "teacher_subjects", "subject_students", "lessons", "semester_closures"];
     const [groupTable] = await source`SELECT TO_REGCLASS('public.student_groups') AS name`;
     if (groupTable.name) tables.push("student_groups");
+    const [typeTable] = await source`SELECT TO_REGCLASS('public.lesson_types') AS name`;
+    if (typeTable.name) tables.push("lesson_types");
     for (const table of tables) await source.query(`CREATE TABLE "${schema}"."${table}" (LIKE public."${table}" INCLUDING ALL)`);
     for (const table of tables) {
       const constraints = await source`SELECT conname, pg_get_constraintdef(oid) AS definition FROM pg_constraint WHERE conrelid = ${`public.${table}`}::regclass AND contype = 'f'`;
@@ -37,7 +39,15 @@ export async function createAttendanceTestDatabase() {
         ]);
       }
     }
-    for (const file of ["006_attendance.sql", "007_student_groups_and_lesson_rosters.sql"]) {
+    for (const file of ["006_attendance.sql", "007_student_groups_and_lesson_rosters.sql", "008_administrator_bootstrap.sql", "009_makeup_days.sql", "010_lesson_types.sql", "011_class_period_colors.sql"]) {
+      if (file === "008_administrator_bootstrap.sql" && legacyAdministrator) {
+        // Відтворення старої схеми тільки в щойно створеній тестовій БД.
+        await source.query(`ALTER TABLE "${schema}".app_users DROP COLUMN IF EXISTS is_bootstrap_administrator`);
+        await source.query(`INSERT INTO "${schema}".app_users
+          (id, email, email_normalized, full_name, password_hash, role, approval_status)
+          VALUES ('legacy-administrator', 'codex.attendance.legacy@example.test',
+          'codex.attendance.legacy@example.test', 'Тест старого адміністратора', 'test-only-unused', 'administrator', 'approved')`);
+      }
       const migration = await readFile(new URL(`../../db/migrations/${file}`, import.meta.url), "utf8");
       await source.transaction([
         source.query(`SET LOCAL search_path TO "${schema}"`),
@@ -57,7 +67,7 @@ export async function createAttendanceTestDatabase() {
     const salt = randomBytes(16);
     const hash = scryptSync("Codex Attendance Test 2026!", salt, 64, { N: 16384, r: 8, p: 5, maxmem: 32 * 1024 * 1024 });
     const passwordHash = `scrypt$16384$8$5$${salt.toString("base64url")}$${hash.toString("base64url")}`;
-    for (const id of ["teacher", "other-teacher", "administrator"]) {
+    for (const id of ["teacher", "other-teacher", ...(seedAdministrator ? ["administrator"] : [])]) {
       const email = `codex.attendance.${id}@example.test`;
       await sql`INSERT INTO app_users (id, email, email_normalized, full_name, password_hash, role, approval_status)
         VALUES (${id}, ${email}, ${email}, ${`Тест ${id}`}, ${passwordHash}, ${id === "administrator" ? "administrator" : "teacher"}, 'approved')`;

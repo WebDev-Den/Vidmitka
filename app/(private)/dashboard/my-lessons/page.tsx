@@ -5,6 +5,8 @@ import { PageIntro } from "@/components/page-intro";
 import { EmptyState } from "@/components/private/empty-state";
 import { requireTeacher } from "@/lib/auth/session";
 import { listTeacherLessons } from "@/lib/lessons/repository";
+import { listLessonTypes } from "@/lib/lesson-types/repository";
+import { LessonTypePicker } from "./lesson-type-picker";
 
 const DAY_LABELS: Record<number, string> = {
   1: "Понеділок",
@@ -24,7 +26,8 @@ const WEEK_LABELS = {
 
 export default async function MyLessonsPage() {
   const teacher = await requireTeacher();
-  const lessons = await listTeacherLessons(teacher.id);
+  const [lessons, types] = await Promise.all([listTeacherLessons(teacher.id), listLessonTypes({ activeOnly: true })]);
+  const typeChoices = types.map(({ id, name }) => ({ id, name }));
 
   return (
     <section>
@@ -67,7 +70,11 @@ export default async function MyLessonsPage() {
                 <tr key={lesson.id}>
                   <td>{DAY_LABELS[lesson.dayOfWeek]}</td>
                   <td>{lesson.periodNumber} · {lesson.periodTime}</td>
-                  <td><strong>{lesson.subjectName}</strong></td>
+                  <td><strong>{lesson.subjectName}</strong>
+                    {teacher.role === "administrator" || lesson.createdByUserId === teacher.id
+                      ? <LessonTypePicker lessonId={lesson.id} currentTypeId={lesson.lessonTypeId} currentTypeName={lesson.lessonTypeName} types={typeChoices} />
+                      : <p>{lesson.lessonTypeName ?? "Тип не вказано"} · змінює адміністратор</p>}
+                  </td>
                   <td>{lesson.roomName}</td>
                   <td>{WEEK_LABELS[lesson.weekType]}</td>
                   <td>{lesson.studentCount} · {lesson.groupNames.join(", ") || "без студентів"}<br />

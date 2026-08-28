@@ -1,0 +1,4 @@
+[
+  {"subject":"Основи програмування","room":"101","day":6,"period":1,"weekType":"both","lessonType":"Лекція"},
+  {"subject":"Основи програмування","room":"101","day":6,"period":2,"weekType":"both","lessonType":"Неіснуючий тип QA"}
+]

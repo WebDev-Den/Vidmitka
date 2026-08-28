@@ -9,6 +9,7 @@ import { listTeacherLessons } from "@/lib/lessons/repository";
 import { listJournalLessons, listJournalStudents, saveAttendance } from "@/lib/attendance/repository";
 import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 import { endSemester } from "@/lib/semesters/repository";
+import { listLessonTypes } from "@/lib/lesson-types/repository";
 
 it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("група → студент → власний список заняття → журнал", async () => {
   const sql = getDb();
@@ -38,6 +39,7 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("група → студ
   const bohdan = students.find((student) => student.fullName === "Мельник Богдан")!;
   const maria = students.find((student) => student.fullName === "Шевченко Марія")!;
   const draft = { subjectId: programming, roomId: rooms.find((room) => room.name === "101")!.id, classPeriodId: periods[0].id,
+    lessonTypeId: (await listLessonTypes({ activeOnly: true }))[0].id,
     dayOfWeek: String(weekday), weekType: "both", groupNames: ["КН-31"], studentIds: [anna.id] };
   expect((await createLesson("teacher", "other-teacher", draft)).success).toBe(false);
   expect((await createLesson("teacher", "teacher", { ...draft, studentIds: [maria.id] })).success).toBe(false);
@@ -66,7 +68,7 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("група → студ
   expect(roster.map((student) => student.studentId).sort()).toEqual([anna.id, maria.id].sort());
   expect(await listJournalStudents("teacher", await findLesson(second.lessonId!))).toHaveLength(1);
   const lesson = await findLesson(first.lessonId!);
-  expect((await saveAttendance("teacher", { date, key: lesson.key, version: 0, marks: roster.map((student) => ({ studentId: student.studentId, status: "present" })) })).success).toBe(true);
+  expect((await saveAttendance("teacher", { date, key: lesson.key, version: 0, calendarToken: (await listJournalLessons("teacher", date)).day!.token, marks: roster.map((student) => ({ studentId: student.studentId, status: "present" })) })).success).toBe(true);
   await endSemester("administrator");
   expect((await listJournalLessons("teacher", date)).lessons[0].archived).toBe(true);
   expect(await listGroupStudents()).toHaveLength(3);

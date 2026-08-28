@@ -5,14 +5,17 @@ import { ScheduleView } from "@/components/schedule-view";
 
 export const metadata: Metadata = { title: "Публічний розклад" };
 
-export default function PublicSchedulePage() {
+export default async function PublicSchedulePage({ searchParams }: {
+  searchParams: Promise<{ date?: string | string[] }>;
+}) {
+  const { date } = await searchParams;
   return (
     <>
       <div className="public-header-surface">
         <PublicHeader />
       </div>
       <main className="public-content">
-        <ScheduleView />
+        <ScheduleView selectedDate={date} />
       </main>
     </>
   );

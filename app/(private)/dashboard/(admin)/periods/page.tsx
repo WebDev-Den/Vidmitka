@@ -11,16 +11,17 @@ export default async function PeriodsPage() {
       <PageIntro
         eyebrow="ДОВІДНИКИ"
         title="Пари та час"
-        description="Керуйте номерами пар і точними межами навчальних слотів. Неактивні пари залишаються в переліку, але їх не можна вибрати для нового заняття."
+        description="Керуйте номерами, часом і кольорами пар на публічній шкалі. Неактивні пари залишаються в переліку, але їх не можна вибрати для нового заняття."
       />
       <PeriodManager
         periods={periods.map(
-          ({ id, number, startTime, endTime, isActive }) => ({
+          ({ id, number, startTime, endTime, isActive, color }) => ({
             id,
             number,
             startTime,
             endTime,
             isActive,
+            color,
           }),
         )}
       />

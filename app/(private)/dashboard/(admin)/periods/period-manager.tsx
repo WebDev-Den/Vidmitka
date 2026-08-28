@@ -1,14 +1,16 @@
 "use client";
 
 import { Check, Clock3, PauseCircle, Plus, Save } from "lucide-react";
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
+
+import { PERIOD_COLORS, parsePeriodColor, type PeriodColor } from "@/lib/class-periods/colors";
 
 import {
   createClassPeriodAction,
-  initialPeriodActionState,
   updateClassPeriodAction,
 } from "./actions";
+import { initialPeriodActionState } from "./form-state";
 
 type PeriodView = Readonly<{
   id: string;
@@ -16,7 +18,33 @@ type PeriodView = Readonly<{
   startTime: string;
   endTime: string;
   isActive: boolean;
+  color: PeriodColor;
 }>;
+
+function PeriodColorField({ color = "#0F766E", label = "Колір шкали" }: {
+  color?: PeriodColor;
+  label?: string;
+}) {
+  const [selected, setSelected] = useState(color);
+
+  return (
+    <label>
+      <span>Колір шкали</span>
+      <span className="period-color-control">
+        <span className="period-color-swatch" style={{ backgroundColor: selected }} aria-hidden="true" />
+        <select name="color" value={selected} aria-label={label} required
+          onChange={(event) => {
+            const value = parsePeriodColor(event.target.value);
+            if (value) setSelected(value);
+          }}>
+          {PERIOD_COLORS.map((option) => (
+            <option key={option.value} value={option.value}>{option.name}</option>
+          ))}
+        </select>
+      </span>
+    </label>
+  );
+}
 
 function ActionMessage({
   state,
@@ -80,7 +108,7 @@ function CreatePeriodForm() {
         <span className="period-icon"><Plus size={20} /></span>
         <div>
           <h2>Додати пару</h2>
-          <p>Вкажіть номер і точні межі одного навчального слота.</p>
+          <p>Вкажіть номер, час і колір пари на публічній шкалі.</p>
         </div>
       </div>
 
@@ -97,6 +125,7 @@ function CreatePeriodForm() {
           Завершення
           <input name="endTime" type="time" required />
         </label>
+        <PeriodColorField key={state.success ? state.submittedAt : "new"} />
         <SubmitButton className="button button-primary period-create-button">
           <Plus size={17} />
           Додати пару
@@ -151,6 +180,7 @@ function PeriodRow({ period }: { period: PeriodView }) {
           aria-label={`Час завершення ${period.number} пари`}
         />
       </label>
+      <PeriodColorField key={period.color} color={period.color} label={`Колір ${period.number} пари`} />
       <div className="period-status-cell">
         <span className={`period-status${period.isActive ? " is-active" : " is-inactive"}`}>
           {period.isActive ? "Активна" : "Неактивна"}
@@ -184,7 +214,7 @@ export function PeriodManager({ periods }: { periods: PeriodView[] }) {
         <Clock3 size={22} />
         <div>
           <strong>{activeCount} активних пар</strong>
-          <span>Пари використовуються в розкладі в порядку їх номерів.</span>
+          <span>Кольори позначають пари на публічній шкалі часу. Неактивні пари на ній не показуються.</span>
         </div>
       </div>
 

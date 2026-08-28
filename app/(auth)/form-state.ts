@@ -5,6 +5,7 @@ export type AuthActionState = Readonly<{
   message: string;
   fieldErrors: AuthFieldErrors;
   values: Readonly<{ fullName?: string; email?: string }>;
+  administratorRegistrationOpen?: boolean;
 }>;
 
 export const initialAuthActionState: AuthActionState = {

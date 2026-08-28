@@ -1,11 +1,13 @@
 ---
 name: ui-spacing-review
-description: Review spacing, alignment, density, responsive rhythm, and overflow in Vidmitka UI. Use after layout, CSS, or TSX changes and whenever the user asks to check margins, padding, gaps, or adaptive spacing.
+description: Review spacing, alignment, density, responsive rhythm, and overflow in Vidmitka UI during final batch QA or an explicit spacing-review request. Collect layout, CSS, and TSX changes for that phase; do not run a review after each edit.
 ---
 
 # UI Spacing Review
 
 Перевіряй відступи як систему, а не як окремі числа. Мета — послідовна візуальна ієрархія на desktop, tablet і mobile без переповнення сторінки.
+
+За правилом користувача від 28.08.2026 цю перевірку виконує окремий QA-агент наприкінці пакета або за прямим запитом на перевірку. Під час звичайної розробки лише додай її до критеріїв задачі в `info/tasks.md`; не відкривай браузер після кожної TSX/CSS-правки.
 
 ## Робочий процес
 
@@ -16,7 +18,7 @@ description: Review spacing, alignment, density, responsive rhythm, and overflow
 5. Перевір browser console і document-level horizontal overflow. Таблиця може прокручуватися тільки у власному контейнері.
 6. Після виправлень повтори ті самі вимірювання та основний user flow.
 
-Скриншоти й інші браузерні артефакти зберігай у `output/playwright/`.
+Скриншоти й інші браузерні артефакти зберігай у `info/qa/artifacts/<batch-id>/`. Не включай до них реальні персональні дані чи секрети.
 
 ## Критерії
 

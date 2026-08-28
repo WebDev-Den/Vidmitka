@@ -27,6 +27,7 @@ export async function saveWeekSettingsAction(
   }
 
   if (result.success) {
+    revalidatePath("/");
     revalidatePath("/dashboard/settings");
     revalidatePath("/dashboard/schedule");
     revalidatePath("/dashboard/journal");
@@ -42,6 +43,7 @@ export async function endSemesterAction(
   const administrator = await requireAdministrator();
   const result = await endSemester(administrator.id);
 
+  revalidatePath("/");
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/schedule");
   revalidatePath("/dashboard/journal");

@@ -1,0 +1,7 @@
+[
+  {"subject":"Основи програмування","room":"101","day":1,"period":1,"weekType":"both","lessonType":"Лекція"},
+  {"subject":"Основи програмування","room":"101","day":1,"period":2,"weekType":"denominator","lessonType":"Практична"},
+  {"subject":"Математика","room":"102","day":2,"period":1,"weekType":"both","lessonType":"Лабораторна"},
+  {"subject":"Основи програмування","room":"101","day":3,"period":1,"weekType":"both"},
+  {"subject":"Математика","room":"102","day":5,"period":3,"weekType":"both","lessonType":"Лекція"}
+]

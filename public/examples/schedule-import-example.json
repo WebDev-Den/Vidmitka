@@ -4,13 +4,15 @@
     "room": "КН-21",
     "day": "Понеділок",
     "period": 1,
-    "weekType": "Чисельник"
+    "weekType": "Чисельник",
+    "lessonType": "Лекція"
   },
   {
     "subject": "Бази даних",
     "room": "КН-22",
     "day": "Середа",
     "period": 3,
-    "weekType": "Обидва тижні"
+    "weekType": "Обидва тижні",
+    "lessonType": "Лабораторна"
   }
 ]

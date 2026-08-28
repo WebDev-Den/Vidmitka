@@ -1,10 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import {
   authenticateAccount,
   registerAccount,
+  isAdministratorRegistrationOpen,
 } from "@/lib/auth/repository";
 import { endAppSession, startAppSession } from "@/lib/auth/session";
 import {
@@ -66,6 +68,7 @@ export async function signUpAction(
       message: validation.message,
       fieldErrors: validation.fieldErrors,
       values: { fullName, email },
+      administratorRegistrationOpen: await isAdministratorRegistrationOpen(),
     };
   }
 
@@ -76,9 +79,11 @@ export async function signUpAction(
       message: result.message,
       fieldErrors: {},
       values: { fullName, email },
+      administratorRegistrationOpen: await isAdministratorRegistrationOpen(),
     };
   }
 
+  revalidatePath("/sign-up");
   await startAppSession(result.user.id);
   redirect(
     result.user.approval === "approved" ? "/dashboard" : "/approval-pending",

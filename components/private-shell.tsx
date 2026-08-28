@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Brand } from "@/components/brand";
 import { signOutAction } from "@/app/(auth)/actions";
@@ -57,6 +57,9 @@ export function PrivateShell({
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobileCloseRef = useRef<HTMLButtonElement>(null);
   const navigation = useMemo(() => getRoleNavigation(user.role), [user.role]);
   const activeItem =
     navigation.find(
@@ -70,13 +73,66 @@ export function PrivateShell({
   }, [pathname]);
 
   useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMobileOpen(false);
+    const sidebar = sidebarRef.current;
+    if (!mobileOpen || !sidebar) return;
+
+    // Keep this breakpoint aligned with the mobile drawer in globals.css.
+    const mobileViewport = window.matchMedia("(max-width: 860px)");
+    if (!mobileViewport.matches) {
+      setMobileOpen(false);
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    mobileCloseRef.current?.focus();
+
+    const handleKeyboard = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMobileOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const controls = Array.from(
+        sidebar.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) =>
+        element.getClientRects().length > 0 &&
+        window.getComputedStyle(element).visibility !== "hidden",
+      );
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      const active = document.activeElement;
+
+      if (!first || !last) {
+        event.preventDefault();
+        sidebar.focus();
+      } else if (event.shiftKey && (active === first || !sidebar.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !sidebar.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    const closeOnDesktop = () => {
+      if (!mobileViewport.matches) setMobileOpen(false);
     };
 
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, []);
+    document.addEventListener("keydown", handleKeyboard);
+    mobileViewport.addEventListener("change", closeOnDesktop);
+    return () => {
+      document.removeEventListener("keydown", handleKeyboard);
+      mobileViewport.removeEventListener("change", closeOnDesktop);
+      document.body.style.overflow = previousOverflow;
+
+      const trigger = mobileTriggerRef.current;
+      if (trigger && trigger.getClientRects().length > 0) trigger.focus();
+    };
+  }, [mobileOpen]);
 
   return (
     <div
@@ -84,7 +140,15 @@ export function PrivateShell({
         mobileOpen ? " is-mobile-open" : ""
       }`}
     >
-      <aside className="private-sidebar" aria-label="Навігація кабінету">
+      <aside
+        ref={sidebarRef}
+        id="private-navigation"
+        className="private-sidebar"
+        role={mobileOpen ? "dialog" : undefined}
+        aria-modal={mobileOpen ? true : undefined}
+        aria-label="Навігація кабінету"
+        tabIndex={mobileOpen ? -1 : undefined}
+      >
         <div className="private-brand-row">
           <Brand compact={collapsed} />
           <button
@@ -93,10 +157,12 @@ export function PrivateShell({
             onClick={() => setCollapsed((value) => !value)}
             aria-label={collapsed ? "Розгорнути меню" : "Згорнути меню ліворуч"}
             aria-expanded={!collapsed}
+            aria-controls="private-navigation"
           >
             {collapsed ? <PanelLeftOpen size={19} /> : <PanelLeftClose size={19} />}
           </button>
           <button
+            ref={mobileCloseRef}
             className="icon-control mobile-close"
             type="button"
             onClick={() => setMobileOpen(false)}
@@ -148,17 +214,19 @@ export function PrivateShell({
         type="button"
         onClick={() => setMobileOpen(false)}
         aria-label="Закрити меню"
-        tabIndex={mobileOpen ? 0 : -1}
+        tabIndex={-1}
       />
 
-      <div className="private-workspace">
+      <div className="private-workspace" inert={mobileOpen ? true : undefined}>
         <header className="private-topbar">
           <button
+            ref={mobileTriggerRef}
             className="icon-control mobile-menu-button"
             type="button"
             onClick={() => setMobileOpen(true)}
             aria-label="Відкрити меню"
             aria-expanded={mobileOpen}
+            aria-controls="private-navigation"
           >
             <Menu size={21} />
           </button>

@@ -7,9 +7,9 @@ import type { Room } from "@/lib/rooms/repository";
 
 import {
   createRoomAction,
-  initialRoomActionState,
   toggleRoomAction,
 } from "./actions";
+import { initialRoomActionState } from "./form-state";
 
 export function RoomManager({ rooms }: { rooms: Room[] }) {
   const [state, formAction, pending] = useActionState(

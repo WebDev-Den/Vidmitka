@@ -6,8 +6,8 @@ import { applyAudience, attendanceSummary, ATTENDANCE_LABELS, type AttendanceStu
 import { saveAttendanceAction } from "./actions";
 import { initialJournalState } from "./form-state";
 
-export function JournalForm({ students, date, lessonKey, version, future }: {
-  students: AttendanceStudent[]; date: string; lessonKey: string; version: number; future: boolean;
+export function JournalForm({ students, date, lessonKey, version, calendarToken, future }: {
+  students: AttendanceStudent[]; date: string; lessonKey: string; version: number; calendarToken: string; future: boolean;
 }) {
   const [rows, setRows] = useState(students);
   const [group, setGroup] = useState("");
@@ -33,6 +33,7 @@ export function JournalForm({ students, date, lessonKey, version, future }: {
       <input type="hidden" name="date" value={date} />
       <input type="hidden" name="lessonKey" value={lessonKey} />
       <input type="hidden" name="version" value={version} />
+      <input type="hidden" name="calendarToken" value={calendarToken} />
       <input type="hidden" name="marks" value={JSON.stringify(rows.map(({ studentId, status }) => ({ studentId, status })))} />
       <div className="lesson-editor journal-controls">
         <div className="settings-form-heading">

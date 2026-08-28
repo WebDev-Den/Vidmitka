@@ -5,15 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdministrator } from "@/lib/auth/session";
 import { createRoom, setRoomActive } from "@/lib/rooms/repository";
 
-export type RoomActionState = Readonly<{
-  success: boolean;
-  message: string;
-}>;
-
-export const initialRoomActionState: RoomActionState = {
-  success: false,
-  message: "",
-};
+import type { RoomActionState } from "./form-state";
 
 export async function createRoomAction(
   _previousState: RoomActionState,

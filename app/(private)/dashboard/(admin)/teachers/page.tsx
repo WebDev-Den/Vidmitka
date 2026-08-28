@@ -2,14 +2,15 @@ import { Check, Clock3, UsersRound } from "lucide-react";
 
 import { PageIntro } from "@/components/page-intro";
 import { EmptyState } from "@/components/private/empty-state";
-import { listTeacherAccounts } from "@/lib/auth/repository";
+import { listStaffAccounts } from "@/lib/auth/repository";
 import { requireAdministrator } from "@/lib/auth/session";
 
 import { approveTeacher } from "./actions";
+import { AccountRoleForm } from "./role-form";
 
 export default async function TeachersPage() {
   await requireAdministrator();
-  const teachers = await listTeacherAccounts();
+  const teachers = await listStaffAccounts();
 
   const pendingCount = teachers.filter(
     (teacher) => teacher.approval === "pending",
@@ -19,8 +20,8 @@ export default async function TeachersPage() {
     <section>
       <PageIntro
         eyebrow="АДМІНІСТРУВАННЯ"
-        title="Викладачі"
-        description="Схвалюйте нові облікові записи перед наданням доступу до приватного кабінету."
+        title="Викладачі та адміністратори"
+        description="Схвалюйте доступ і керуйте ролями. Адміністратор також має всі викладацькі можливості."
         actions={
           <span className="pending-summary">
             <Clock3 size={16} /> Очікують: {pendingCount}
@@ -37,13 +38,14 @@ export default async function TeachersPage() {
       ) : (
         <div className="teacher-list" aria-label="Облікові записи викладачів">
           {teachers.map((teacher) => (
-            <article className="teacher-row" key={teacher.id}>
+            <article className="teacher-row" key={teacher.id} aria-label={teacher.fullName}>
               <span className="teacher-avatar" aria-hidden="true">
                 {teacher.fullName.slice(0, 2).toUpperCase()}
               </span>
               <span className="teacher-identity">
                 <strong>{teacher.fullName}</strong>
                 <small>{teacher.email}</small>
+                <small>{teacher.role === "administrator" ? "Адміністратор + викладач" : "Викладач"}</small>
               </span>
               <span className={`approval-badge is-${teacher.approval}`}>
                 {teacher.approval === "approved" ? (
@@ -63,9 +65,9 @@ export default async function TeachersPage() {
                     Схвалити доступ
                   </button>
                 </form>
-              ) : (
-                <span className="teacher-approved-note">Доступ активний</span>
-              )}
+              ) : teacher.isBootstrapAdministrator ? (
+                <span className="teacher-approved-note">Захищений адміністратор — пониження недоступне</span>
+              ) : <AccountRoleForm key={teacher.role} userId={teacher.id} role={teacher.role} />}
             </article>
           ))}
         </div>

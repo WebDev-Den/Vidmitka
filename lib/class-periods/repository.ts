@@ -2,6 +2,8 @@ import "server-only";
 
 import { getDb } from "@/lib/db";
 
+import type { PeriodColor } from "./colors";
+
 import {
   formatMinute,
   validateClassPeriod,
@@ -15,6 +17,7 @@ export type ClassPeriod = ComparableClassPeriod &
     startTime: string;
     endTime: string;
     label: string;
+    color: PeriodColor;
   }>;
 
 export type ClassPeriodMutationResult = Readonly<{
@@ -28,6 +31,7 @@ type PeriodRow = {
   start_minute: number;
   end_minute: number;
   is_active: boolean;
+  color: PeriodColor;
 };
 
 function toClassPeriod(row: PeriodRow): ClassPeriod {
@@ -42,6 +46,7 @@ function toClassPeriod(row: PeriodRow): ClassPeriod {
     startTime,
     endTime,
     isActive: row.is_active,
+    color: row.color,
     label: `${row.number} пара · ${startTime}–${endTime}`,
   };
 }
@@ -66,7 +71,7 @@ function mutationError(error: unknown): ClassPeriodMutationResult {
 async function getPeriodRows(): Promise<ClassPeriod[]> {
   const sql = getDb();
   const rows = await sql`
-    SELECT id, number, start_minute, end_minute, is_active
+    SELECT id, number, start_minute, end_minute, is_active, color
     FROM class_periods
     ORDER BY number ASC
   `;
@@ -111,12 +116,12 @@ export async function createClassPeriod(
   if (!validation.ok) return validation.result;
 
   const sql = getDb();
-  const { number, startMinute, endMinute } = validation.value;
+  const { number, startMinute, endMinute, color } = validation.value;
 
   try {
     await sql`
-      INSERT INTO class_periods (number, start_minute, end_minute)
-      VALUES (${number}, ${startMinute}, ${endMinute})
+      INSERT INTO class_periods (number, start_minute, end_minute, color)
+      VALUES (${number}, ${startMinute}, ${endMinute}, ${color})
     `;
   } catch (error) {
     return mutationError(error);
@@ -137,7 +142,7 @@ export async function updateClassPeriod(
   if (!validation.ok) return validation.result;
 
   const sql = getDb();
-  const { number, startMinute, endMinute } = validation.value;
+  const { number, startMinute, endMinute, color } = validation.value;
 
   try {
     const rows = (await sql`
@@ -146,6 +151,7 @@ export async function updateClassPeriod(
         number = ${number},
         start_minute = ${startMinute},
         end_minute = ${endMinute},
+        color = ${color},
         updated_at = NOW()
       WHERE id = ${id}
       RETURNING id
@@ -182,6 +188,7 @@ export async function setClassPeriodActive(
         number: String(period.number),
         startTime: period.startTime,
         endTime: period.endTime,
+        color: period.color,
       },
       periods,
       id,

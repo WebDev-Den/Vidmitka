@@ -5,7 +5,7 @@ import { createHash, randomBytes, randomUUID, timingSafeEqual } from "node:crypt
 import { getDb } from "@/lib/db";
 
 import { hashPassword, verifyPassword } from "./password";
-import { resolveAccountAccess, type AccountApproval, type AppRole } from "./roles";
+import { resolveRole, type AccountApproval, type AppRole } from "./roles";
 import type { LoginInput, RegistrationInput } from "./validation";
 
 const SESSION_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
@@ -17,6 +17,7 @@ export type AuthUser = Readonly<{
   fullName: string;
   role: AppRole;
   approval: AccountApproval;
+  isBootstrapAdministrator: boolean;
 }>;
 
 export type TeacherAccount = AuthUser &
@@ -39,6 +40,7 @@ type UserRow = {
   password_hash: string;
   role: AppRole;
   approval_status: AccountApproval;
+  is_bootstrap_administrator: boolean;
   failed_login_attempts: number;
   locked_until: string | Date | null;
   created_at: string | Date;
@@ -51,6 +53,7 @@ function toAuthUser(row: UserRow): AuthUser {
     fullName: row.full_name,
     role: row.role,
     approval: row.approval_status,
+    isBootstrapAdministrator: row.is_bootstrap_administrator,
   };
 }
 
@@ -72,21 +75,23 @@ export async function registerAccount(
   input: RegistrationInput,
 ): Promise<RegisterAccountResult> {
   const sql = getDb();
-  const access = resolveAccountAccess(input.email, false);
-  if (
-    access.role === "administrator" &&
-    !hasAdministratorRegistrationCode(input.administratorCode)
-  ) {
-    return {
-      success: false,
-      message: "Для реєстрації адміністратора введіть правильний код адміністратора.",
-    };
-  }
+  const administratorEmail = resolveRole(input.email) === "administrator";
+  const correctCode = hasAdministratorRegistrationCode(input.administratorCode);
   const id = randomUUID();
   const passwordHash = await hashPassword(input.password);
 
   try {
-    const [row] = (await sql`
+    // Окремий запит блокування + Read Committed: другий запит бачить
+    // адміністратора, якого щойно створив паралельний запит.
+    const [, rows] = await sql.transaction([
+      sql`SELECT pg_advisory_xact_lock(hashtext(current_schema()), hashtext('vidmitka-auth-roles'))`,
+      sql`
+      WITH setup AS (
+        SELECT NOT EXISTS (SELECT 1 FROM app_users WHERE role = 'administrator') AS is_open
+      ), registration AS (
+        SELECT is_open AND ${administratorEmail} AND ${correctCode} AS bootstrap
+        FROM setup WHERE NOT is_open OR NOT ${administratorEmail} OR ${correctCode}
+      )
       INSERT INTO app_users (
         id,
         email,
@@ -95,22 +100,25 @@ export async function registerAccount(
         password_hash,
         role,
         approval_status,
-        approved_at
+        approved_at,
+        is_bootstrap_administrator
       )
-      VALUES (
+      SELECT
         ${id},
         ${input.email},
         ${input.email},
         ${input.fullName},
         ${passwordHash},
-        ${access.role},
-        ${access.approval},
-        ${access.approval === "approved" ? new Date().toISOString() : null}
-      )
+        CASE WHEN bootstrap THEN 'administrator' ELSE 'teacher' END,
+        CASE WHEN bootstrap THEN 'approved' ELSE 'pending' END,
+        CASE WHEN bootstrap THEN NOW() ELSE NULL END,
+        bootstrap
+      FROM registration
       RETURNING *
-    `) as unknown as UserRow[];
+    `], { isolationLevel: "ReadCommitted" });
+    const [row] = rows as unknown as UserRow[];
 
-    if (!row) throw new Error("Обліковий запис не створено.");
+    if (!row) return { success: false, message: "Для реєстрації першого адміністратора введіть правильний код адміністратора." };
     return { success: true, user: toAuthUser(row) };
   } catch (error) {
     if ((error as { code?: string }).code === "23505") {
@@ -121,6 +129,13 @@ export async function registerAccount(
     }
     throw error;
   }
+}
+
+export async function isAdministratorRegistrationOpen(): Promise<boolean> {
+  const [state] = await getDb()`
+    SELECT NOT EXISTS (SELECT 1 FROM app_users WHERE role = 'administrator') AS is_open
+  ` as unknown as { is_open: boolean }[];
+  return state.is_open;
 }
 
 export async function authenticateAccount(
@@ -239,12 +254,11 @@ export async function revokeAuthSession(token: string): Promise<void> {
   `;
 }
 
-export async function listTeacherAccounts(): Promise<TeacherAccount[]> {
+export async function listStaffAccounts(): Promise<TeacherAccount[]> {
   const sql = getDb();
   const rows = (await sql`
     SELECT *
     FROM app_users
-    WHERE role = 'teacher'
     ORDER BY created_at DESC
   `) as unknown as UserRow[];
 
@@ -252,6 +266,51 @@ export async function listTeacherAccounts(): Promise<TeacherAccount[]> {
     ...toAuthUser(row),
     createdAt: new Date(row.created_at).toISOString(),
   }));
+}
+
+export type AccountRoleResult = Readonly<{ success: boolean; message: string }>;
+
+export async function changeAccountRole(
+  administratorId: string,
+  userId: string,
+  role: string,
+): Promise<AccountRoleResult> {
+  if (!userId || (role !== "administrator" && role !== "teacher")) {
+    return { success: false, message: "Некоректний користувач або роль." };
+  }
+  const sql = getDb();
+  const [, rows] = await sql.transaction([
+    sql`SELECT pg_advisory_xact_lock(hashtext(current_schema()), hashtext('vidmitka-auth-roles'))`,
+    sql`
+      WITH permission AS (
+        SELECT CASE
+          WHEN NOT EXISTS (SELECT 1 FROM app_users WHERE id = ${administratorId}
+            AND role = 'administrator' AND approval_status = 'approved')
+            THEN 'Недостатньо прав для зміни ролі.'
+          WHEN NOT EXISTS (SELECT 1 FROM app_users WHERE id = ${userId})
+            THEN 'Користувача не знайдено.'
+          WHEN ${role} = 'teacher' AND EXISTS (SELECT 1 FROM app_users
+            WHERE id = ${userId} AND is_bootstrap_administrator)
+            THEN 'Захищеного адміністратора не можна понизити до викладача.'
+          WHEN EXISTS (SELECT 1 FROM app_users WHERE id = ${userId} AND approval_status <> 'approved')
+            THEN 'Спочатку схваліть доступ користувача.'
+          WHEN ${role} = 'teacher' AND EXISTS (SELECT 1 FROM app_users WHERE id = ${userId} AND role = 'administrator')
+            AND NOT EXISTS (SELECT 1 FROM app_users WHERE id <> ${userId} AND role = 'administrator' AND approval_status = 'approved')
+            THEN 'Не можна понизити останнього адміністратора.'
+          ELSE NULL
+        END AS error
+      ), changed AS (
+        UPDATE app_users SET role = ${role}, updated_at = NOW()
+        WHERE id = ${userId} AND (SELECT error FROM permission) IS NULL
+        RETURNING id
+      )
+      SELECT EXISTS (SELECT 1 FROM changed) AS success, error FROM permission
+    `,
+  ], { isolationLevel: "ReadCommitted" });
+  const [result] = rows as unknown as { success: boolean; error: string | null }[];
+  return { success: result.success, message: result.error ?? (role === "administrator"
+    ? "Права адміністратора надано. Викладацькі можливості збережені."
+    : "Адміністративні права знято. Викладацькі можливості збережені.") };
 }
 
 export async function approveTeacherAccount(

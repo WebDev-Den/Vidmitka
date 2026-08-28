@@ -63,21 +63,10 @@ const teacherNavigation: readonly NavigationItem[] = [
 
 const administratorNavigation: readonly NavigationItem[] = [
   { id: "overview", label: "Огляд", href: "/dashboard", icon: "overview" },
-  {
-    id: "schedule",
-    label: "Увесь розклад",
-    href: "/dashboard/schedule",
-    icon: "schedule",
-  },
-  {
-    id: "create-lesson",
-    label: "Створити заняття",
-    href: "/dashboard/lessons/new",
-    icon: "create",
-  },
+  ...teacherNavigation,
   {
     id: "teachers",
-    label: "Викладачі",
+    label: "Користувачі",
     href: "/dashboard/teachers",
     icon: "teachers",
   },
@@ -93,6 +82,7 @@ const administratorNavigation: readonly NavigationItem[] = [
     href: "/dashboard/rooms",
     icon: "rooms",
   },
+  { id: "lesson-types", label: "Типи занять", href: "/dashboard/lesson-types", icon: "subjects" },
   {
     id: "periods",
     label: "Пари та час",

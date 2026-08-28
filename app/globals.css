@@ -321,6 +321,183 @@ textarea:focus-visible {
   justify-self: end;
 }
 
+.day-timeline {
+  display: grid;
+  width: min(1280px, calc(100% - 64px));
+  min-width: 0;
+  margin: 0 auto;
+  padding-block: 12px;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.day-timeline-heading,
+.day-timeline-title,
+.day-timeline-footer {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.day-timeline-title {
+  justify-content: flex-start;
+}
+
+.day-timeline-title > span,
+.day-timeline-clock > span {
+  color: var(--navy-soft);
+}
+
+.day-timeline-clock {
+  color: var(--accent-strong);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.day-timeline-track {
+  position: relative;
+  height: 24px;
+  margin-top: 8px;
+}
+
+.day-timeline-segments {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+
+.day-timeline-segment {
+  position: absolute;
+  top: 0;
+  display: grid;
+  height: 100%;
+  min-width: 0;
+  place-items: center;
+  overflow: hidden;
+  border-right: 1px solid var(--line-dark);
+  container: period-segment / inline-size;
+}
+
+.day-timeline-segment.is-break,
+.day-timeline-details .is-break {
+  background: var(--paper);
+}
+
+.day-timeline-number {
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+@container period-segment (max-width: 24px) {
+  .day-timeline-number {
+    visibility: hidden;
+  }
+}
+
+.day-timeline-marker {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  box-shadow: 0 0 0 1px var(--surface);
+  pointer-events: none;
+  transition: left 1s linear;
+}
+
+.day-timeline-marker::before {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--ink);
+  content: "";
+}
+
+.day-timeline-status {
+  margin: 0;
+  color: var(--navy-soft);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.day-timeline-details {
+  min-width: 0;
+}
+
+.day-timeline-details[open] {
+  flex: 1 1 100%;
+}
+
+.day-timeline-details summary {
+  width: fit-content;
+  min-height: 44px;
+  align-content: center;
+  color: var(--accent-strong);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.day-timeline-details summary:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.day-timeline-details ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 176px), 1fr));
+  margin: 8px 0;
+  padding: 0;
+  gap: 8px;
+  list-style: none;
+}
+
+.day-timeline-details li {
+  display: flex;
+  min-width: 0;
+  padding: 8px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.day-timeline-details li[aria-current="time"] {
+  border-color: var(--accent-strong);
+}
+
+.day-timeline-details li > span:last-child {
+  display: grid;
+  gap: 4px;
+  color: var(--navy-soft);
+}
+
+.day-timeline-details p {
+  margin: 8px 0 0;
+  color: var(--navy-soft);
+}
+
+.day-timeline-message {
+  min-height: 132px;
+  align-content: center;
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
@@ -366,6 +543,7 @@ textarea:focus-visible {
 
 .schedule-preview {
   position: relative;
+  min-width: 0;
   padding: 28px;
   color: var(--ink);
   background: var(--surface);
@@ -386,6 +564,7 @@ textarea:focus-visible {
 
 .preview-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
@@ -405,7 +584,8 @@ textarea:focus-visible {
   letter-spacing: 0.12em;
 }
 
-.preview-heading strong {
+.preview-heading h2 {
+  margin: 0;
   font-size: 22px;
   letter-spacing: -0.025em;
 }
@@ -421,44 +601,56 @@ textarea:focus-visible {
   display: grid;
 }
 
-.preview-lesson {
+.upcoming-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.upcoming-lesson {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) auto;
+  grid-template-columns: 100px minmax(0, 1fr);
   min-height: 90px;
-  align-items: center;
-  gap: 18px;
+  padding-block: 16px;
+  align-items: start;
+  gap: 16px;
   border-bottom: 1px solid var(--line);
 }
 
-.preview-lesson:last-child {
+.upcoming-lesson:last-child {
   border-bottom: 0;
 }
 
-.preview-lesson time {
-  color: var(--accent-strong);
-  font-size: 15px;
-  font-weight: 850;
-}
-
-.preview-lesson > span {
+.upcoming-slot {
   display: grid;
-  gap: 6px;
+  gap: 8px;
+  color: var(--accent-strong);
+  font-size: 13px;
 }
 
-.preview-lesson strong {
-  line-height: 1.25;
+.upcoming-details {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  overflow-wrap: anywhere;
 }
 
-.preview-lesson small {
+.upcoming-details > span,
+.upcoming-details > small {
   color: var(--muted);
+  font-size: 13px;
 }
 
-.preview-lesson em {
+.upcoming-details > .upcoming-type {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.upcoming-current { font-size: 12px; font-weight: 700; }
+
+.upcoming-empty {
+  margin: 24px 0 0;
   color: var(--muted);
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 800;
-  text-transform: uppercase;
 }
 
 .public-main,
@@ -698,6 +890,16 @@ textarea:focus-visible {
   text-align: left;
   text-transform: uppercase;
 }
+
+.schedule-date-form { margin-bottom: 24px; align-items: end; }
+.daily-schedule-table td:not(.schedule-empty) { padding: 16px 18px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+.daily-schedule-table td > small { display: block; margin-top: 8px; color: var(--muted); }
+.daily-schedule-table td > .week-chip { margin-top: 8px; }
+.makeup-days-manager { display: grid; max-width: 920px; margin-top: 24px; gap: 24px; }
+.makeup-days-list { display: grid; gap: 24px; }
+.makeup-day-row { min-width: 0; }
+.makeup-day-row h3 { margin: 0; font-size: 18px; }
+.makeup-day-delete { display: grid; margin-top: 12px; gap: 12px; justify-items: start; }
 
 .schedule-empty {
   height: 300px;
@@ -986,11 +1188,19 @@ textarea:focus-visible {
   display: flex;
   min-width: 0;
   height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
   padding: 20px 16px;
   flex-direction: column;
   color: var(--ink);
   background: var(--surface);
   border-right: 1px solid var(--line);
+}
+
+.private-sidebar > * {
+  flex-shrink: 0;
 }
 
 .private-brand-row {
@@ -1636,6 +1846,15 @@ textarea:focus-visible {
   gap: 28px;
 }
 
+.lesson-type-list { display: grid; gap: 24px; }
+.lesson-type-row { min-width: 0; }
+.lesson-type-toggle { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 24px; }
+.lesson-type-toggle > span { min-width: 0; overflow-wrap: anywhere; color: var(--muted); }
+.lesson-type-toggle > .period-action-message { flex-basis: 100%; }
+.lesson-type-picker { display: grid; gap: 8px; margin-top: 12px; min-width: 180px; max-width: 260px; }
+.lesson-type-picker label { display: grid; gap: 8px; }
+.lesson-type-picker select { width: 100%; min-width: 0; min-height: 44px; padding: 8px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+
 .subject-create-form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1818,7 +2037,7 @@ textarea:focus-visible {
 
 .period-fields {
   display: grid;
-  grid-template-columns: minmax(120px, 0.65fr) repeat(2, minmax(150px, 1fr)) auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(180px, 1.25fr);
   align-items: end;
   gap: 16px;
 }
@@ -1834,7 +2053,9 @@ textarea:focus-visible {
 }
 
 .period-fields input,
-.period-row input {
+.period-row input,
+.period-fields select,
+.period-row select {
   width: 100%;
   min-width: 0;
   min-height: 44px;
@@ -1846,12 +2067,32 @@ textarea:focus-visible {
 }
 
 .period-fields input:hover,
-.period-row input:hover {
+.period-row input:hover,
+.period-fields select:hover,
+.period-row select:hover {
   border-color: #b8b4a9;
 }
 
 .period-create-button {
+  grid-column: 1 / -1;
+  justify-self: start;
   white-space: nowrap;
+}
+
+.period-color-control {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.period-color-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  border: 1px solid var(--line-dark);
+  border-radius: 4px;
 }
 
 .period-list-section {
@@ -1886,12 +2127,7 @@ textarea:focus-visible {
 
 .period-row {
   display: grid;
-  grid-template-columns:
-    minmax(118px, 0.62fr)
-    minmax(130px, 0.8fr)
-    minmax(130px, 0.8fr)
-    minmax(90px, 0.55fr)
-    minmax(268px, auto);
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(180px, 1.25fr);
   min-height: 96px;
   padding: 16px 18px;
   align-items: end;
@@ -1951,6 +2187,7 @@ textarea:focus-visible {
 
 .period-row-actions {
   display: flex;
+  grid-column: 2 / -1;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
@@ -2020,7 +2257,7 @@ textarea:focus-visible {
   }
 
   .period-fields {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .period-create-button {
@@ -2029,7 +2266,7 @@ textarea:focus-visible {
   }
 
   .period-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .period-status-cell {
@@ -2037,13 +2274,14 @@ textarea:focus-visible {
   }
 
   .period-row-actions {
-    grid-column: 2 / -1;
+    grid-column: 1 / -1;
     justify-content: flex-end;
   }
 }
 
 @media (max-width: 860px) {
   .public-header-inner,
+  .day-timeline,
   .hero-content,
   .public-main,
   .public-content {
@@ -2207,6 +2445,7 @@ textarea:focus-visible {
 
 @media (max-width: 540px) {
   .public-header-inner,
+  .day-timeline,
   .hero-content,
   .public-main,
   .public-content {
@@ -2252,13 +2491,9 @@ textarea:focus-visible {
     padding: 20px;
   }
 
-  .preview-lesson {
-    grid-template-columns: 52px minmax(0, 1fr);
+  .upcoming-lesson {
+    grid-template-columns: 80px minmax(0, 1fr);
     gap: 12px;
-  }
-
-  .preview-lesson em {
-    display: none;
   }
 
   .public-intro {

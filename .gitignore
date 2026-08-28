@@ -7,6 +7,7 @@ __v0_jsx-dev-runtime.ts
 .vercel/
 .playwright-cli/
 output/playwright/
+info/qa/artifacts/
 
 # Environment variables
 .env*.local

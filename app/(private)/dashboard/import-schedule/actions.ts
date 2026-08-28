@@ -6,19 +6,7 @@ import { requireTeacher } from "@/lib/auth/session";
 import { parseScheduleImport } from "@/lib/schedule-import/parser";
 import { importTeacherSchedule } from "@/lib/schedule-import/repository";
 
-export type ImportScheduleActionState = Readonly<{
-  success: boolean;
-  message: string;
-  errors: string[];
-  importedCount: number;
-}>;
-
-export const initialImportScheduleActionState: ImportScheduleActionState = {
-  success: false,
-  message: "",
-  errors: [],
-  importedCount: 0,
-};
+import type { ImportScheduleActionState } from "./form-state";
 
 const MAX_FILE_SIZE_BYTES = 512 * 1024;
 const MAX_RETURNED_ERRORS = 20;
@@ -57,6 +45,7 @@ export async function importScheduleAction(
 
   const result = await importTeacherSchedule(teacher.id, parsed.rows);
   if (result.success) {
+    revalidatePath("/");
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/my-lessons");
     revalidatePath("/dashboard/journal");

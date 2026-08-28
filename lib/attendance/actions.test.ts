@@ -22,7 +22,7 @@ const importForm = () => {
 };
 const attendanceForm = () => {
   const form = new FormData();
-  for (const [key, value] of Object.entries({ date: "2026-08-27", lessonKey: "lesson:12", version: "0", marks: '[{"studentId":"1","status":"not_required"}]', teacherUserId: "forged-owner" })) form.set(key, value);
+  for (const [key, value] of Object.entries({ date: "2026-08-27", lessonKey: "lesson:12", version: "0", calendarToken: "2026-08-27:0:4:unset", marks: '[{"studentId":"1","status":"not_required"}]', teacherUserId: "forged-owner" })) form.set(key, value);
   return form;
 };
 describe("дії журналу", () => {
@@ -33,7 +33,7 @@ describe("дії журналу", () => {
   });
   it("передає статус виключення і версію збереження", async () => {
     expect((await saveAttendanceAction(initialJournalState, attendanceForm())).success).toBe(true);
-    expect(save).toHaveBeenCalledWith("authenticated-teacher", { date: "2026-08-27", key: "lesson:12", version: 0, marks: [{ studentId: "1", status: "not_required" }] });
+    expect(save).toHaveBeenCalledWith("authenticated-teacher", { date: "2026-08-27", key: "lesson:12", version: 0, calendarToken: "2026-08-27:0:4:unset", marks: [{ studentId: "1", status: "not_required" }] });
   });
   it.each(["anonymous", "pending", "administrator"])("блокує обидві операції для %s", async (role) => {
     authorize.mockRejectedValue(new Error(`denied:${role}`));

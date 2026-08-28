@@ -5,15 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdministrator } from "@/lib/auth/session";
 import { createSubject, setSubjectActive } from "@/lib/subjects/repository";
 
-export type SubjectActionState = Readonly<{
-  success: boolean;
-  message: string;
-}>;
-
-export const initialSubjectActionState: SubjectActionState = {
-  success: false,
-  message: "",
-};
+import type { SubjectActionState } from "./form-state";
 
 export async function createSubjectAction(
   _previousState: SubjectActionState,

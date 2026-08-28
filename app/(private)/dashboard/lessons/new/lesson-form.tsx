@@ -8,14 +8,14 @@ import { createLessonAction } from "./actions";
 import { initialLessonState } from "./form-state";
 
 type Choice = { id: string; name: string };
-export function LessonForm({ subjects, rooms, periods, groups, students, teachers, isAdministrator }: {
-  subjects: Choice[]; rooms: Choice[]; periods: Choice[]; groups: StudentGroup[]; students: GroupStudent[];
-  teachers: Choice[]; isAdministrator: boolean;
+export function LessonForm({ subjects, rooms, periods, lessonTypes, groups, students, teachers, isAdministrator, currentUserId }: {
+  subjects: Choice[]; rooms: Choice[]; periods: Choice[]; lessonTypes: Choice[]; groups: StudentGroup[]; students: GroupStudent[];
+  teachers: Choice[]; isAdministrator: boolean; currentUserId: string;
 }) {
   const [state, action, pending] = useActionState(createLessonAction, initialLessonState);
   const [groupNames, setGroupNames] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
-  const ready = subjects.length > 0 && rooms.length > 0 && periods.length > 0 && (!isAdministrator || teachers.length > 0);
+  const ready = subjects.length > 0 && rooms.length > 0 && periods.length > 0 && lessonTypes.length > 0 && (!isAdministrator || teachers.length > 0);
   const visibleStudents = students.filter((student) => groupNames.includes(student.groupName));
 
   function toggleGroup(name: string, checked: boolean) {
@@ -26,11 +26,11 @@ export function LessonForm({ subjects, rooms, periods, groups, students, teacher
     }
   }
   return <form action={action} className="lesson-editor lesson-create-form">
-    {!ready && <p className="notice journal-wide">Для створення заняття адміністратор має додати активні предмети, аудиторії, пари та схвалити викладача.</p>}
+    {!ready && <p className="notice journal-wide">Для створення заняття адміністратор має додати активні предмети, аудиторії, пари, типи занять та схвалити викладача.</p>}
     {isAdministrator && <label>Викладач
-      <select name="teacherId" defaultValue="" required disabled={pending}>
+      <select name="teacherId" defaultValue={currentUserId} required disabled={pending}>
         <option value="" disabled>Оберіть викладача</option>
-        {teachers.map((teacher) => <option key={teacher.id} value={teacher.id}>{teacher.name}</option>)}
+        {teachers.map((teacher) => <option key={teacher.id} value={teacher.id}>{teacher.name}{teacher.id === currentUserId ? " (я)" : ""}</option>)}
       </select>
     </label>}
     <label>Навчальний предмет
@@ -43,6 +43,12 @@ export function LessonForm({ subjects, rooms, periods, groups, students, teacher
       <select name="roomId" defaultValue="" required disabled={pending}>
         <option value="" disabled>Оберіть аудиторію</option>
         {rooms.map((room) => <option key={room.id} value={room.id}>{room.name}</option>)}
+      </select>
+    </label>
+    <label>Тип заняття
+      <select name="lessonTypeId" defaultValue="" required disabled={pending}>
+        <option value="" disabled>Оберіть тип заняття</option>
+        {lessonTypes.map((type) => <option key={type.id} value={type.id}>{type.name}</option>)}
       </select>
     </label>
     <label>День тижня
@@ -90,10 +96,10 @@ export function LessonForm({ subjects, rooms, periods, groups, students, teacher
       {selected.length > 0 && <button className="button button-light" type="button" onClick={() => setSelected([])}>Зняти вибір студентів</button>}
     </fieldset>
     <button className="button button-primary" type="submit" disabled={pending || !ready || !selected.length}>{pending ? "Створення…" : "Створити заняття"}</button>
-    {!isAdministrator && <Link className="button button-light" href="/dashboard/students">Додати студента або нову групу</Link>}
+    <Link className="button button-light" href="/dashboard/students">Додати студента або нову групу</Link>
     {state.message && <div className={`period-action-message ${state.success ? "is-success" : "is-error"}`} role={state.success ? "status" : "alert"}>
       <p>{state.message}</p>
-      {state.success && !isAdministrator && <Link href="/dashboard/my-lessons">Переглянути мої заняття</Link>}
+      {state.success && <Link href="/dashboard/my-lessons">Переглянути мої заняття</Link>}
     </div>}
   </form>;
 }

@@ -15,6 +15,7 @@ export function parseAdminEmails(value: string | undefined): Set<string> {
   );
 }
 
+/** Кандидат для початкової реєстрації; чинні права завжди читаються з БД. */
 export function resolveRole(
   email: string | null | undefined,
   adminEmails = process.env.ADMIN_EMAILS,

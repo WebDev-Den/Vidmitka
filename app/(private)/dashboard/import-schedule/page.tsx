@@ -3,15 +3,17 @@ import { requireTeacher } from "@/lib/auth/session";
 import { listClassPeriods } from "@/lib/class-periods/repository";
 import { listRooms } from "@/lib/rooms/repository";
 import { listSubjects } from "@/lib/subjects/repository";
+import { listLessonTypes } from "@/lib/lesson-types/repository";
 
 import { ImportScheduleForm } from "./import-schedule-form";
 
 export default async function ImportSchedulePage() {
   await requireTeacher();
-  const [subjects, rooms, periods] = await Promise.all([
+  const [subjects, rooms, periods, lessonTypes] = await Promise.all([
     listSubjects({ activeOnly: true }),
     listRooms({ activeOnly: true }),
     listClassPeriods({ activeOnly: true }),
+    listLessonTypes({ activeOnly: true }),
   ]);
 
   return (
@@ -25,6 +27,7 @@ export default async function ImportSchedulePage() {
         subjects={subjects.map((subject) => subject.name)}
         rooms={rooms.map((room) => room.name)}
         periods={periods.map((period) => period.label)}
+        lessonTypes={lessonTypes.map((type) => type.name)}
       />
     </section>
   );

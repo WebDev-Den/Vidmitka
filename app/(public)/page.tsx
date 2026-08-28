@@ -6,14 +6,10 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { PublicHeader } from "@/components/public-header";
-
-const previewLessons = [
-  ["08:30", "Вища математика", "Ауд. 204", "Чисельник"],
-  ["10:10", "Основи програмування", "Ауд. 318", "Обидва"],
-  ["12:00", "Комп’ютерні мережі", "Ауд. 112", "Знаменник"],
-];
+import { UpcomingLessonsCard } from "@/components/upcoming-lessons-card";
 
 export default function PublicHomePage() {
   return (
@@ -39,27 +35,9 @@ export default function PublicHomePage() {
             </div>
           </div>
 
-          <div className="schedule-preview" aria-label="Приклад тижневого розкладу">
-            <div className="preview-heading">
-              <div>
-                <span>ВІВТОРОК</span>
-                <strong>Навчальний день</strong>
-              </div>
-              <span className="preview-week">Чисельник</span>
-            </div>
-            <div className="preview-list">
-              {previewLessons.map(([time, subject, room, week]) => (
-                <div className="preview-lesson" key={time}>
-                  <time>{time}</time>
-                  <span>
-                    <strong>{subject}</strong>
-                    <small>{room}</small>
-                  </span>
-                  <em>{week}</em>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Suspense fallback={<section className="schedule-preview" aria-label="Найближчі заняття" aria-busy="true"><p role="status">Завантаження найближчих занять…</p></section>}>
+            <UpcomingLessonsCard />
+          </Suspense>
         </div>
       </div>
 

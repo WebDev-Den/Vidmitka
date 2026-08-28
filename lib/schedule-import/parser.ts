@@ -1,4 +1,5 @@
 import type { LessonWeekType } from "@/lib/schedule-week/rules";
+import { validateLessonTypeName } from "@/lib/lesson-types/rules";
 
 export type ScheduleImportRow = Readonly<{
   rowNumber: number;
@@ -7,6 +8,7 @@ export type ScheduleImportRow = Readonly<{
   dayOfWeek: number;
   periodNumber: number;
   weekType: LessonWeekType;
+  lessonTypeName?: string;
 }>;
 
 export type ScheduleImportParseResult =
@@ -22,6 +24,7 @@ const FIELD_ALIASES = {
   day: ["day", "dayofweek", "день", "день тижня"],
   period: ["period", "periodnumber", "pair", "пара", "номер пари"],
   weekType: ["weektype", "week", "тиждень", "тип тижня"],
+  lessonType: ["lessontype", "lessontypename", "тип заняття", "вид заняття"],
 } as const;
 
 const DAY_VALUES = new Map<string, number>([
@@ -183,6 +186,10 @@ function normalizeRow(row: RawRow, rowNumber: number): ScheduleImportRow | strin
   const dayOfWeek = DAY_VALUES.get(dayValue);
   const periodNumber = Number(periodValue);
   const weekType = WEEK_TYPE_VALUES.get(weekValue);
+  const rawLessonType = readField(row, FIELD_ALIASES.lessonType);
+  const hasLessonType = rawLessonType !== undefined && rawLessonType !== null && rawLessonType !== "";
+  const lessonType = hasLessonType ? validateLessonTypeName(rawLessonType) : null;
+  if (lessonType && !lessonType.ok) errors.push(`Рядок ${rowNumber}: ${lessonType.message}`);
 
   if (subjectName.length < 2 || subjectName.length > 200) {
     errors.push(`Рядок ${rowNumber}: вкажіть коректний предмет.`);
@@ -209,6 +216,7 @@ function normalizeRow(row: RawRow, rowNumber: number): ScheduleImportRow | strin
     dayOfWeek: dayOfWeek as number,
     periodNumber,
     weekType: weekType as LessonWeekType,
+    ...(lessonType?.ok ? { lessonTypeName: lessonType.name } : {}),
   };
 }
 

@@ -54,7 +54,7 @@ export default async function JournalPage({ searchParams }: {
         {!selected.archived && selected.lessonId && <StudentImportForm key={selected.key} lessonId={selected.lessonId} />}
         {students.length && day ? <JournalForm key={`${selected.key}:${date}:${selected.version}:${day.token}:${students.map((student) => student.studentId).join(",")}`}
           students={students} date={date} lessonKey={selected.key} version={selected.version} calendarToken={day.token} future={date > today} />
-          : <p className="notice">До предмета ще не додано студентів. Імпортуйте CSV/JSON або додайте їх у розділі <Link href="/dashboard/students">«Мої студенти»</Link>.</p>}
+          : <div className="notice"><p>Для цього заняття список студентів порожній. Імпортуйте CSV/JSON або відкрийте <Link href="/dashboard/my-lessons">«Мої заняття»</Link> → «Додати студентів». Для занять зі списком усього предмета використовуйте <Link href="/dashboard/students">«Мої студенти»</Link>.</p></div>}
       </>}
     </section>
   );

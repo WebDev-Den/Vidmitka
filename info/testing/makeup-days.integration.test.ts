@@ -61,11 +61,23 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
 
     const regular = await getScheduleDayContext("2026-09-04");
     expect(regular).toMatchObject({ dayOfWeek: 5, weekType: null, isMakeup: false });
+    // Without an anchor, the automatic view still includes only weekly lessons.
+    expect((await listScheduleForDate("2026-08-31")).lessons.map((lesson) => lesson.periodNumber)).toEqual([3]);
+    const unconfiguredPreview = await listScheduleForDate("2026-08-31", "numerator");
+    expect(unconfiguredPreview.lessons.map((lesson) => lesson.periodNumber)).toEqual([1, 3]);
+    expect(unconfiguredPreview.view).toMatchObject({ weekType: "numerator", isPreview: true });
+    expect(unconfiguredPreview.day.weekType).toBeNull();
+    expect((await listScheduleForDate("2026-08-31", "both")).lessons.map((lesson) => lesson.periodNumber)).toEqual([3]);
     cookie.token = administratorToken;
     expect((await saveMakeupDayAction(initialMakeupActionState, form(makeupInput("2026-09-04")))).success).toBe(true);
     const first = await getScheduleDayContext("2026-09-04");
     expect(first).toMatchObject({ date: "2026-09-04", calendarDayOfWeek: 5, dayOfWeek: 1, weekType: "numerator", isMakeup: true });
     expect((await listScheduleForDate("2026-09-04")).lessons.map((lesson) => lesson.periodNumber)).toEqual([1, 3]);
+    const makeupPreview = await listScheduleForDate("2026-09-04", "denominator");
+    expect(makeupPreview.lessons.map((lesson) => lesson.periodNumber)).toEqual([2, 3]);
+    expect(makeupPreview.view).toMatchObject({ weekType: "denominator", isPreview: true });
+    expect(makeupPreview.day).toEqual(first);
+    expect(await getScheduleDayContext("2026-09-04")).toEqual(first);
     expect((await listJournalLessons("teacher", "2026-09-04")).lessons.map((lesson) => lesson.periodNumber)).toEqual([1, 3]);
     expect((await listJournalLessons("other-teacher", "2026-09-04")).lessons).toEqual([]);
     expect((await saveMakeupDay("administrator", makeupInput("2026-09-04"))).success).toBe(false);
@@ -87,6 +99,10 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
 
     expect((await saveScheduleWeekSettings({ numeratorDate: "2026-08-24" })).success).toBe(true);
     expect(await getScheduleDayContext("2026-08-31")).toMatchObject({ dayOfWeek: 1, weekType: "denominator", isMakeup: false });
+    expect((await listScheduleForDate("2026-08-31", "numerator")).lessons.map((lesson) => lesson.periodNumber)).toEqual([1, 3]);
+    const calendarView = await listScheduleForDate("2026-08-31");
+    expect(calendarView.lessons.map((lesson) => lesson.periodNumber)).toEqual([2, 3]);
+    expect(calendarView.view).toMatchObject({ weekType: "denominator", isPreview: false });
     const date = "2026-08-21";
     expect((await saveMakeupDay("administrator", makeupInput(date))).success).toBe(true);
     const before = await listJournalLessons("teacher", date);

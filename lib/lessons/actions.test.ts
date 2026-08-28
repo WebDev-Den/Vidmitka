@@ -21,6 +21,11 @@ function form() {
   return data;
 }
 describe("форми груп і занять", () => {
+  it("передає порожні списки, коли групи та студенти не вибрані", async () => {
+    const data = form(); data.delete("groupNames"); data.delete("studentIds");
+    await createLessonAction(initialLessonState, data);
+    expect(create).toHaveBeenCalledWith("teacher", "teacher", expect.objectContaining({ groupNames: [], studentIds: [] }));
+  });
   it("не дозволяє викладачу підмінити власника заняття", async () => {
     await createLessonAction(initialLessonState, form());
     expect(create).toHaveBeenCalledWith("teacher", "teacher", expect.objectContaining({ studentIds: ["1", "2"], groupNames: ["КН-21"] }));

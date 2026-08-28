@@ -7,7 +7,7 @@ export default async function RoomsPage() {
   const rooms = await listRooms();
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="ДОВІДНИКИ"
         title="Аудиторії"

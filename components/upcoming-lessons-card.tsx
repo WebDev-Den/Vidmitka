@@ -19,7 +19,6 @@ export async function UpcomingLessonsCard() {
   return <section className="schedule-preview" aria-labelledby="upcoming-lessons-heading">
     <div className="preview-heading">
       <div><span>АКТУАЛЬНИЙ РОЗКЛАД</span><h2 id="upcoming-lessons-heading">Найближчі 5 занять</h2></div>
-      <span className="preview-week">Київський час</span>
     </div>
     {lessons.length > 0 ? <ol className="preview-list upcoming-list">
       {lessons.map((lesson) => <li className="upcoming-lesson" key={`${lesson.date}:${lesson.id}`}>

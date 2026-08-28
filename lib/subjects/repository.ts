@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getDb } from "@/lib/db";
+import type { DirectoryCreateResult } from "@/lib/lessons/directory-options";
 
 export type Subject = Readonly<{
   id: string;
@@ -52,6 +53,13 @@ export async function listSubjects(options?: {
 export async function createSubject(
   nameValue: FormDataEntryValue | null,
 ): Promise<SubjectMutationResult> {
+  const { success, message } = await createSubjectOption(nameValue);
+  return { success, message };
+}
+
+export async function createSubjectOption(
+  nameValue: FormDataEntryValue | null,
+): Promise<DirectoryCreateResult> {
   const name = normalizeSubjectName(nameValue);
 
   if (name.length < 2 || name.length > 200) {
@@ -61,15 +69,17 @@ export async function createSubject(
   const sql = getDb();
 
   try {
-    await sql`INSERT INTO subjects (name) VALUES (${name})`;
+    const [row] = (await sql`
+      INSERT INTO subjects (name) VALUES (${name}) RETURNING id, name
+    `) as unknown as Array<{ id: string | number; name: string }>;
+    if (!row) return { success: false, message: "Не вдалося додати предмет." };
+    return { success: true, message: `Предмет «${row.name}» додано.`, option: { id: String(row.id), name: row.name } };
   } catch (error) {
     if ((error as { code?: string }).code === "23505") {
       return { success: false, message: "Предмет із такою назвою вже існує." };
     }
     throw error;
   }
-
-  return { success: true, message: `Предмет «${name}» додано.` };
 }
 
 export async function setSubjectActive(

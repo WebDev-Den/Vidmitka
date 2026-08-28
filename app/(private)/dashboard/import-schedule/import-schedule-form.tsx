@@ -28,8 +28,8 @@ export function ImportScheduleForm({
   }, [state.success, state.message]);
 
   return (
-    <div className="student-manager">
-      <form ref={formRef} action={formAction} className="lesson-editor">
+    <div className="management-stack">
+      <form ref={formRef} action={formAction} className="lesson-editor compact-form">
         <div className="settings-form-heading">
           <h2>Файл розкладу</h2>
           <p>
@@ -65,7 +65,7 @@ export function ImportScheduleForm({
         ) : null}
       </form>
 
-      <section className="semester-end-panel" aria-labelledby="import-examples-title">
+      <section className="semester-end-panel management-panel" aria-labelledby="import-examples-title">
         <div>
           <span className="eyebrow">ПРИКЛАДИ</span>
           <h2 id="import-examples-title">Завантажити приклад імпорту</h2>

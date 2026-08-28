@@ -1,0 +1,305 @@
+.page {
+  display: grid;
+  width: 100%;
+  max-width: 920px;
+  min-width: 0;
+  gap: 16px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  container: settings-page / inline-size;
+}
+
+.page > *,
+.page :global(.lesson-editor) > * {
+  min-width: 0;
+}
+
+.page :global(.page-intro) {
+  margin-bottom: 0;
+  gap: 16px;
+}
+
+.page :global(.page-intro) h1 {
+  margin: 8px 0;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.page :global(.page-intro) p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.page :global(.lesson-editor),
+.page :global(.semester-end-panel) {
+  max-width: none;
+  padding: 20px;
+  align-items: start;
+  gap: 16px;
+}
+
+.page :global(.lesson-editor) > label {
+  font-weight: 650;
+}
+
+.page :global(.lesson-editor) input:not([type="hidden"]),
+.page :global(.lesson-editor) select {
+  min-width: 0;
+  min-height: 44px;
+  max-width: 100%;
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+}
+
+.page :global(.lesson-editor) > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.page :global(.settings-form-heading) {
+  gap: 8px;
+}
+
+.page :global(.settings-form-heading) h2,
+.page :global(.semester-end-panel) h2,
+.page :global(.settings-explanation) h2 {
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.page :global(.settings-form-heading) p,
+.page :global(.semester-end-panel) p,
+.page :global(.settings-explanation) p {
+  line-height: 1.5;
+}
+
+.page :global(.button) {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 10px 16px;
+  align-self: start;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.page :global(.button) > svg {
+  flex-shrink: 0;
+}
+
+.page :global(.semester-end-panel),
+.page :global(.settings-explanation) {
+  max-width: none;
+  margin: 0;
+}
+
+.page :global(.notice) {
+  max-width: none;
+  margin: 0;
+  padding: 12px 16px;
+  line-height: 1.5;
+}
+
+.page :global(.semester-end-panel) h2 {
+  margin: 4px 0 8px;
+}
+
+.page :global(.settings-explanation) {
+  padding: 16px 20px;
+  gap: 12px;
+}
+
+.page :global(.settings-explanation) > svg {
+  width: 20px;
+  height: 20px;
+}
+
+.makeupCalendar {
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.calendarHeading {
+  padding: 20px;
+}
+
+.tableHint {
+  display: none;
+  margin: 0;
+  padding: 0 20px 12px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.calendarTableScroll {
+  /* Contain the visually hidden labels when the table scrolls horizontally. */
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.calendarTableScroll:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
+.calendarTable {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+}
+
+.dateColumn { width: 24%; }
+.dayColumn { width: 25%; }
+.weekColumn { width: 23%; }
+.actionsColumn { width: 28%; }
+
+.calendarTable th,
+.calendarTable td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.calendarTable thead th {
+  color: var(--muted);
+  background: var(--surface-soft);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.calendarTable tbody {
+  border-top: 1px solid var(--line);
+}
+
+.calendarCreateRow {
+  background: var(--paper);
+}
+
+.calendarTable input:not([type="hidden"]),
+.calendarTable select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+}
+
+.calendarDate {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.protectedDate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.page .rowActions :global(.button) {
+  width: auto;
+  padding-inline: 12px;
+  white-space: nowrap;
+}
+
+.page .rowActions .deleteButton {
+  width: 44px;
+  padding: 0;
+}
+
+.calendarTable .feedbackCell {
+  padding-top: 0;
+}
+
+.rowFeedback {
+  display: grid;
+  gap: 8px;
+}
+
+.rowFeedback p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.protectionNote {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.calendarEmpty {
+  margin: 0;
+  padding: 16px 20px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+@container settings-page (max-width: 762px) {
+  .tableHint {
+    display: block;
+  }
+}
+
+/* Use the available workspace width, including when the sidebar is expanded. */
+@container settings-page (max-width: 640px) {
+  .page :global(.lesson-editor) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page :global(.lesson-editor),
+  .page :global(.semester-end-panel),
+  .page :global(.settings-explanation) {
+    padding: 16px;
+  }
+
+  .page :global(.page-intro) h1 {
+    font-size: 1.5rem;
+  }
+
+  .page :global(.lesson-editor) input:not([type="hidden"]),
+  .page :global(.lesson-editor) select,
+  .calendarTable input:not([type="hidden"]),
+  .calendarTable select {
+    font-size: 1rem;
+  }
+
+  .page :global(.button) {
+    width: 100%;
+  }
+
+  .calendarHeading,
+  .calendarEmpty {
+    padding: 16px;
+  }
+
+  .tableHint {
+    padding-inline: 16px;
+  }
+}

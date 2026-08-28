@@ -5,7 +5,6 @@ import {
   Building2,
   CalendarDays,
   Clock3,
-  ChevronRight,
   CircleUserRound,
   GraduationCap,
   LayoutDashboard,
@@ -25,6 +24,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Brand } from "@/components/brand";
+import { NavigationLinkContent } from "@/components/private/navigation-link-content";
 import { signOutAction } from "@/app/(auth)/actions";
 import type { AppUser } from "@/lib/auth/session";
 import {
@@ -150,7 +150,7 @@ export function PrivateShell({
         tabIndex={mobileOpen ? -1 : undefined}
       >
         <div className="private-brand-row">
-          <Brand compact={collapsed} />
+          <Brand />
           <button
             className="icon-control desktop-collapse"
             type="button"
@@ -189,12 +189,11 @@ export function PrivateShell({
                 key={item.id}
                 className={active ? "role-link is-active" : "role-link"}
                 href={item.href}
+                aria-label={item.label}
                 aria-current={active ? "page" : undefined}
                 title={collapsed ? item.label : undefined}
               >
-                <Icon size={19} />
-                <span>{item.label}</span>
-                {!collapsed && active && <ChevronRight size={16} />}
+                <NavigationLinkContent icon={Icon} label={item.label} active={active} />
               </Link>
             );
           })}

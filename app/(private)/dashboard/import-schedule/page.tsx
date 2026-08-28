@@ -17,7 +17,7 @@ export default async function ImportSchedulePage() {
   ]);
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="КАБІНЕТ ВИКЛАДАЧА"
         title="Імпорт розкладу"

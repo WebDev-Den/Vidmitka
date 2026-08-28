@@ -1,4 +1,4 @@
-// node --env-file=.env.local info/testing/attendance-runner.mjs [--rooms|--calendar|--upcoming|--periods] [--browser] [--production]
+// node --env-file=.env.local info/testing/attendance-runner.mjs [--rooms|--calendar|--upcoming|--periods|--directories|--deferred-roster] [--browser] [--production]
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createAttendanceTestDatabase } from "./attendance-database.mjs";
@@ -21,7 +21,9 @@ for (const signal of ["SIGINT", "SIGTERM"]) process.once(signal, () => {
   child?.kill(); void db.cleanup().then(() => process.exit(0));
 });
 try {
-  if (!bootstrapBrowser) await run(["node_modules/vitest/vitest.mjs", "run", administratorTests ? "info/testing/administrators.integration.test.ts" : process.argv.includes("--periods")
+  if (!bootstrapBrowser) await run(["node_modules/vitest/vitest.mjs", "run", administratorTests ? "info/testing/administrators.integration.test.ts" : process.argv.includes("--deferred-roster")
+    ? "info/testing/deferred-roster.integration.test.ts" : process.argv.includes("--directories")
+    ? "info/testing/lesson-directories.integration.test.ts" : process.argv.includes("--periods")
     ? "info/testing/class-periods.integration.test.ts" : process.argv.includes("--upcoming")
     ? "info/testing/upcoming-lessons.integration.test.ts" : process.argv.includes("--calendar")
     ? "info/testing/makeup-days.integration.test.ts" : process.argv.includes("--rooms")

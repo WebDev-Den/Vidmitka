@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { PageIntro } from "@/components/page-intro";
 import { EmptyState } from "@/components/private/empty-state";
+import { ManagementTable } from "@/components/private/management-table";
 import { requireTeacher } from "@/lib/auth/session";
 import { listTeacherLessons } from "@/lib/lessons/repository";
 import { listLessonTypes } from "@/lib/lesson-types/repository";
@@ -30,7 +31,7 @@ export default async function MyLessonsPage() {
   const typeChoices = types.map(({ id, name }) => ({ id, name }));
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="КАБІНЕТ ВИКЛАДАЧА"
         title="Мої заняття"
@@ -53,18 +54,7 @@ export default async function MyLessonsPage() {
           description="Створіть заняття вручну або імпортуйте власний розклад із JSON чи CSV."
         />
       ) : (
-        <div className="schedule-table-wrap">
-          <table className="schedule-table">
-            <thead>
-              <tr>
-                <th>День</th>
-                <th>Пара</th>
-                <th>Предмет</th>
-                <th>Аудиторія</th>
-                <th>Тиждень</th>
-                <th>Студенти / групи</th>
-              </tr>
-            </thead>
+        <ManagementTable caption="Мої заняття" columns={["День", "Пара", "Предмет / тип", "Аудиторія", "Тиждень", "Студенти / групи"]} minWidth={980}>
             <tbody>
               {lessons.map((lesson) => (
                 <tr key={lesson.id}>
@@ -79,12 +69,14 @@ export default async function MyLessonsPage() {
                   <td>{WEEK_LABELS[lesson.weekType]}</td>
                   <td>{lesson.studentCount} · {lesson.groupNames.join(", ") || "без студентів"}<br />
                     <small>{lesson.rosterMode === "selected" ? "Окремий список заняття" : "Список предмета"}</small>
+                    {lesson.rosterMode === "selected" && <div className="page-actions">
+                      <Link className="button button-light" href={`/dashboard/my-lessons/${lesson.id}/students`}>Додати студентів</Link>
+                    </div>}
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+        </ManagementTable>
       )}
     </section>
   );

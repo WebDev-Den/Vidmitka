@@ -7,7 +7,7 @@ export default async function SubjectsPage() {
   const subjects = await listSubjects();
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="ДОВІДНИКИ"
         title="Навчальні предмети"

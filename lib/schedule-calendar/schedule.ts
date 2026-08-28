@@ -3,6 +3,7 @@ import "server-only";
 import { getDb } from "@/lib/db";
 import type { LessonWeekType } from "@/lib/schedule-week/rules";
 import { getScheduleDayContext } from "./repository";
+import { resolveScheduleWeekView } from "./view";
 
 export type ScheduledLesson = Readonly<{
   id: string;
@@ -17,8 +18,9 @@ export type ScheduledLesson = Readonly<{
   groupNames: string[];
 }>;
 
-export async function listScheduleForDate(date: string) {
+export async function listScheduleForDate(date: string, requestedWeek?: unknown) {
   const day = await getScheduleDayContext(date);
+  const view = resolveScheduleWeekView(day.weekType, requestedWeek);
   const sql = getDb();
   const rows = await sql`
     SELECT l.id, s.name AS subject_name, u.full_name AS teacher_name, r.name AS room_name,
@@ -38,14 +40,14 @@ export async function listScheduleForDate(date: string) {
     JOIN class_periods p ON p.id = l.class_period_id
     LEFT JOIN lesson_types t ON t.id = l.lesson_type_id
     WHERE u.approval_status = 'approved' AND l.day_of_week = ${day.dayOfWeek}
-      AND (l.week_type = 'both' OR l.week_type = ${day.weekType})
+      AND (l.week_type = 'both' OR l.week_type = ${view.weekType})
     ORDER BY p.start_minute, p.number, s.name, u.full_name, r.name, l.id
   ` as unknown as {
     id: string | number; subject_name: string; teacher_name: string; room_name: string; lesson_type_name: string | null;
     period_number: number; start_minute: number; end_minute: number;
     week_type: LessonWeekType; group_names: string[];
   }[];
-  return { day, lessons: rows.map((row): ScheduledLesson => ({
+  return { day, view, lessons: rows.map((row): ScheduledLesson => ({
     id: String(row.id), subjectName: row.subject_name, teacherName: row.teacher_name, lessonTypeName: row.lesson_type_name,
     roomName: row.room_name, periodNumber: row.period_number, startMinute: row.start_minute,
     endMinute: row.end_minute, weekType: row.week_type, groupNames: row.group_names,

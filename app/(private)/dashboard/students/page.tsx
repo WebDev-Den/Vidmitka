@@ -16,7 +16,7 @@ export default async function StudentsPage() {
   ]);
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="КАБІНЕТ ВИКЛАДАЧА"
         title="Мої студенти"

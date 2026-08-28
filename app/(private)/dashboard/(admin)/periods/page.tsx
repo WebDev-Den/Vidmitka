@@ -7,7 +7,7 @@ export default async function PeriodsPage() {
   const periods = await listClassPeriods();
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="ДОВІДНИКИ"
         title="Пари та час"

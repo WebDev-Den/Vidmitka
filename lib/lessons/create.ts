@@ -48,7 +48,9 @@ export async function createLesson(actorUserId: string, teacherUserId: string, i
       SELECT id, (SELECT COUNT(*)::INT FROM linked) AS student_count FROM created
     ` as unknown as { id: string | number; student_count: number }[];
     return rows[0]
-      ? { success: true, message: `Заняття створено. Прив’язано студентів: ${rows[0].student_count}.`, lessonId: String(rows[0].id) }
+      ? { success: true, message: rows[0].student_count > 0
+        ? `Заняття створено. Прив’язано студентів: ${rows[0].student_count}.`
+        : "Заняття створено без студентів. Додайте їх пізніше в розділі «Мої заняття».", lessonId: String(rows[0].id) }
       : { success: false, message: "Перевірте активні довідники, викладача та належність студентів до вибраних груп. Дані могли змінитися — оновіть сторінку." };
   } catch (error) {
     const failure = error as { code?: string; constraint?: string };

@@ -2,6 +2,8 @@ import { Check, Clock3, UsersRound } from "lucide-react";
 
 import { PageIntro } from "@/components/page-intro";
 import { EmptyState } from "@/components/private/empty-state";
+import { ManagementTable } from "@/components/private/management-table";
+import { ManagementSubmit } from "@/components/private/management-submit";
 import { listStaffAccounts } from "@/lib/auth/repository";
 import { requireAdministrator } from "@/lib/auth/session";
 
@@ -17,7 +19,7 @@ export default async function TeachersPage() {
   ).length;
 
   return (
-    <section>
+    <section className="management-page">
       <PageIntro
         eyebrow="АДМІНІСТРУВАННЯ"
         title="Викладачі та адміністратори"
@@ -36,18 +38,14 @@ export default async function TeachersPage() {
           description="Новий обліковий запис з’явиться тут одразу після завершення реєстрації."
         />
       ) : (
-        <div className="teacher-list" aria-label="Облікові записи викладачів">
+        <ManagementTable caption="Облікові записи викладачів" columns={["ПІБ", "Електронна пошта", "Роль", "Доступ", "Дії"]} minWidth={980}>
+          <tbody>
           {teachers.map((teacher) => (
-            <article className="teacher-row" key={teacher.id} aria-label={teacher.fullName}>
-              <span className="teacher-avatar" aria-hidden="true">
-                {teacher.fullName.slice(0, 2).toUpperCase()}
-              </span>
-              <span className="teacher-identity">
-                <strong>{teacher.fullName}</strong>
-                <small>{teacher.email}</small>
-                <small>{teacher.role === "administrator" ? "Адміністратор + викладач" : "Викладач"}</small>
-              </span>
-              <span className={`approval-badge is-${teacher.approval}`}>
+            <tr key={teacher.id}>
+              <th scope="row">{teacher.fullName}</th>
+              <td>{teacher.email}</td>
+              <td>{teacher.role === "administrator" ? "Адміністратор + викладач" : "Викладач"}</td>
+              <td><span className={`approval-badge is-${teacher.approval}`}>
                 {teacher.approval === "approved" ? (
                   <>
                     <Check size={14} /> Схвалено
@@ -57,20 +55,23 @@ export default async function TeachersPage() {
                     <Clock3 size={14} /> Очікує
                   </>
                 )}
-              </span>
+              </span></td>
+              <td className="management-actions-cell">
               {teacher.approval === "pending" ? (
                 <form action={approveTeacher}>
                   <input type="hidden" name="userId" value={teacher.id} />
-                  <button className="button button-primary" type="submit">
+                  <ManagementSubmit className="button button-primary" aria-label={`Схвалити доступ: ${teacher.fullName}`}>
                     Схвалити доступ
-                  </button>
+                  </ManagementSubmit>
                 </form>
               ) : teacher.isBootstrapAdministrator ? (
                 <span className="teacher-approved-note">Захищений адміністратор — пониження недоступне</span>
               ) : <AccountRoleForm key={teacher.role} userId={teacher.id} role={teacher.role} />}
-            </article>
+              </td>
+            </tr>
           ))}
-        </div>
+          </tbody>
+        </ManagementTable>
       )}
     </section>
   );

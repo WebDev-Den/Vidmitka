@@ -5,8 +5,8 @@ import { ScheduleView } from "@/components/schedule-view";
 export const metadata: Metadata = { title: "Загальний розклад" };
 
 export default async function PrivateSchedulePage({ searchParams }: {
-  searchParams: Promise<{ date?: string | string[] }>;
+  searchParams: Promise<{ date?: string | string[]; week?: string | string[] }>;
 }) {
-  const { date } = await searchParams;
-  return <ScheduleView privateView selectedDate={date} />;
+  const { date, week } = await searchParams;
+  return <ScheduleView privateView selectedDate={date} selectedWeek={week} />;
 }

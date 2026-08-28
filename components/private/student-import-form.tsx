@@ -11,7 +11,7 @@ export function StudentImportForm({ lessonId, subjects }: {
   return (
     <details className="journal-import">
       <summary>Імпортувати студентів із CSV або JSON</summary>
-      <form action={action} className="lesson-editor">
+      <form action={action} className="lesson-editor compact-form">
         <div className="settings-form-heading">
           <h2>Імпорт студентів до предмета</h2>
           <p>ПІБ, група та необов’язкова підгрупа. До 500 студентів, 512 КБ. У разі помилки весь файл не імпортується.</p>

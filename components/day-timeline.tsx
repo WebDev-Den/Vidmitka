@@ -52,7 +52,7 @@ export function DayTimeline({ periods, initialNow }: {
           <span>Сьогодні · {dateLabel}</span>
         </div>
         <time className="day-timeline-clock" dateTime={new Date(now).toISOString()}>
-          {timeline.time} <span>Київ</span>
+          {timeline.time}
         </time>
       </div>
 
@@ -60,7 +60,7 @@ export function DayTimeline({ periods, initialNow }: {
         <>
           <div className="day-timeline-track" role="progressbar" aria-label="Поточний час у сітці пар"
             aria-valuemin={0} aria-valuemax={100} aria-valuenow={Number(timeline.positionPercent.toFixed(2))}
-            aria-valuetext={`${timeline.time}, Київ. ${status}`}>
+            aria-valuetext={`${timeline.time}. ${status}`}>
             <div className="day-timeline-segments" aria-hidden="true">
               {timeline.segments.map((segment) => (
                 <span key={segment.id}

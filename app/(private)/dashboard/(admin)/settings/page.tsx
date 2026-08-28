@@ -9,13 +9,14 @@ import { listMakeupDays } from "@/lib/schedule-calendar/repository";
 import { SemesterEndForm } from "./semester-end-form";
 import { WeekSettingsForm } from "./week-settings-form";
 import { MakeupDaysManager } from "./makeup-days-manager";
+import styles from "./settings.module.css";
 
 export default async function SettingsPage() {
   await requireAdministrator();
   const [weekSettings, makeupDays] = await Promise.all([getScheduleWeekSettings(), listMakeupDays()]);
 
   return (
-    <section>
+    <section className={styles.page}>
       <PageIntro
         eyebrow="АДМІНІСТРУВАННЯ"
         title="Налаштування системи"

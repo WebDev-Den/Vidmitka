@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getDb } from "@/lib/db";
+import type { DirectoryCreateResult } from "@/lib/lessons/directory-options";
 
 export type Room = Readonly<{
   id: string;
@@ -44,6 +45,13 @@ export async function listRooms(options?: { activeOnly?: boolean }): Promise<Roo
 export async function createRoom(
   nameValue: FormDataEntryValue | null,
 ): Promise<RoomMutationResult> {
+  const { success, message } = await createRoomOption(nameValue);
+  return { success, message };
+}
+
+export async function createRoomOption(
+  nameValue: FormDataEntryValue | null,
+): Promise<DirectoryCreateResult> {
   const name = normalizeRoomName(nameValue);
 
   if (name.length < 1 || name.length > 100) {
@@ -53,15 +61,17 @@ export async function createRoom(
   const sql = getDb();
 
   try {
-    await sql`INSERT INTO rooms (name) VALUES (${name})`;
+    const [row] = (await sql`
+      INSERT INTO rooms (name) VALUES (${name}) RETURNING id, name
+    `) as unknown as Array<{ id: string | number; name: string }>;
+    if (!row) return { success: false, message: "Не вдалося додати аудиторію." };
+    return { success: true, message: `Аудиторію «${row.name}» додано.`, option: { id: String(row.id), name: row.name } };
   } catch (error) {
     if ((error as { code?: string }).code === "23505") {
       return { success: false, message: "Аудиторія з такою назвою вже існує." };
     }
     throw error;
   }
-
-  return { success: true, message: `Аудиторію «${name}» додано.` };
 }
 
 export async function setRoomActive(

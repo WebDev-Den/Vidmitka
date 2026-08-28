@@ -9,6 +9,8 @@ import * as scheduleImport from "@/app/(private)/dashboard/import-schedule/actio
 import * as makeupDays from "@/app/(private)/dashboard/(admin)/settings/makeup-actions";
 import * as lessonTypes from "@/app/(private)/dashboard/(admin)/lesson-types/actions";
 import * as lessonTypeAssignment from "@/app/(private)/dashboard/my-lessons/actions";
+import * as lessonDirectories from "@/app/(private)/dashboard/lessons/new/directory-actions";
+import * as lessonRoster from "@/app/(private)/dashboard/my-lessons/[lessonId]/students/actions";
 
 describe("контракт серверних дій Next.js", () => {
   it.each([
@@ -19,6 +21,8 @@ describe("контракт серверних дій Next.js", () => {
     ["календар відпрацювань", makeupDays],
     ["типи занять", lessonTypes],
     ["призначення типу заняття", lessonTypeAssignment],
+    ["швидке додавання довідників", lessonDirectories],
+    ["додавання студентів до створеного заняття", lessonRoster],
   ])("%s: модуль експортує тільки асинхронні функції", (_name, actions) => {
     const invalidExports = Object.entries(actions).filter(([, value]) => (
       typeof value !== "function" || value.constructor.name !== "AsyncFunction"

@@ -17,7 +17,7 @@ export default async function NewLessonPage() {
     listLessonTypes({ activeOnly: true }),
   ]);
   const teachers = accounts.filter((teacher) => teacher.approval === "approved").map((teacher) => ({ id: teacher.id, name: teacher.fullName }));
-  return <section>
+  return <section className="management-page">
     <PageIntro eyebrow={isAdministrator ? "АДМІНІСТРУВАННЯ" : "КАБІНЕТ ВИКЛАДАЧА"} title="Створити заняття"
       description="Оберіть параметри розкладу, групи та студентів для цієї пари. Система перевірить конфлікти перед збереженням." />
     <LessonForm subjects={subjects.map(({ id, name }) => ({ id, name }))} rooms={rooms.map(({ id, name }) => ({ id, name }))}

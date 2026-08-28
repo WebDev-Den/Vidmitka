@@ -39,7 +39,7 @@ async function importLessons(rows: Record<string, unknown>[], teacher = "teacher
   return importTeacherSchedule(teacher, parsed.rows);
 }
 
-it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять → п’ять найближчих проведень → незмінний журнал", async () => {
+it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять → три найближчі проведення з перемішуванням → незмінний журнал", async () => {
   const [scope] = await getDb()`SELECT current_schema() AS name` as unknown as { name: string }[];
   expect(scope.name).toBe(process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA);
   expect(scope.name).toMatch(/^codex_attendance_test_[0-9a-f]{16}$/u);
@@ -48,6 +48,9 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять �
   const initialTypes = await listLessonTypes();
   expect(initialTypes.map((type) => type.name)).toEqual(expect.arrayContaining(["Лекція", "Практична", "Лабораторна"]));
   const lecture = initialTypes.find((type) => type.name === "Лекція")!;
+  expect(lecture.color).toBe("#0F766E");
+  expect(initialTypes.find((type) => type.name === "Практична")?.color).toBe("#16835B");
+  expect(initialTypes.find((type) => type.name === "Лабораторна")?.color).toBe("#073C40");
   const administratorToken = (await createAuthSession("administrator")).token;
   const teacherToken = (await createAuthSession("teacher")).token;
   const pending = await registerAccount({ fullName: "Тест Типів", email: "codex.attendance.pending-types@example.test", password: "Codex Attendance Test 2026!", administratorCode: "" });
@@ -55,16 +58,23 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять �
   const pendingToken = (await createAuthSession(pending.user.id)).token;
   for (const [token, destination] of [["", "/sign-in"], [teacherToken, "/dashboard?access=denied"], [pendingToken, "/approval-pending"]]) {
     cookie.token = token;
-    await expect(saveLessonTypeAction(initialLessonTypeState, form({ name: "Семінар" }))).rejects.toThrow(`redirect:${destination}`);
+    await expect(saveLessonTypeAction(initialLessonTypeState, form({ name: "Семінар", color: "#ABC123" }))).rejects.toThrow(`redirect:${destination}`);
     await expect(toggleLessonTypeAction(initialLessonTypeState, form({ id: lecture.id, active: "false" }))).rejects.toThrow(`redirect:${destination}`);
     if (token !== teacherToken) {
       await expect(updateLessonTypeAction(initialLessonState, form({ lessonId: "1", lessonTypeId: lecture.id }))).rejects.toThrow(`redirect:${destination}`);
     }
   }
   expect((await saveLessonType("teacher", { name: "Семінар" })).success).toBe(false);
+  expect((await saveLessonType("teacher", { id: lecture.id, name: lecture.name, color: "#ABC123" })).success).toBe(false);
   cookie.token = administratorToken;
-  expect((await saveLessonTypeAction(initialLessonTypeState, form({ name: "  Семінар  " }))).success).toBe(true);
+  expect((await saveLessonTypeAction(initialLessonTypeState, form({ name: "  Семінар  ", color: "#abc123" }))).success).toBe(true);
   const seminar = (await listLessonTypes()).find((type) => type.name === "Семінар")!;
+  expect(seminar.color).toBe("#ABC123");
+  const beforeInvalidColors = await listLessonTypes();
+  for (const color of ["", "#FFF", "#12345678", "red", "url(test)"]) {
+    expect((await saveLessonTypeAction(initialLessonTypeState, form({ id: lecture.id, name: "Невалідна зміна", color }))).success).toBe(false);
+  }
+  expect(await listLessonTypes()).toEqual(beforeInvalidColors);
   expect((await saveLessonType("administrator", { name: "семінар" })).success).toBe(false);
   expect((await saveLessonType("administrator", { id: seminar.id, name: "Лекція" })).success).toBe(false);
 
@@ -84,14 +94,15 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять �
     { ...base, day: 5, period: 1, weekType: "both", lessonType: "Лабораторна" },
   ])).success).toBe(true);
   expect((await importLessons([{ ...base, room: "102", period: 1, weekType: "numerator", lessonType: "Лекція" }], "other-teacher")).success).toBe(true);
-  expect((await listUpcomingLessons(now))[0]).toMatchObject({ date: "2026-08-24", periodNumber: 3, lessonTypeName: "Семінар" });
+  expect((await listUpcomingLessons(now))[0]).toMatchObject({ date: "2026-08-24", periodNumber: 3, lessonTypeName: "Семінар", lessonTypeColor: "#ABC123" });
   expect((await saveScheduleWeekSettings({ numeratorDate: "2026-08-24" })).success).toBe(true);
-  const upcoming = await listUpcomingLessons(now);
-  expect(upcoming.map((lesson) => [lesson.date, lesson.periodNumber, lesson.teacherName])).toEqual([
+  const upcoming = await listUpcomingLessons(now, "baseline");
+  expect(upcoming).toHaveLength(3);
+  expect(upcoming.slice(0, 2).map((lesson) => [lesson.date, lesson.periodNumber, lesson.teacherName]).sort((a, b) => String(a[2]).localeCompare(String(b[2])))).toEqual([
     ["2026-08-24", 1, "Тест other-teacher"], ["2026-08-24", 1, "Тест teacher"],
-    ["2026-08-24", 3, "Тест teacher"], ["2026-08-28", 1, "Тест teacher"], ["2026-08-31", 2, "Тест teacher"],
   ]);
-  expect(upcoming[1]).toMatchObject({ subjectName: "Основи програмування", roomName: "101", lessonTypeName: "Лекція", startMinute: 480, endMinute: 560, isCurrent: true });
+  expect(upcoming[2]).toMatchObject({ date: "2026-08-24", periodNumber: 3, teacherName: "Тест teacher" });
+  expect(upcoming.find((lesson) => lesson.periodNumber === 1 && lesson.teacherName === "Тест teacher")).toMatchObject({ subjectName: "Основи програмування", roomName: "101", lessonTypeName: "Лекція", startMinute: 480, endMinute: 560, isCurrent: true });
   expect(upcoming[2].isCurrent).toBe(false);
   expect((await listUpcomingLessons(new Date("2026-08-24T06:20:00Z")))[0].periodNumber).toBe(3); // Рівно 09:20: перша пара закінчилася.
   expect((await listUpcomingLessons(new Date("2026-08-23T21:30:00Z")))[0].date).toBe("2026-08-24"); // Вже понеділок у Києві.
@@ -100,7 +111,7 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять �
   expect((await saveMakeupDay("administrator", { date: "2026-09-04", dayOfWeek: "1", weekType: "denominator", version: "0" })).success).toBe(true);
   const makeup = await listUpcomingLessons(new Date("2026-09-03T21:00:00Z"));
   expect(makeup.map((lesson) => [lesson.date, lesson.periodNumber])).toEqual([
-    ["2026-09-04", 2], ["2026-09-04", 3], ["2026-09-07", 1], ["2026-09-07", 1], ["2026-09-07", 3],
+    ["2026-09-04", 2], ["2026-09-04", 3], ["2026-09-07", 1],
   ]);
   expect(makeup[0]).toMatchObject({ isMakeup: true, weekType: "denominator", lessonTypeName: "Практична" });
   const beforeInvalid = await listTeacherLessons("teacher");
@@ -112,16 +123,26 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять �
 
   const journal = await listJournalLessons("teacher", "2026-08-24");
   const lesson = journal.lessons.find((row) => row.periodNumber === 1)!;
+  expect(lesson.lessonTypeColor).toBe("#0F766E");
+  // One administrator color update is visible in all existing read models.
+  expect((await saveLessonTypeAction(initialLessonTypeState, form({ id: lecture.id, name: lecture.name, color: "#808080" }))).success).toBe(true);
+  expect((await listTeacherLessons("teacher")).find((row) => row.id === lesson.lessonId)?.lessonTypeColor).toBe("#808080");
+  expect((await listScheduleForDate("2026-08-24")).lessons.find((row) => row.id === lesson.lessonId)?.lessonTypeColor).toBe("#808080");
+  expect((await listUpcomingLessons(now)).find((row) => row.id === lesson.lessonId)?.lessonTypeColor).toBe("#808080");
+  expect((await listJournalLessons("teacher", "2026-08-24")).lessons.find((row) => row.key === lesson.key)?.lessonTypeColor).toBe("#808080");
   expect((await importTeacherStudents("teacher", { lessonId: lesson.lessonId! }, [{ fullName: "Тестенко Анна", groupName: "КН-71", subgroup: "1" }])).success).toBe(true);
   const students = await listJournalStudents("teacher", lesson);
   expect((await saveAttendance("teacher", { date: "2026-08-24", key: lesson.key, version: 0, calendarToken: journal.day!.token,
     marks: students.map((student) => ({ studentId: student.studentId, status: "present" })) })).success).toBe(true);
   expect((await saveLessonTypeAction(initialLessonTypeState, form({ id: lecture.id, name: "Оглядова лекція" }))).success).toBe(true);
+  expect((await listLessonTypes()).find((type) => type.id === lecture.id)?.color).toBe("#808080");
   expect((await listScheduleForDate("2026-08-24")).lessons.find((row) => row.id === lesson.lessonId)?.lessonTypeName).toBe("Оглядова лекція");
   expect((await listJournalLessons("teacher", "2026-08-24")).lessons.find((row) => row.key === lesson.key)?.lessonTypeName).toBe("Лекція");
+  expect((await listJournalLessons("teacher", "2026-08-24")).lessons.find((row) => row.key === lesson.key)?.lessonTypeColor).toBeNull();
   expect((await toggleLessonTypeAction(initialLessonTypeState, form({ id: lecture.id, active: "false" }))).success).toBe(true);
   expect((await listLessonTypes({ activeOnly: true })).some((type) => type.id === lecture.id)).toBe(false);
   expect((await listUpcomingLessons(now))[0].lessonTypeName).toBe("Оглядова лекція"); // Деактивація не приховує старе заняття.
+  expect((await listUpcomingLessons(now))[0].lessonTypeColor).toBe("#808080");
   expect((await importLessons([{ ...base, day: 6, period: 1, weekType: "both", lessonType: "Оглядова лекція" }])).success).toBe(false);
 
   const student = (await listGroupStudents())[0];
@@ -149,11 +170,43 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("типи занять �
   expect((await endSemester("administrator")).success).toBe(true);
   expect(await listUpcomingLessons(now)).toEqual([]);
   const archive = (await listJournalLessons("teacher", "2026-08-24")).lessons[0];
-  expect(archive).toMatchObject({ archived: true, lessonTypeName: "Лекція" });
+  expect(archive).toMatchObject({ archived: true, lessonTypeName: "Лекція", lessonTypeColor: null });
   expect((await listJournalStudents("teacher", archive))[0].status).toBe("present");
-  // Рідкий розклад: п’ять реальних проведень одного запису через два тижні.
+  // Більше трьох одночасних: перемішуємо весь пул, а не перші 3 або старі 5.
+  const sql = getDb();
+  const parallelIds: string[] = [];
+  for (let index = 0; index < 6; index += 1) {
+    const id = `rotation-teacher-${index}`;
+    const email = `${id}@example.test`;
+    const room = `rotation-room-${index}`;
+    await sql`INSERT INTO app_users (id, email, email_normalized, full_name, password_hash, role, approval_status)
+      VALUES (${id}, ${email}, ${email}, ${`Ротація ${index}`}, 'test-only-unused', 'teacher', 'approved')`;
+    await sql`INSERT INTO rooms (name) VALUES (${room})`;
+    expect((await importLessons([{ ...base, room, day: 2, period: 1, weekType: "both", lessonType: "Семінар" }], id)).success).toBe(true);
+    parallelIds.push((await listTeacherLessons(id))[0].id);
+  }
+  const rotationNow = new Date("2026-08-25T04:00:00Z");
+  const firstDraw = await listUpcomingLessons(rotationNow, "rotation-0");
+  expect(await listUpcomingLessons(rotationNow, "rotation-0")).toEqual(firstDraw);
+  const seen = new Set<string>();
+  const orders = new Set<string>();
+  // Fixed seeds make the coverage reproducible; requests stay bounded in batches of four.
+  for (let batch = 0; batch < 6; batch += 1) {
+    const draws = await Promise.all(Array.from({ length: 4 }, (_, index) => listUpcomingLessons(rotationNow, `rotation-${batch * 4 + index}`)));
+    for (const draw of draws) {
+      expect(draw).toHaveLength(3);
+      expect(new Set(draw.map((row) => `${row.date}:${row.id}`)).size).toBe(3);
+      expect(draw.every((row) => row.date === "2026-08-25" && row.periodNumber === 1 && parallelIds.includes(row.id))).toBe(true);
+      draw.forEach((row) => seen.add(row.id));
+      orders.add(draw.map((row) => row.id).join(","));
+    }
+  }
+  expect([...seen].sort()).toEqual([...parallelIds].sort());
+  expect(orders.size).toBeGreaterThan(1);
+  expect((await endSemester("administrator")).success).toBe(true);
+  // Рідкий розклад: три реальні проведення одного запису через два тижні.
   expect((await importLessons([{ ...base, day: 2, period: 1, weekType: "numerator", lessonType: "Оглядова лекція" }])).success).toBe(true);
   expect((await listUpcomingLessons(new Date("2026-08-25T20:00:00Z")))).toMatchObject([
-    { date: "2026-09-08" }, { date: "2026-09-22" }, { date: "2026-10-06" }, { date: "2026-10-20" }, { date: "2026-11-03" },
+    { date: "2026-09-08" }, { date: "2026-09-22" }, { date: "2026-10-06" },
   ]);
 }, 180000);

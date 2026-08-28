@@ -6,7 +6,7 @@ import { deleteMakeupDay, saveMakeupDay } from "@/lib/schedule-calendar/reposito
 import type { MakeupActionState } from "./makeup-form-state";
 
 function refreshCalendar() {
-  for (const path of ["/", "/dashboard/settings", "/dashboard/schedule", "/dashboard/journal", "/schedule"]) {
+  for (const path of ["/", "/dashboard/settings", "/dashboard/schedule", "/dashboard/journal", "/schedule", "/transfers"]) {
     revalidatePath(path);
   }
 }

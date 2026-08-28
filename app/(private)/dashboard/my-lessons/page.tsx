@@ -2,12 +2,15 @@ import { CalendarPlus, Plus, Upload } from "lucide-react";
 import Link from "next/link";
 
 import { PageIntro } from "@/components/page-intro";
+import { LessonTypeBadge } from "@/components/lesson-type-badge";
 import { EmptyState } from "@/components/private/empty-state";
 import { ManagementTable } from "@/components/private/management-table";
 import { requireTeacher } from "@/lib/auth/session";
 import { listTeacherLessons } from "@/lib/lessons/repository";
 import { listLessonTypes } from "@/lib/lesson-types/repository";
 import { LessonTypePicker } from "./lesson-type-picker";
+import { LessonRowLink } from "./lesson-row-link";
+import styles from "./my-lessons.module.css";
 
 const DAY_LABELS: Record<number, string> = {
   1: "Понеділок",
@@ -35,7 +38,7 @@ export default async function MyLessonsPage() {
       <PageIntro
         eyebrow="КАБІНЕТ ВИКЛАДАЧА"
         title="Мої заняття"
-        description="Створені вами заняття та їхній поточний стан."
+        description="Ваші заняття. Натисніть на тип, щоб змінити його, або скопіюйте заняття на іншу пару."
         actions={
           <div className="page-actions">
             <Link className="button button-light" href="/dashboard/import-schedule">
@@ -54,29 +57,33 @@ export default async function MyLessonsPage() {
           description="Створіть заняття вручну або імпортуйте власний розклад із JSON чи CSV."
         />
       ) : (
-        <ManagementTable caption="Мої заняття" columns={["День", "Пара", "Предмет / тип", "Аудиторія", "Тиждень", "Студенти / групи"]} minWidth={980}>
+        <div className={styles.list}>
+        <ManagementTable caption="Мої заняття" columns={["День", "Пара / час", "Предмет / тип", "Аудиторія", "Тиждень", "Студенти / групи", "Дії"]} minWidth={1080}>
             <tbody>
               {lessons.map((lesson) => (
                 <tr key={lesson.id}>
                   <td>{DAY_LABELS[lesson.dayOfWeek]}</td>
-                  <td>{lesson.periodNumber} · {lesson.periodTime}</td>
-                  <td><strong>{lesson.subjectName}</strong>
+                  <td><strong className={styles.period}>{lesson.periodNumber} пара</strong><span className={`${styles.secondary} ${styles.time}`}>{lesson.periodTime}</span></td>
+                  <th scope="row"><strong className={styles.subject}>{lesson.subjectName}</strong>
                     {teacher.role === "administrator" || lesson.createdByUserId === teacher.id
-                      ? <LessonTypePicker lessonId={lesson.id} currentTypeId={lesson.lessonTypeId} currentTypeName={lesson.lessonTypeName} types={typeChoices} />
-                      : <p>{lesson.lessonTypeName ?? "Тип не вказано"} · змінює адміністратор</p>}
-                  </td>
+                      ? <LessonTypePicker lessonId={lesson.id} currentTypeId={lesson.lessonTypeId} currentTypeName={lesson.lessonTypeName} currentTypeColor={lesson.lessonTypeColor} types={typeChoices} subjectName={lesson.subjectName} />
+                      : <span className={styles.secondary}><LessonTypeBadge name={lesson.lessonTypeName} color={lesson.lessonTypeColor} /> · змінює адміністратор</span>}
+                  </th>
                   <td>{lesson.roomName}</td>
-                  <td>{WEEK_LABELS[lesson.weekType]}</td>
-                  <td>{lesson.studentCount} · {lesson.groupNames.join(", ") || "без студентів"}<br />
-                    <small>{lesson.rosterMode === "selected" ? "Окремий список заняття" : "Список предмета"}</small>
-                    {lesson.rosterMode === "selected" && <div className="page-actions">
-                      <Link className="button button-light" href={`/dashboard/my-lessons/${lesson.id}/students`}>Додати студентів</Link>
-                    </div>}
+                  <td><span className={styles.week}>{WEEK_LABELS[lesson.weekType]}</span></td>
+                  <td><span>{lesson.studentCount ? `Студентів: ${lesson.studentCount}` : "Без студентів"}</span>
+                    {!!lesson.groupNames.length && <span className={styles.secondary}>{lesson.groupNames.join(", ")}</span>}
+                    <span className={styles.secondary}>{lesson.rosterMode === "selected" ? "Окремий список" : "Список предмета"}</span>
                   </td>
+                  <td><div className={styles.actions}>
+                    <LessonRowLink lessonId={lesson.id} subjectName={lesson.subjectName} kind="copy" />
+                    {lesson.rosterMode === "selected" && <LessonRowLink lessonId={lesson.id} subjectName={lesson.subjectName} kind="students" />}
+                  </div></td>
                 </tr>
               ))}
             </tbody>
         </ManagementTable>
+        </div>
       )}
     </section>
   );

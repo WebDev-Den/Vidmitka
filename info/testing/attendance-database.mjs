@@ -39,7 +39,10 @@ export async function createAttendanceTestDatabase({ seedAdministrator = true, l
         ]);
       }
     }
-    for (const file of ["006_attendance.sql", "007_student_groups_and_lesson_rosters.sql", "008_administrator_bootstrap.sql", "009_makeup_days.sql", "010_lesson_types.sql", "011_class_period_colors.sql"]) {
+    // Exercise 013 consistently even after the source schema has already been upgraded.
+    // Only the newly created empty test table is changed; never public.lesson_types.
+    if (typeTable.name) await source.query(`ALTER TABLE "${schema}".lesson_types DROP COLUMN IF EXISTS color`);
+    for (const file of ["006_attendance.sql", "007_student_groups_and_lesson_rosters.sql", "008_administrator_bootstrap.sql", "009_makeup_days.sql", "010_lesson_types.sql", "011_class_period_colors.sql", "012_class_period_custom_colors.sql", "013_lesson_type_colors.sql"]) {
       if (file === "008_administrator_bootstrap.sql" && legacyAdministrator) {
         // Відтворення старої схеми тільки в щойно створеній тестовій БД.
         await source.query(`ALTER TABLE "${schema}".app_users DROP COLUMN IF EXISTS is_bootstrap_administrator`);

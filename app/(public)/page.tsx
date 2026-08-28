@@ -1,10 +1,4 @@
-import {
-  ArrowRight,
-  CalendarRange,
-  CheckCircle2,
-  GraduationCap,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, CalendarRange } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -42,41 +36,6 @@ export default function PublicHomePage() {
       </div>
 
       <main className="public-main">
-        <section className="public-intro" id="roles">
-          <span className="section-index">01</span>
-          <div>
-            <span className="eyebrow">РОЛІ ТА ДОСТУП</span>
-            <h2>Одна система. Різна відповідальність.</h2>
-          </div>
-          <p>
-            Публічна частина показує опублікований розклад. Приватний кабінет
-            відкриває лише ті інструменти, які відповідають ролі користувача.
-          </p>
-        </section>
-
-        <section className="role-columns">
-          <article>
-            <span className="role-icon"><GraduationCap size={24} /></span>
-            <span className="eyebrow">ВИКЛАДАЧ</span>
-            <h3>Власні заняття під контролем</h3>
-            <ul>
-              <li><CheckCircle2 size={17} /> Створення і редагування власних занять</li>
-              <li><CheckCircle2 size={17} /> Перегляд загального розкладу</li>
-              <li><CheckCircle2 size={17} /> Попередження про часові конфлікти</li>
-            </ul>
-          </article>
-          <article>
-            <span className="role-icon"><ShieldCheck size={24} /></span>
-            <span className="eyebrow">АДМІНІСТРАТОР</span>
-            <h3>Цілісність усього розкладу</h3>
-            <ul>
-              <li><CheckCircle2 size={17} /> Керування всіма заняттями</li>
-              <li><CheckCircle2 size={17} /> Викладачі, предмети й аудиторії</li>
-              <li><CheckCircle2 size={17} /> Контроль актуальності даних</li>
-            </ul>
-          </article>
-        </section>
-
         <section className="public-cta">
           <CalendarRange size={32} />
           <div>

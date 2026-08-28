@@ -78,7 +78,7 @@ export function validateClassPeriod(
 
   const color = parsePeriodColor(input.color);
   if (!color) {
-    return { ok: false, message: "Оберіть колір пари з палітри сайту." };
+    return { ok: false, message: "Оберіть коректний колір пари у форматі #RRGGBB." };
   }
 
   const comparable = existingPeriods.filter((period) => period.id !== excludedId);

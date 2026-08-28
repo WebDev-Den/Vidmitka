@@ -309,12 +309,32 @@ textarea:focus-visible {
 
 .public-navigation a {
   min-height: 44px;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
+  border-bottom: 2px solid transparent;
 }
 
-.public-navigation a:hover {
+.public-navigation a:hover,
+.public-navigation a[aria-current="page"] {
   color: var(--accent-strong);
+}
+
+.public-navigation a[aria-current="page"] {
+  border-bottom-color: currentColor;
+}
+
+.public-navigation-indicator {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+.public-navigation-indicator .navigation-spinner {
+  width: 16px;
+  height: 16px;
 }
 
 .header-action {
@@ -641,11 +661,6 @@ textarea:focus-visible {
   font-size: 13px;
 }
 
-.upcoming-details > .upcoming-type {
-  color: var(--accent-strong);
-  font-weight: 700;
-}
-
 .upcoming-current { font-size: 12px; font-weight: 700; }
 
 .upcoming-empty {
@@ -783,6 +798,11 @@ textarea:focus-visible {
 
 .public-content {
   padding: 64px 0 96px;
+}
+
+.public-content .management-table-scroll:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 3px;
 }
 
 /* Shared schedules and content */
@@ -2361,10 +2381,17 @@ textarea:focus-visible {
 
   .public-header-inner {
     grid-template-columns: 1fr auto;
+    row-gap: 8px;
+    padding-block: 12px 0;
   }
 
   .public-navigation {
-    display: none;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-width: 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 24px;
   }
 
   .public-intro {
@@ -2911,7 +2938,7 @@ textarea:focus-visible {
   background: var(--surface-soft);
 }
 
-.management-table input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+.management-table input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="color"]),
 .management-table select {
   width: 100%;
   min-width: 100px;

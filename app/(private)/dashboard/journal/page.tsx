@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageIntro } from "@/components/page-intro";
+import { LessonTypeBadge } from "@/components/lesson-type-badge";
 import { ScheduleDayNotice } from "@/components/schedule-day-notice";
 import { StudentImportForm } from "@/components/private/student-import-form";
 import { requireTeacher } from "@/lib/auth/session";
@@ -48,7 +49,7 @@ export default async function JournalPage({ searchParams }: {
       </form> : <div className="empty-state"><h2>На цю дату занять немає</h2><p>Оберіть іншу дату або імпортуйте власний розклад.</p></div>}
       {selected && <>
         <h2>{selected.subjectName} · {selected.periodNumber} пара · {selected.roomName}</h2>
-        <p>{selected.lessonTypeName ?? "Тип не вказано"}</p>
+        <p><LessonTypeBadge name={selected.lessonTypeName} color={selected.lessonTypeColor} /></p>
         {selected.version > 0 && <p role="status">Журнал збережено · версія {selected.version}. Нижче показано збережені відмітки.</p>}
         {selected.archived && <p className="notice">Збережений журнал. Заняття вже відсутнє в актуальному розкладі; історію збережено.</p>}
         {!selected.archived && selected.lessonId && <StudentImportForm key={selected.key} lessonId={selected.lessonId} />}

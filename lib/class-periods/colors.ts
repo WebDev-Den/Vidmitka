@@ -1,4 +1,6 @@
-// Semantic colors for the bell timetable, using only the approved site palette.
+import { colorForeground, parseHexColor, type HexColor } from "@/lib/ui/colors";
+
+// Default bell-timetable colors. Administrators may also choose any opaque RGB color.
 export const PERIOD_COLORS = [
   { value: "#0F766E", name: "Бірюзовий", foreground: "#FFFFFF" },
   { value: "#48C5B5", name: "М’ятний", foreground: "#18283D" },
@@ -10,14 +12,17 @@ export const PERIOD_COLORS = [
   { value: "#18283D", name: "Чорнильний", foreground: "#FFFFFF" },
 ] as const;
 
-export type PeriodColor = (typeof PERIOD_COLORS)[number]["value"];
+export type PeriodColor = HexColor;
 
 export function parsePeriodColor(value: unknown): PeriodColor | null {
-  if (typeof value !== "string") return null;
-  const normalized = value.trim().toUpperCase();
-  return PERIOD_COLORS.find((color) => color.value === normalized)?.value ?? null;
+  return parseHexColor(value);
 }
 
 export function periodColorForeground(color: PeriodColor): string {
-  return PERIOD_COLORS.find((entry) => entry.value === color)?.foreground ?? "#FFFFFF";
+  const normalized = parsePeriodColor(color);
+  if (!normalized) return "#18283D";
+  const preset = PERIOD_COLORS.find((entry) => entry.value === normalized);
+  if (preset) return preset.foreground;
+
+  return colorForeground(normalized);
 }

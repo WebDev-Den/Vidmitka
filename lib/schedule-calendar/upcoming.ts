@@ -1,15 +1,19 @@
 import "server-only";
+import { randomUUID } from "node:crypto";
 import { getDb } from "@/lib/db";
 import type { AlternatingWeekType } from "@/lib/schedule-week/rules";
 
 export type UpcomingLesson = Readonly<{
   id: string; date: string; periodNumber: number; startMinute: number; endMinute: number;
   subjectName: string; roomName: string; teacherName: string; lessonTypeName: string | null;
+  lessonTypeColor: string | null;
   isMakeup: boolean; isCurrent: boolean; weekType: AlternatingWeekType | null;
 }>;
 
-/** П’ять найближчих проведень, включно з поточними, за київським календарем. */
-export async function listUpcomingLessons(now: Date): Promise<UpcomingLesson[]> {
+export const UPCOMING_LESSON_LIMIT = 3;
+
+/** Найближчі проведення; однаковий час перемішується до обмеження кількості. */
+export async function listUpcomingLessons(now: Date, rotationSeed: string = randomUUID()): Promise<UpcomingLesson[]> {
   const sql = getDb();
   const rows = await sql`
     WITH clock AS (
@@ -18,11 +22,11 @@ export async function listUpcomingLessons(now: Date): Promise<UpcomingLesson[]> 
       SELECT held_on FROM makeup_days, clock WHERE is_active AND held_on >= local_now::DATE
     ), dates AS (
       -- Кожне регулярне заняття повторюється не рідше разу на 14 днів.
-      -- П’ять циклів + один за кожну можливу підміну гарантують 5 проведень,
+      -- Один цикл на місце картки + один за кожну можливу підміну,
       -- якщо є регулярний розклад; далекі явні відпрацювання додаються окремо.
       SELECT clock.local_now::DATE + candidate.day_offset AS held_on
       FROM clock CROSS JOIN LATERAL GENERATE_SERIES(0, LEAST(
-        14 * (5 + (SELECT COUNT(*)::INT FROM exceptions)),
+        14 * (${UPCOMING_LESSON_LIMIT} + (SELECT COUNT(*)::INT FROM exceptions)),
         DATE '9999-12-31' - clock.local_now::DATE
       )) candidate(day_offset)
       UNION SELECT held_on FROM exceptions
@@ -31,7 +35,7 @@ export async function listUpcomingLessons(now: Date): Promise<UpcomingLesson[]> 
     )
     SELECT l.id, days.held_on::TEXT AS date, p.number AS period_number, p.start_minute, p.end_minute,
       s.name AS subject_name, r.name AS room_name, u.full_name AS teacher_name,
-      t.name AS lesson_type_name, days.is_makeup, days.week_type,
+      t.name AS lesson_type_name, t.color AS lesson_type_color, days.is_makeup, days.week_type,
       days.held_on + p.start_minute * INTERVAL '1 minute' <= clock.local_now AS is_current
     FROM days CROSS JOIN clock
     JOIN lessons l ON l.day_of_week = days.schedule_day
@@ -42,15 +46,19 @@ export async function listUpcomingLessons(now: Date): Promise<UpcomingLesson[]> 
     JOIN class_periods p ON p.id = l.class_period_id
     LEFT JOIN lesson_types t ON t.id = l.lesson_type_id
     WHERE days.held_on + p.end_minute * INTERVAL '1 minute' > clock.local_now
-    ORDER BY days.held_on, p.start_minute, p.number, u.full_name, s.name, r.name, l.id
-    LIMIT 5
+    -- New request seed changes ties across the entire candidate pool, not only three preselected rows.
+    ORDER BY days.held_on, p.start_minute,
+      MD5(${rotationSeed}::TEXT || ':' || l.id::TEXT || ':' || days.held_on::TEXT), l.id
+    LIMIT ${UPCOMING_LESSON_LIMIT}
   ` as unknown as {
     id: string | number; date: string; period_number: number; start_minute: number; end_minute: number;
     subject_name: string; room_name: string; teacher_name: string; lesson_type_name: string | null;
+    lesson_type_color: string | null;
     is_makeup: boolean; is_current: boolean; week_type: AlternatingWeekType | null;
   }[];
   return rows.map((row) => ({ id: String(row.id), date: row.date, periodNumber: row.period_number,
     startMinute: row.start_minute, endMinute: row.end_minute, subjectName: row.subject_name,
     roomName: row.room_name, teacherName: row.teacher_name, lessonTypeName: row.lesson_type_name,
+    lessonTypeColor: row.lesson_type_color,
     isMakeup: row.is_makeup, isCurrent: row.is_current, weekType: row.week_type }));
 }

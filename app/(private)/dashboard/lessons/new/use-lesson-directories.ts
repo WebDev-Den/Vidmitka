@@ -6,9 +6,9 @@ import { createLessonDirectoryOption } from "./directory-actions";
 
 type DirectoryOptions = Record<LessonDirectoryKind, readonly DirectoryOption[]>;
 
-export function useLessonDirectories(initialOptions: DirectoryOptions) {
+export function useLessonDirectories(initialOptions: DirectoryOptions, initialValues?: Record<LessonDirectoryKind, string>) {
   const [created, setCreated] = useState<DirectoryOptions>({ subject: [], room: [], lessonType: [] });
-  const [values, setValues] = useState({ subject: "", room: "", lessonType: "" });
+  const [values, setValues] = useState(initialValues ?? { subject: "", room: "", lessonType: "" });
   const [results, setResults] = useState<Record<LessonDirectoryKind, DirectoryCreateResult | null>>({ subject: null, room: null, lessonType: null });
   const [creatingKind, setCreatingKind] = useState<LessonDirectoryKind | null>(null);
   const [isCreating, startTransition] = useTransition();

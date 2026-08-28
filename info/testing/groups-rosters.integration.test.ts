@@ -2,7 +2,7 @@ import { expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import { getDb } from "@/lib/db";
 import { listGroupStudents, listStudentGroups } from "@/lib/groups/repository";
-import { addStudentToTeacherSubject, listTeacherStudents } from "@/lib/students/repository";
+import { addStudentToTeacherSubject, listTeacherStudents, removeStudentFromTeacherSubject } from "@/lib/students/repository";
 import { importTeacherStudents } from "@/lib/students/import-repository";
 import { createLesson } from "@/lib/lessons/create";
 import { listTeacherLessons } from "@/lib/lessons/repository";
@@ -38,6 +38,20 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("група → студ
   const anna = students.find((student) => student.fullName === "Ковальчук Анна")!;
   const bohdan = students.find((student) => student.fullName === "Мельник Богдан")!;
   const maria = students.find((student) => student.fullName === "Шевченко Марія")!;
+  // VID-020: один студент, кілька незалежних предметних зв’язків.
+  const existingAnna = { ...studentInput, groupMode: "existing", existingGroupName: anna.groupName, newGroupName: null };
+  expect((await addStudentToTeacherSubject({ ...existingAnna, subjectId: programming, subgroup: "2" })).success).toBe(true);
+  expect((await addStudentToTeacherSubject({ ...existingAnna, teacherUserId: "other-teacher", subgroup: "3" })).success).toBe(true);
+  expect((await addStudentToTeacherSubject({ ...existingAnna, subjectId: programming, subgroup: "не перезаписувати" })).success).toBe(false);
+  expect((await listGroupStudents()).filter((student) => student.fullName === anna.fullName && student.groupName === anna.groupName)).toEqual([anna]);
+  const annaSubjects = (await listTeacherStudents("teacher")).filter((student) => student.studentId === anna.id);
+  expect(annaSubjects).toHaveLength(2);
+  expect(annaSubjects).toEqual(expect.arrayContaining([
+    expect.objectContaining({ subjectId: math, subgroup: "1" }),
+    expect.objectContaining({ subjectId: programming, subgroup: "2" }),
+  ]));
+  const otherAnnaSubjects = (await listTeacherStudents("other-teacher")).filter((student) => student.studentId === anna.id);
+  expect(otherAnnaSubjects).toEqual([expect.objectContaining({ subjectId: math, subgroup: "3" })]);
   const draft = { subjectId: programming, roomId: rooms.find((room) => room.name === "101")!.id, classPeriodId: periods[0].id,
     lessonTypeId: (await listLessonTypes({ activeOnly: true }))[0].id,
     dayOfWeek: String(weekday), weekType: "both", groupNames: ["КН-31"], studentIds: [anna.id] };
@@ -69,6 +83,26 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)("група → студ
   expect(await listJournalStudents("teacher", await findLesson(second.lessonId!))).toHaveLength(1);
   const lesson = await findLesson(first.lessonId!);
   expect((await saveAttendance("teacher", { date, key: lesson.key, version: 0, calendarToken: (await listJournalLessons("teacher", date)).day!.token, marks: roster.map((student) => ({ studentId: student.studentId, status: "present" })) })).success).toBe(true);
+  // Різні предмети мають незалежні відмітки того самого студента.
+  const mathLesson = await createLesson("teacher", "teacher", { ...draft, subjectId: math, classPeriodId: periods[2].id });
+  expect(mathLesson.success).toBe(true);
+  const mathJournal = await findLesson(mathLesson.lessonId!);
+  expect((await saveAttendance("teacher", { date, key: mathJournal.key, version: 0,
+    calendarToken: (await listJournalLessons("teacher", date)).day!.token,
+    marks: [{ studentId: anna.id, status: "absent" }] })).success).toBe(true);
+  const annaMath = annaSubjects.find((student) => student.subjectId === math)!;
+  expect((await removeStudentFromTeacherSubject("other-teacher", annaMath.enrollmentId)).success).toBe(false);
+  expect((await listTeacherStudents("teacher")).filter((student) => student.studentId === anna.id)).toHaveLength(2);
+  expect((await removeStudentFromTeacherSubject("teacher", annaMath.enrollmentId)).success).toBe(true);
+  expect((await listTeacherStudents("teacher")).filter((student) => student.studentId === anna.id)).toEqual([
+    expect.objectContaining({ subjectId: programming, subgroup: "2" }),
+  ]);
+  expect((await listTeacherStudents("other-teacher")).filter((student) => student.studentId === anna.id && student.subjectId === math)).toEqual(otherAnnaSubjects);
+  expect((await listGroupStudents()).find((student) => student.id === anna.id)).toEqual(anna);
+  expect((await listJournalStudents("teacher", await findLesson(first.lessonId!))).find((student) => student.studentId === anna.id)?.status).toBe("present");
+  expect(await listJournalStudents("teacher", await findLesson(mathLesson.lessonId!))).toEqual([
+    expect.objectContaining({ studentId: anna.id, subgroup: "1", status: "absent" }),
+  ]);
   await endSemester("administrator");
   expect((await listJournalLessons("teacher", date)).lessons[0].archived).toBe(true);
   expect(await listGroupStudents()).toHaveLength(3);

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { Brand } from "@/components/brand";
 import { DayTimelineMessage, PublicDayTimeline } from "@/components/public-day-timeline";
+import { PublicNavigation } from "@/components/public-navigation";
 import { getOptionalAppUser } from "@/lib/auth/session";
 
 export async function PublicHeader() {
@@ -13,10 +14,7 @@ export async function PublicHeader() {
     <header className="public-header">
       <div className="public-header-inner">
         <Brand />
-        <nav className="public-navigation" aria-label="Публічна навігація">
-          <Link href="/schedule">Розклад</Link>
-          <a href="#roles">Можливості</a>
-        </nav>
+        <PublicNavigation />
         <Link
           className="button button-light header-action"
           href={user ? "/dashboard" : "/sign-in"}

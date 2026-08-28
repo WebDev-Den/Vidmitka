@@ -84,13 +84,20 @@ describe("validateClassPeriod", () => {
     });
   });
 
-  it.each([null, "", "purple", "#A855F7", "#fff", "url(https://example.test)"])(
-    "відхиляє колір поза затвердженою палітрою: %s",
+  it("приймає колір поза початковими зразками", () => {
+    expect(validateClassPeriod(
+      { number: "2", startTime: "09:35", endTime: "10:55", color: " #a855f7 " },
+      existingPeriods,
+    )).toEqual({ ok: true, value: { number: 2, startMinute: 575, endMinute: 655, color: "#A855F7" } });
+  });
+
+  it.each([null, "", "purple", "#GGGGGG", "#fff", "#12345678", "url(https://example.test)"])(
+    "відхиляє некоректний HEX-колір: %s",
     (color) => {
       expect(validateClassPeriod(
         { number: "2", startTime: "09:35", endTime: "10:55", color },
         existingPeriods,
-      )).toEqual({ ok: false, message: "Оберіть колір пари з палітри сайту." });
+      )).toEqual({ ok: false, message: "Оберіть коректний колір пари у форматі #RRGGBB." });
     },
   );
 });

@@ -8,6 +8,7 @@ export type TeacherLesson = Readonly<{
   id: string;
   subjectName: string;
   lessonTypeName: string | null;
+  lessonTypeColor: string | null;
   lessonTypeId: string | null;
   createdByUserId: string;
   roomName: string;
@@ -24,6 +25,7 @@ type TeacherLessonRow = {
   id: string | number;
   subject_name: string;
   lesson_type_name: string | null;
+  lesson_type_color: string | null;
   lesson_type_id: string | number | null;
   created_by_user_id: string;
   room_name: string;
@@ -46,6 +48,7 @@ export async function listTeacherLessons(
       lesson.id,
       subject.name AS subject_name,
       lesson_type.name AS lesson_type_name,
+      lesson_type.color AS lesson_type_color,
       lesson.lesson_type_id,
       lesson.created_by_user_id,
       room.name AS room_name,
@@ -82,6 +85,7 @@ export async function listTeacherLessons(
     id: String(row.id),
     subjectName: row.subject_name,
     lessonTypeName: row.lesson_type_name,
+    lessonTypeColor: row.lesson_type_color,
     lessonTypeId: row.lesson_type_id === null ? null : String(row.lesson_type_id),
     createdByUserId: row.created_by_user_id,
     roomName: row.room_name,

@@ -9,6 +9,7 @@ export type ScheduledLesson = Readonly<{
   id: string;
   subjectName: string;
   lessonTypeName: string | null;
+  lessonTypeColor: string | null;
   teacherName: string;
   roomName: string;
   periodNumber: number;
@@ -25,6 +26,7 @@ export async function listScheduleForDate(date: string, requestedWeek?: unknown)
   const rows = await sql`
     SELECT l.id, s.name AS subject_name, u.full_name AS teacher_name, r.name AS room_name,
       p.number AS period_number, p.start_minute, p.end_minute, l.week_type, t.name AS lesson_type_name,
+      t.color AS lesson_type_color,
       ARRAY(
         SELECT DISTINCT student.group_name FROM subject_students ss
         JOIN students student ON student.id = ss.student_id
@@ -44,11 +46,13 @@ export async function listScheduleForDate(date: string, requestedWeek?: unknown)
     ORDER BY p.start_minute, p.number, s.name, u.full_name, r.name, l.id
   ` as unknown as {
     id: string | number; subject_name: string; teacher_name: string; room_name: string; lesson_type_name: string | null;
+    lesson_type_color: string | null;
     period_number: number; start_minute: number; end_minute: number;
     week_type: LessonWeekType; group_names: string[];
   }[];
   return { day, view, lessons: rows.map((row): ScheduledLesson => ({
     id: String(row.id), subjectName: row.subject_name, teacherName: row.teacher_name, lessonTypeName: row.lesson_type_name,
+    lessonTypeColor: row.lesson_type_color,
     roomName: row.room_name, periodNumber: row.period_number, startMinute: row.start_minute,
     endMinute: row.end_minute, weekType: row.week_type, groupNames: row.group_names,
   })) };

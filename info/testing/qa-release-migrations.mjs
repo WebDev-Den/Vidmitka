@@ -28,7 +28,39 @@ try {
   assert.deepEqual(await db.sql`SELECT * FROM makeup_days ORDER BY held_on`,beforeDays);
   assert.deepEqual(await db.sql`SELECT * FROM lesson_types ORDER BY id`,beforeTypes);
   await assert.rejects(()=>db.sql`UPDATE class_periods SET color='#A855F7' WHERE number=1`, e=>e.code==='23514');
+  await migrate('012_class_period_custom_colors.sql');
+  assert.deepEqual(await db.sql`SELECT * FROM class_periods ORDER BY id`,beforePeriods);
+  await db.sql`UPDATE class_periods SET color='#A855F7' WHERE number=1`;
+  const customPeriods = await db.sql`SELECT * FROM class_periods ORDER BY id`;
+  assert.equal(customPeriods.find(row => row.number === 1).color, '#A855F7');
+  await migrate('012_class_period_custom_colors.sql');
+  assert.deepEqual(await db.sql`SELECT * FROM class_periods ORDER BY id`,customPeriods);
+  for (const color of ['', '#fff', '#12345678', '#GGGGGG', 'red', 'url(test)']) {
+    await assert.rejects(()=>db.sql`UPDATE class_periods SET color=${color} WHERE number=1`, e=>e.code==='23514');
+  }
+  await assert.rejects(()=>db.sql`UPDATE class_periods SET color=NULL WHERE number=1`, e=>e.code==='23502');
+  assert.deepEqual(await db.sql`SELECT * FROM makeup_days ORDER BY held_on`,beforeDays);
+  assert.deepEqual(await db.sql`SELECT * FROM lesson_types ORDER BY id`,beforeTypes);
   const [day] = await db.sql`SELECT * FROM get_schedule_day('2026-09-04'::date)`;
   assert.equal(day.schedule_day,1); assert.equal(day.is_makeup,true);
-  console.log('PASS: 011 legacy color backfill; 009/010/011 reapply preserves rows/settings; arbitrary colors rejected; calendar function retained.');
+  // Emulate the pre-013 schema only in the isolated database, including an inactive type.
+  await owner(['ALTER TABLE lesson_types DROP COLUMN color']);
+  await migrate('013_lesson_type_colors.sql');
+  assert.deepEqual(await db.sql`SELECT * FROM lesson_types ORDER BY id`,beforeTypes);
+  assert.deepEqual(await db.sql`SELECT name,color FROM lesson_types ORDER BY name`, [
+    { name: 'Лабораторна', color: '#073C40' },
+    { name: 'Лекція', color: '#0F766E' },
+    { name: 'Практична', color: '#16835B' },
+  ]);
+  await db.sql`UPDATE lesson_types SET color='#ABC123' WHERE name='Лекція'`;
+  const customTypes = await db.sql`SELECT * FROM lesson_types ORDER BY id`;
+  await migrate('013_lesson_type_colors.sql');
+  assert.deepEqual(await db.sql`SELECT * FROM lesson_types ORDER BY id`, customTypes);
+  for (const color of ['', '#fff', '#12345678', '#GGGGGG', 'red', 'url(test)']) {
+    await assert.rejects(()=>db.sql`UPDATE lesson_types SET color=${color} WHERE name='Лекція'`, e=>e.code==='23514');
+  }
+  await assert.rejects(()=>db.sql`UPDATE lesson_types SET color=NULL WHERE name='Лекція'`, e=>e.code==='23502');
+  assert.deepEqual(await db.sql`SELECT * FROM class_periods ORDER BY id`, customPeriods);
+  assert.deepEqual(await db.sql`SELECT * FROM makeup_days ORDER BY held_on`, beforeDays);
+  console.log('PASS: 011/013 backfill and reapply; 012/013 RGB constraints; existing colors, state and calendar retained.');
 } finally { await db.cleanup(); }

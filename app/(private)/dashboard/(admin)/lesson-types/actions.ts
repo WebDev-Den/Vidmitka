@@ -14,7 +14,9 @@ export async function saveLessonTypeAction(_previous: LessonTypeActionState, dat
   const id = data.get("id");
   if (id !== null && typeof id !== "string") return { success: false, message: "Некоректний тип заняття." };
   try {
-    const result = await saveLessonType(administrator.id, { id: id ?? undefined, name: data.get("name") });
+    const result = await saveLessonType(administrator.id, {
+      id: id ?? undefined, name: data.get("name"), color: data.get("color") ?? undefined,
+    });
     if (result.success) refreshTypes();
     return result;
   } catch {

@@ -17,6 +17,8 @@ export type MakeupDay = Readonly<{
   hasJournal: boolean;
 }>;
 
+export type PublicMakeupDay = Pick<MakeupDay, "date" | "dayOfWeek" | "weekType">;
+
 type DateVersion = Readonly<{ date: string; version: number }>;
 type Validation<T> = { ok: true; value: T } | { ok: false; message: string };
 type DateVersionInput = { date: FormDataEntryValue | null; version: FormDataEntryValue | null };

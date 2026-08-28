@@ -4,12 +4,13 @@ vi.mock("server-only", () => ({}));
 const cookie = vi.hoisted(() => ({ token: "" }));
 vi.mock("next/headers", () => ({ cookies: async () => ({ get: () => cookie.token ? { value: cookie.token } : undefined }) }));
 vi.mock("next/navigation", () => ({ redirect: (path: string) => { throw new Error(`redirect:${path}`); } }));
-vi.mock("next/cache", () => ({ revalidatePath: () => {} }));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 
+import { revalidatePath } from "next/cache";
 import { getDb } from "@/lib/db";
 import { createAuthSession, registerAccount } from "@/lib/auth/repository";
 import { listJournalLessons, listJournalStudents, saveAttendance } from "@/lib/attendance/repository";
-import { getScheduleDayContext, listMakeupDays, saveMakeupDay, deleteMakeupDay } from "@/lib/schedule-calendar/repository";
+import { getScheduleDayContext, listMakeupDays, listPublicMakeupDays, saveMakeupDay, deleteMakeupDay } from "@/lib/schedule-calendar/repository";
 import { listScheduleForDate } from "@/lib/schedule-calendar/schedule";
 import { saveScheduleWeekSettings } from "@/lib/schedule-week/repository";
 import { importTeacherSchedule } from "@/lib/schedule-import/repository";
@@ -50,6 +51,7 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
     }
     expect((await saveMakeupDay("teacher", makeupInput("2026-09-04"))).success).toBe(false);
     expect(await listMakeupDays()).toEqual([]);
+    expect(await listPublicMakeupDays()).toEqual([]);
 
     const baseLesson = { subjectName: "Основи програмування", roomName: "101" };
     expect((await importTeacherSchedule("teacher", [
@@ -70,6 +72,12 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
     expect((await listScheduleForDate("2026-08-31", "both")).lessons.map((lesson) => lesson.periodNumber)).toEqual([3]);
     cookie.token = administratorToken;
     expect((await saveMakeupDayAction(initialMakeupActionState, form(makeupInput("2026-09-04")))).success).toBe(true);
+    expect(revalidatePath).toHaveBeenCalledWith("/transfers");
+    cookie.token = "";
+    expect(await listPublicMakeupDays()).toEqual([
+      { date: "2026-09-04", dayOfWeek: 1, weekType: "numerator" },
+    ]);
+    cookie.token = administratorToken;
     const first = await getScheduleDayContext("2026-09-04");
     expect(first).toMatchObject({ date: "2026-09-04", calendarDayOfWeek: 5, dayOfWeek: 1, weekType: "numerator", isMakeup: true });
     expect((await listScheduleForDate("2026-09-04")).lessons.map((lesson) => lesson.periodNumber)).toEqual([1, 3]);
@@ -89,7 +97,13 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
     expect((await deleteMakeupDay("administrator", { date: entry.date, version: String(entry.version) })).success).toBe(false);
     entry = (await listMakeupDays())[0];
     expect(await getScheduleDayContext(entry.date)).toMatchObject({ dayOfWeek: 2, weekType: "denominator", isMakeup: true });
+    expect(await listPublicMakeupDays()).toEqual([
+      { date: "2026-09-04", dayOfWeek: 2, weekType: "denominator" },
+    ]);
+    vi.mocked(revalidatePath).mockClear();
     expect((await deleteMakeupDayAction(initialMakeupActionState, form({ date: entry.date, version: String(entry.version) }))).success).toBe(true);
+    expect(revalidatePath).toHaveBeenCalledWith("/transfers");
+    expect(await listPublicMakeupDays()).toEqual([]);
     expect(await listMakeupDays()).toEqual([]);
     expect(await getScheduleDayContext(entry.date)).toMatchObject({ dayOfWeek: 5, weekType: null, isMakeup: false });
     expect((await saveMakeupDay("administrator", makeupInput(entry.date))).success).toBe(true);
@@ -129,6 +143,14 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
     expect((await listJournalStudents("teacher", saved)).map((student) => student.status)).toEqual(["present", "not_required"]);
     const protectedDay = (await listMakeupDays()).find((day) => day.date === date)!;
     expect(protectedDay.hasJournal).toBe(true);
+    // Public output contains no journal flags or audit fields and stays chronological.
+    expect((await saveMakeupDay("administrator", makeupInput("2026-10-09", "0", "2", "denominator"))).success).toBe(true);
+    expect((await saveMakeupDay("administrator", makeupInput("2026-09-11"))).success).toBe(true);
+    expect(await listPublicMakeupDays()).toEqual([
+      { date: "2026-08-21", dayOfWeek: 1, weekType: "denominator" },
+      { date: "2026-09-11", dayOfWeek: 1, weekType: "numerator" },
+      { date: "2026-10-09", dayOfWeek: 2, weekType: "denominator" },
+    ]);
     expect((await saveMakeupDay("administrator", makeupInput(date, String(protectedDay.version), "5"))).success).toBe(false);
     expect((await deleteMakeupDay("administrator", { date, version: String(protectedDay.version) })).success).toBe(false);
     expect((await getScheduleDayContext("2026-08-31")).weekType).toBe("denominator");

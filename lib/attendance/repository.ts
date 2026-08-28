@@ -8,12 +8,14 @@ export type JournalLesson = {
   key: string; lessonId: string | null; sessionId: string | null; teacherSubjectId: string;
   subjectId: string; subjectName: string; roomName: string; periodNumber: number;
   lessonTypeName: string | null;
+  lessonTypeColor: string | null;
   startMinute: number; endMinute: number; version: number; archived: boolean;
 };
 type LessonRow = {
   lesson_id: string | number | null; session_id: string | number | null; teacher_subject_id: string | number;
   subject_id: string | number; subject_name: string; room_name: string; period_number: number;
   lesson_type_name: string | null;
+  lesson_type_color: string | null;
   start_minute: number; end_minute: number; version: number; archived: boolean;
 };
 
@@ -25,7 +27,8 @@ export async function listJournalLessons(teacherUserId: string, date: string) {
   const rows = await sql`
     WITH scheduled AS (
       SELECT l.id, l.teacher_subject_id, ts.subject_id, s.name AS subject_name,
-        r.name AS room_name, p.number AS period_number, p.start_minute, p.end_minute, t.name AS lesson_type_name
+        r.name AS room_name, p.number AS period_number, p.start_minute, p.end_minute,
+        t.name AS lesson_type_name, t.color AS lesson_type_color
       FROM lessons l JOIN teacher_subjects ts ON ts.id = l.teacher_subject_id
       JOIN subjects s ON s.id = ts.subject_id JOIN rooms r ON r.id = l.room_id
       JOIN class_periods p ON p.id = l.class_period_id
@@ -41,13 +44,16 @@ export async function listJournalLessons(teacherUserId: string, date: string) {
       COALESCE(a.start_minute, l.start_minute) AS start_minute,
       COALESCE(a.end_minute, l.end_minute) AS end_minute,
       COALESCE(a.version, 0) AS version, FALSE AS archived,
-      CASE WHEN a.id IS NOT NULL THEN a.lesson_type_name ELSE l.lesson_type_name END AS lesson_type_name
+      CASE WHEN a.id IS NOT NULL THEN a.lesson_type_name ELSE l.lesson_type_name END AS lesson_type_name,
+      CASE WHEN a.id IS NOT NULL THEN saved_type.color ELSE l.lesson_type_color END AS lesson_type_color
     FROM scheduled l LEFT JOIN attendance_sessions a ON a.lesson_id = l.id AND a.held_on = ${date}::DATE
       AND a.teacher_user_id = ${teacherUserId}
+    LEFT JOIN lesson_types saved_type ON LOWER(saved_type.name) = LOWER(a.lesson_type_name)
     UNION ALL
     SELECT a.lesson_id, a.id, a.teacher_subject_id, ts.subject_id, a.subject_name, a.room_name,
-      a.period_number, a.start_minute, a.end_minute, a.version, TRUE AS archived, a.lesson_type_name
+      a.period_number, a.start_minute, a.end_minute, a.version, TRUE AS archived, a.lesson_type_name, saved_type.color
     FROM attendance_sessions a JOIN teacher_subjects ts ON ts.id = a.teacher_subject_id
+    LEFT JOIN lesson_types saved_type ON LOWER(saved_type.name) = LOWER(a.lesson_type_name)
     WHERE a.teacher_user_id = ${teacherUserId} AND a.held_on = ${date}::DATE
       AND NOT EXISTS (SELECT 1 FROM scheduled l WHERE l.id = a.lesson_id)
     ORDER BY start_minute, subject_name
@@ -59,6 +65,7 @@ export async function listJournalLessons(teacherUserId: string, date: string) {
     teacherSubjectId: String(row.teacher_subject_id), subjectId: String(row.subject_id),
     subjectName: row.subject_name, roomName: row.room_name, periodNumber: row.period_number,
     lessonTypeName: row.lesson_type_name,
+    lessonTypeColor: row.lesson_type_color,
     startMinute: row.start_minute, endMinute: row.end_minute, version: row.version, archived: row.archived,
   })) };
 }

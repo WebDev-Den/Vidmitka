@@ -1,0 +1,46 @@
+/* Shared native picker for period and lesson-type colors. */
+.field {
+  display: grid;
+  min-width: 0;
+  justify-items: start;
+  gap: 8px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.input {
+  display: block;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 3px;
+  background: var(--surface);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.input::-webkit-color-swatch {
+  border: 0;
+  border-radius: 5px;
+}
+
+.input::-moz-color-swatch {
+  border: 0;
+  border-radius: 5px;
+}
+
+.input:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
+.input:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}

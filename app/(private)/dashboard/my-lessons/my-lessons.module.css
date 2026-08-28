@@ -1,0 +1,30 @@
+.list { min-width: 0; }
+.list :global(.management-table) { table-layout: fixed; }
+.list :global(.management-table th), .list :global(.management-table td) { padding: 8px 10px; }
+.list :global(.management-table thead th:nth-child(1)) { width: 110px; }
+.list :global(.management-table thead th:nth-child(2)) { width: 116px; }
+.list :global(.management-table thead th:nth-child(4)) { width: 88px; }
+.list :global(.management-table thead th:nth-child(5)) { width: 126px; }
+.list :global(.management-table thead th:nth-child(6)) { width: 145px; }
+.list :global(.management-table thead th:nth-child(7)) { width: 236px; }
+.subject { display: block; font-size: 14px; font-weight: 650; line-height: 1.4; }
+.secondary { display: block; color: var(--muted); font-size: 12px; font-weight: 400; margin-top: 4px; }
+.period { display: block; font-size: 15px; }
+.time { white-space: nowrap; font-size: 12px; font-variant-numeric: tabular-nums; }
+.week { display: inline-block; padding: 4px 7px; border-radius: 6px; background: var(--surface-soft); font-size: 12px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.rowAction { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 7px 8px; color: var(--accent-strong); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font-size: 12px; font-weight: 650; text-decoration: none; }
+.rowAction:hover { background: var(--accent-soft); }
+.rowAction svg { flex-shrink: 0; }
+.rowAction:focus-visible, .typeDetails > summary:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 2px; }
+.typeDetails { position: relative; font-weight: 400; }
+.typeDetails > summary { display: flex; align-items: center; gap: 7px; width: fit-content; min-height: 44px; padding: 4px 6px; margin-left: -6px; color: var(--accent-strong); font-size: 12px; cursor: pointer; list-style: none; border-radius: 6px; }
+.typeDetails > summary::-webkit-details-marker { display: none; }
+.typeDetails > summary:hover { background: var(--accent-soft); }
+.typeDetails > summary svg { flex-shrink: 0; }
+.typeForm { display: grid; gap: 8px; padding-block: 4px 8px; }
+.typeForm label { display: grid; gap: 5px; font-size: 12px; }
+.list .typeForm select { min-width: 0; }
+.typeForm :global(.button) { justify-self: start; }
+.typeForm :global(.period-action-message) { overflow-wrap: anywhere; }
+.list :global(.management-table tbody tr:hover) { background: color-mix(in srgb, var(--paper) 35%, var(--surface)); }

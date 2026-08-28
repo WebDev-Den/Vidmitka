@@ -4,7 +4,7 @@ import { getDb } from "@/lib/db";
 import { validateScheduleWeekSettings } from "@/lib/schedule-week/rules";
 import {
   validateMakeupDateVersion, validateMakeupDay,
-  type MakeupDay, type MakeupDayInput, type ScheduleDayContext,
+  type MakeupDay, type MakeupDayInput, type PublicMakeupDay, type ScheduleDayContext,
 } from "./rules";
 
 export type CalendarMutationResult = Readonly<{ success: boolean; message: string }>;
@@ -33,6 +33,16 @@ export async function listMakeupDays(): Promise<MakeupDay[]> {
   ` as unknown as { held_on: string; schedule_day: number; week_type: MakeupDay["weekType"]; version: number; has_journal: boolean }[];
   return rows.map((row) => ({ date: row.held_on, dayOfWeek: row.schedule_day, weekType: row.week_type,
     version: row.version, hasJournal: row.has_journal }));
+}
+
+/** Public calendar projection: never read journal or administrative audit fields. */
+export async function listPublicMakeupDays(): Promise<PublicMakeupDay[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT held_on::TEXT, schedule_day, week_type
+    FROM makeup_days WHERE is_active ORDER BY held_on
+  ` as unknown as { held_on: string; schedule_day: number; week_type: PublicMakeupDay["weekType"] }[];
+  return rows.map((row) => ({ date: row.held_on, dayOfWeek: row.schedule_day, weekType: row.week_type }));
 }
 
 export async function saveMakeupDay(administratorId: string, input: MakeupDayInput): Promise<CalendarMutationResult> {

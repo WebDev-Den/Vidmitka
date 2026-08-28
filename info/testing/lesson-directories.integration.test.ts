@@ -36,12 +36,14 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
       if (!result.success) throw new Error(result.message);
       expect(result.option.id).toMatch(/^[1-9]\d*$/u);
       expect(result.option.name).toBe(scenario.name);
-      expect(await scenario.list({ activeOnly: true })).toContainEqual({ ...result.option, isActive: true });
+      const expectedOption = { ...result.option, isActive: true,
+        ...(scenario.kind === "lessonType" ? { color: "#0F766E" } : {}) };
+      expect(await scenario.list({ activeOnly: true })).toContainEqual(expectedOption);
       expect((await createLessonDirectoryOption(scenario.kind, scenario.name)).success).toBe(false);
       await scenario.deactivate(result.option.id);
       expect((await createLessonDirectoryOption(scenario.kind, scenario.name)).success).toBe(false);
       expect(await scenario.list()).toHaveLength(initialCount + 1);
-      expect(await scenario.list({ activeOnly: true })).not.toContainEqual({ ...result.option, isActive: true });
+      expect(await scenario.list({ activeOnly: true })).not.toContainEqual(expectedOption);
     }
 
     expect(await createSubject("Старий контракт предмета")).toEqual({ success: true, message: "Предмет «Старий контракт предмета» додано." });
@@ -49,7 +51,8 @@ it.skipIf(!process.env.VIDMITKA_ATTENDANCE_TEST_SCHEMA)(
     expect(await saveLessonType("administrator", { name: "Старий контракт типу" })).toEqual({ success: true, message: "Тип заняття додано." });
     const type = (await listLessonTypes()).find((item) => item.name === "Старий контракт типу");
     expect(type).toBeDefined();
-    expect(await saveLessonType("administrator", { id: type!.id, name: "Оновлений тип" })).toEqual({ success: true, message: "Назву типу оновлено." });
+    expect(await saveLessonType("administrator", { id: type!.id, name: "Оновлений тип" })).toEqual({ success: true, message: "Тип заняття оновлено." });
+    expect((await listLessonTypes()).find((item) => item.id === type!.id)?.color).toBe("#0F766E");
     expect((await createLessonDirectoryOption("unknown", "Не створювати")).success).toBe(false);
     expect((await createLessonDirectoryOption("room", null)).success).toBe(false);
 

@@ -4,15 +4,18 @@ import { useState } from "react";
 import type { GroupStudent, StudentGroup } from "@/lib/groups/repository";
 import { ManagementTable } from "./management-table";
 
-export function LessonStudentPicker({ groups, students, disabled, optional = false, existingStudentIds = [] }: {
+export function LessonStudentPicker({ groups, students, disabled, optional = false, existingStudentIds = [], initialStudentIds = [] }: {
   groups: StudentGroup[];
   students: GroupStudent[];
   disabled: boolean;
   optional?: boolean;
   existingStudentIds?: string[];
+  initialStudentIds?: string[];
 }) {
-  const [groupNames, setGroupNames] = useState<string[]>([]);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [groupNames, setGroupNames] = useState<string[]>(() => [...new Set(
+    students.filter((student) => initialStudentIds.includes(student.id)).map((student) => student.groupName),
+  )]);
+  const [selectedIds, setSelectedIds] = useState<string[]>(() => [...new Set(initialStudentIds)]);
   const existing = new Set(existingStudentIds);
   const visibleStudents = students.filter((student) => groupNames.includes(student.groupName));
   const selected = visibleStudents.filter((student) => selectedIds.includes(student.id) && !existing.has(student.id));

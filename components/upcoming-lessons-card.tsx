@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { LessonTypeBadge } from "@/components/lesson-type-badge";
 import { formatMinute } from "@/lib/class-periods/rules";
-import { listUpcomingLessons, type UpcomingLesson } from "@/lib/schedule-calendar/upcoming";
+import { listUpcomingLessons, UPCOMING_LESSON_LIMIT, type UpcomingLesson } from "@/lib/schedule-calendar/upcoming";
 import { formatWeekTypeLabel } from "@/lib/schedule-week/rules";
 
 export async function UpcomingLessonsCard() {
@@ -18,7 +19,7 @@ export async function UpcomingLessonsCard() {
   }
   return <section className="schedule-preview" aria-labelledby="upcoming-lessons-heading">
     <div className="preview-heading">
-      <div><span>АКТУАЛЬНИЙ РОЗКЛАД</span><h2 id="upcoming-lessons-heading">Найближчі 5 занять</h2></div>
+      <div><span>АКТУАЛЬНИЙ РОЗКЛАД</span><h2 id="upcoming-lessons-heading">Найближчі {UPCOMING_LESSON_LIMIT} заняття</h2></div>
     </div>
     {lessons.length > 0 ? <ol className="preview-list upcoming-list">
       {lessons.map((lesson) => <li className="upcoming-lesson" key={`${lesson.date}:${lesson.id}`}>
@@ -30,7 +31,7 @@ export async function UpcomingLessonsCard() {
         <div className="upcoming-details">
           <Link href={`/schedule?date=${lesson.date}`}><strong>{lesson.subjectName}</strong></Link>
           <span>Ауд. {lesson.roomName} · {lesson.teacherName}</span>
-          <span className="upcoming-type">{lesson.lessonTypeName ?? "Тип не вказано"}</span>
+          <LessonTypeBadge name={lesson.lessonTypeName} color={lesson.lessonTypeColor} />
           <small><time dateTime={lesson.date}>{lesson.date.split("-").reverse().join(".")}</time>
             {lesson.weekType ? ` · ${formatWeekTypeLabel(lesson.weekType)}` : " · Обидва тижні"}
             {lesson.isMakeup ? " · Відпрацювання" : ""}

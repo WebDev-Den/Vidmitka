@@ -15,6 +15,8 @@
 
 ## Реліз 28.08.2026 — VID-009
 
+Новіший реліз **VID-025**: код `6b2128a`, Vercel deployment `dpl_6Kei1MX2GC5mpKYB8uszmDtUeDa6` READY на vidmitka.vercel.app; міграції 012/013 застосовані після дозволу та незалежного QA PASS. Включено календар, копіювання занять, публічні перенесення й кольори пар/типів. Remote 346 tests + build PASS, read-only HTTP smoke PASS; додатковий browser smoke після deployment недоступний через завершення тестових сесій. Актуальні докази й межі — [RELEASE-20260828-03](qa/reports/RELEASE-20260828-03.md), [QA-20260828-04](qa/reports/QA-20260828-04.md). Решта цього розділу — історія VID-009.
+
 Накопичений пакет VID-001–VID-008 пройшов [незалежний QA](qa/reports/QA-20260828-01.md): TypeScript, 199 unit-тестів, 7 ізольованих DB-сценаріїв, міграційні probes та production-mode browser. Чотири виявлені дефекти виправлені й повторно перевірені. Міграції 009–011 застосовано без очищення даних до запуску коду.
 
 Git-коміт `efcc141a725fef8fb4b75c105f74d0e2fb22a012` завантажено до `main`. Нативний Vercel deployment `dpl_35rJjWnVAJkZRJshyGzook9Mincj` отримав READY / production 28.08.2026 о 03:11:10 Europe/Kyiv та alias `vidmitka.vercel.app`. Віддалений gate також пройшов 199 тестів і build; сім DB-тестів у Vercel пропущені навмисно, їхні реальні ізольовані прогони виконані до публікації. Початковий scan після READY: 0 runtime errors і 0 HTTP500 до 03:12:47. Подальші факти й live smoke — у [журналі релізу](qa/reports/RELEASE-20260828-01.md).

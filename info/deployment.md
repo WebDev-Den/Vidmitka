@@ -13,6 +13,14 @@
 - Authentication: власні облікові записи та сесії в Neon; зовнішня auth-інтеграція не використовується.
 - Database integration: Neon (`vidmitka-db`), підключено для Production, Preview і Development.
 
+## Реліз 28.08.2026 — VID-009
+
+Накопичений пакет VID-001–VID-008 пройшов [незалежний QA](qa/reports/QA-20260828-01.md): TypeScript, 199 unit-тестів, 7 ізольованих DB-сценаріїв, міграційні probes та production-mode browser. Чотири виявлені дефекти виправлені й повторно перевірені. Міграції 009–011 застосовано без очищення даних до запуску коду.
+
+Git-коміт `efcc141a725fef8fb4b75c105f74d0e2fb22a012` завантажено до `main`. Нативний Vercel deployment `dpl_35rJjWnVAJkZRJshyGzook9Mincj` отримав READY / production 28.08.2026 о 03:11:10 Europe/Kyiv та alias `vidmitka.vercel.app`. Віддалений gate також пройшов 199 тестів і build; сім DB-тестів у Vercel пропущені навмисно, їхні реальні ізольовані прогони виконані до публікації. Початковий scan після READY: 0 runtime errors і 0 HTTP500 до 03:12:47. Подальші факти й live smoke — у [журналі релізу](qa/reports/RELEASE-20260828-01.md).
+
+Розділи нижче про підготовлені фічі описують **історію до цього релізу**, а не поточні невиконані дії. Зовнішнього log drain немає; ранні помилки перевіряються через Vercel logs, Analytics уже підключено.
+
 Перший production deployment виконано 27 серпня 2026 року. Домен було без простою перенесено з попереднього Vercel-проєкту `my-schedule` до `vidmitka` після перевірки нового deployment на окремій адресі.
 
 ## Зміна адреси 28.08.2026 — VID-008

@@ -13,6 +13,14 @@
 - Authentication: власні облікові записи та сесії в Neon; зовнішня auth-інтеграція не використовується.
 - Database integration: Neon (`vidmitka-db`), підключено для Production, Preview і Development.
 
+## Реліз 02.09.2026 — VID-032
+
+Компактний груповий розклад VID-030–VID-031 пройшов незалежний [QA-20260902-03](qa/reports/QA-20260902-03.md): TypeScript, 73 unit-тести, production build, 7/7 isolated PostgreSQL integration і browser/UI 1440 / 820 / 390 PASS. Перевірений пакет закомічено як `78d19dd04a9fddc70c75a765c819643afbd40bd4` і надіслано в `main`.
+
+Vercel Git deployment `dpl_9VLGvFPUikbaKVBwS7fQ5DK379fa` завершився `READY`; aliases `web-dev.pp.ua` і `vidmitka.vercel.app` вказують на новий deployment. HTTP smoke підтвердив `/` → `/schedule`, `/schedule`, `/transfers`, `/admin/login` та обидва домени; `/admin` без сесії повертає 307 на `/admin/login`. Публічні API дня й тижня повернули заняття імпортованої групи. Error-level runtime logs нового deployment порожні.
+
+Production мала 14 застосованих міграцій, включно з `014_schedule_v2.sql`, тож migration write не знадобився. Файл `data/teacher-schedule-lessons.json` SHA-256 `c0eb5cae4069cc0a0649465904283b706495a3f5b9b1888063633c295ab57e0b` уже був штатно імпортований: 431 exception, 431 item у єдиному committed run, read-only preview `create=0 / update=0 / skip=431`, `missingPeriods=[]`. Повторний commit не виконувався, щоб не створювати зайвий audit-run без змін розкладу. Деталі — [RELEASE-20260902-02](qa/reports/RELEASE-20260902-02.md).
+
 ## Реліз 02.09.2026 — VID-028
 
 Головну денну сітку VID-026 перевірено незалежним [QA-20260902-01](qa/reports/QA-20260902-01.md): TypeScript, 348 unit-тестів, production build і browser UI 1440 / 820 / 390 PASS. Після точного allowlist staging commit `f0bb5e27b9122e28141830b978ebe4a6bf2c75f5` завантажено до `main`; Vercel Git deployment `dpl_HUQWo2dohmnd3JxuWkyngqGMfG8t` став `READY` / production і підтвердив source SHA `f0bb5e2`.

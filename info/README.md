@@ -8,6 +8,7 @@
 - [concept-redesign-data-model.md](concept-redesign-data-model.md) — модель розкладу v2 і безпечна additive-first міграція.
 - [teacher-schedule-json-mapping.md](teacher-schedule-json-mapping.md) — фактична структура й mapping наданого JSON.
 - [schedule-v2-operations.md](schedule-v2-operations.md) — маршрути, міграція, створення адміністратора, імпорт, resolver і QA-порядок VID-029.
+- [my-schedule-adoption.md](my-schedule-adoption.md) — зіставлення Vite-прототипу `my-schedule` з чинною серверною архітектурою та план публічного workspace VID-031.
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.
 - [qa/handoff-template.md](qa/handoff-template.md) — доручення незалежному QA-агенту.

@@ -1,5 +1,6 @@
 import "server-only";
 
+import { parsePeriodColor, type PeriodColor } from "@/lib/class-periods/colors";
 import { getDb } from "@/lib/db";
 import { getScheduleWeekSettings } from "@/lib/schedule-week/repository";
 import { getDateKeyInTimeZone, getWeekTypeForDate, type AlternatingWeekType } from "@/lib/schedule-week/rules";
@@ -10,6 +11,13 @@ const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
 export type PublicGroup = Readonly<{ id: string; name: string }>;
+export type PublicPeriod = Readonly<{
+  id: string;
+  number: number;
+  startTime: string;
+  endTime: string;
+  color: PeriodColor;
+}>;
 export type PublicScheduleItem = Readonly<{
   id: string; occurrenceDate: string; periodNumber: number; startTime: string; endTime: string;
   discipline: string; lessonType: string; lessonTypeColor: string;
@@ -53,6 +61,30 @@ export async function listPublicGroups(): Promise<PublicGroup[]> {
   const sql = getDb();
   const rows = await sql`SELECT id, code AS name FROM academic_groups WHERE is_active ORDER BY code` as unknown as PublicGroup[];
   return rows;
+}
+
+export async function listPublicPeriods(): Promise<PublicPeriod[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT id::TEXT, number, MAKE_TIME(start_minute/60, start_minute%60, 0)::TEXT AS start_time,
+      MAKE_TIME(end_minute/60, end_minute%60, 0)::TEXT AS end_time, color
+    FROM class_periods
+    WHERE is_active
+    ORDER BY number
+  ` as unknown as Array<{
+    id: string;
+    number: number;
+    start_time: string;
+    end_time: string;
+    color: string;
+  }>;
+  return rows.map((row) => ({
+    id: row.id,
+    number: Number(row.number),
+    startTime: row.start_time.slice(0, 5),
+    endTime: row.end_time.slice(0, 5),
+    color: parsePeriodColor(row.color) ?? "#0F766E",
+  }));
 }
 
 export async function getPublicScheduleDay(input: { date?: string; groupId?: string | null }): Promise<PublicScheduleDay> {

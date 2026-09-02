@@ -133,6 +133,21 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     }
   });
 
+  it("returns active groups and the ordered public bell timetable", async () => {
+    const groups = await publicRepository.listPublicGroups();
+    expect(groups).toContainEqual({ id: database.fixture.groupId, name: "QA-1" });
+
+    const periods = await publicRepository.listPublicPeriods();
+    expect(periods).toHaveLength(8);
+    expect(periods.map((period) => period.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(periods.find((period) => period.id === database.fixture.periodId)).toMatchObject({
+      number: 2,
+      startTime: "09:35",
+      endTime: "10:55",
+    });
+    expect(periods.every((period) => /^#[0-9A-F]{6}$/u.test(period.color))).toBe(true);
+  });
+
   it("enforces conflicts and resolves move, replacement, cancel and one-time exceptions", async () => {
     const fixture = database.fixture;
     const secondRoomId = randomUUID();

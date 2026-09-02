@@ -674,6 +674,14 @@ textarea:focus-visible {
   margin: 0 auto;
 }
 
+.home-schedule-loading {
+  width: min(1440px, calc(100% - 64px));
+  min-height: 420px;
+  margin: 0 auto;
+  padding: 44px 0 72px;
+  color: var(--muted);
+}
+
 .public-intro {
   display: grid;
   grid-template-columns: 72px minmax(280px, 0.85fr) minmax(300px, 0.7fr);

@@ -1,51 +1,21 @@
-import { ArrowRight, CalendarRange } from "lucide-react";
-import Link from "next/link";
 import { Suspense } from "react";
 
+import { HomeScheduleBoard } from "@/components/home-schedule-board";
 import { PublicHeader } from "@/components/public-header";
-import { UpcomingLessonsCard } from "@/components/upcoming-lessons-card";
 
-export default function PublicHomePage() {
+export default async function PublicHomePage({ searchParams }: {
+  searchParams: Promise<{ date?: string | string[] }>;
+}) {
+  const { date } = await searchParams;
   return (
     <>
-      <div className="public-hero">
-        <PublicHeader />
-        <div className="hero-grid" aria-hidden="true" />
-        <div className="hero-content">
-          <div className="hero-copy">
-            <span className="hero-kicker">ЄДИНИЙ НАВЧАЛЬНИЙ ПРОСТІР</span>
-            <h1>Розклад, у якому немає місця конфліктам.</h1>
-            <p>
-              Викладачі створюють заняття, адміністратори контролюють систему,
-              а актуальний розклад залишається доступним для всіх.
-            </p>
-            <div className="hero-actions">
-              <Link className="button button-accent" href="/schedule">
-                Переглянути розклад <ArrowRight size={18} />
-              </Link>
-              <Link className="button button-ghost-light" href="/sign-in">
-                Увійти до кабінету
-              </Link>
-            </div>
-          </div>
-
-          <Suspense fallback={<section className="schedule-preview" aria-label="Найближчі заняття" aria-busy="true"><p role="status">Завантаження найближчих занять…</p></section>}>
-            <UpcomingLessonsCard />
-          </Suspense>
-        </div>
-      </div>
-
-      <main className="public-main">
-        <section className="public-cta">
-          <CalendarRange size={32} />
-          <div>
-            <span className="eyebrow">АКТУАЛЬНИЙ СТАН</span>
-            <h2>Потрібен розклад без входу?</h2>
-          </div>
-          <Link className="button button-dark" href="/schedule">
-            Відкрити публічний розклад <ArrowRight size={18} />
-          </Link>
-        </section>
+      <PublicHeader />
+      <main>
+        <Suspense fallback={<section className="home-schedule-loading" aria-busy="true">
+          <p role="status">Завантаження розкладу…</p>
+        </section>}>
+          <HomeScheduleBoard selectedDate={date} />
+        </Suspense>
       </main>
 
       <footer className="public-footer">

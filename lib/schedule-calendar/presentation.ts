@@ -1,6 +1,14 @@
 import { validateScheduleWeekSettings } from "@/lib/schedule-week/rules";
 import type { ScheduledLesson } from "./schedule";
 
+export type ScheduleGridPeriod = Readonly<{
+  id: string;
+  number: number;
+  startMinute: number;
+  endMinute: number;
+  isActive: boolean;
+}>;
+
 export type SchedulePath = "/schedule" | "/dashboard/schedule";
 
 /** Calendar keys are dates, not instants in the browser's time zone. */
@@ -46,4 +54,21 @@ export function groupScheduleLessons(lessons: readonly ScheduledLesson[]) {
     group.lessons.push(lesson);
   }
   return Array.from(groups.values()).sort((a, b) => a.startMinute - b.startMinute || a.number - b.number);
+}
+
+export function buildPeriodScheduleColumns<T extends ScheduleGridPeriod>(
+  periods: readonly T[],
+  lessons: readonly ScheduledLesson[],
+) {
+  return periods
+    .filter((period) => period.isActive)
+    .sort((a, b) => a.startMinute - b.startMinute || a.number - b.number)
+    .map((period) => ({
+      period,
+      lessons: lessons.filter((lesson) => (
+        lesson.periodNumber === period.number
+        && lesson.startMinute === period.startMinute
+        && lesson.endMinute === period.endMinute
+      )),
+    }));
 }

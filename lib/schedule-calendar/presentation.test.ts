@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  calendarDate, calendarDateKey, formatScheduleDate, groupScheduleLessons, scheduleDateHref, shiftScheduleDate,
+  buildPeriodScheduleColumns, calendarDate, calendarDateKey, formatScheduleDate, groupScheduleLessons,
+  scheduleDateHref, shiftScheduleDate,
 } from "./presentation";
 import type { ScheduledLesson } from "./schedule";
 
@@ -67,5 +68,37 @@ describe("денний список пар", () => {
 
   it("не вигадує пари в порожньому дні", () => {
     expect(groupScheduleLessons([])).toEqual([]);
+  });
+});
+
+describe("головна сітка за номерами пар", () => {
+  const periods = [
+    { id: "period-3", number: 3, startMinute: 670, endMinute: 750, isActive: true },
+    { id: "period-1", number: 1, startMinute: 480, endMinute: 560, isActive: true },
+    { id: "period-2", number: 2, startMinute: 575, endMinute: 655, isActive: false },
+  ] as const;
+
+  it("показує кожну активну пару в часовому порядку, включно з порожньою", () => {
+    const source = Object.freeze([...periods]);
+    const columns = buildPeriodScheduleColumns(source, [lesson]);
+
+    expect(columns.map(({ period, lessons }) => ({ number: period.number, lessonIds: lessons.map(({ id }) => id) })))
+      .toEqual([
+        { number: 1, lessonIds: [] },
+        { number: 3, lessonIds: [] },
+      ]);
+    expect(source).toEqual(periods);
+  });
+
+  it("не губить паралельні заняття й не створює колонки для неактивного слота", () => {
+    const parallel = { ...lesson, id: "parallel", teacherName: "Викладач 2" };
+    const columns = buildPeriodScheduleColumns([
+      { ...periods[1], isActive: true },
+      { ...periods[2], isActive: true },
+    ], [parallel, lesson]);
+
+    expect(columns).toHaveLength(2);
+    expect(columns[0].lessons).toEqual([]);
+    expect(columns[1].lessons.map(({ id }) => id)).toEqual(["parallel", "first"]);
   });
 });

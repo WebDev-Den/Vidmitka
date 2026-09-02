@@ -7,6 +7,9 @@
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.
 - [qa/handoff-template.md](qa/handoff-template.md) — доручення незалежному QA-агенту.
+- [qa/handoffs/QA-20260902-01.md](qa/handoffs/QA-20260902-01.md) — незалежна перевірка головної сітки VID-026 перед дозволеним релізом VID-028.
+- [qa/reports/QA-20260902-01.md](qa/reports/QA-20260902-01.md) — PASS VID-026: typecheck, 348 тестів, build і browser UI 1440/820/390.
+- [qa/reports/RELEASE-20260902-01.md](qa/reports/RELEASE-20260902-01.md) — production deployment VID-028 і повторна verified-прив’язка `web-dev.pp.ua`.
 - [qa/handoffs/QA-20260828-04.md](qa/handoffs/QA-20260828-04.md) — передрелізний QA накопичених кольорів, календаря, копіювання й публічних розділів VID-025.
 - [qa/reports/QA-20260828-04.md](qa/reports/QA-20260828-04.md) — незалежний PASS уточнень VID-006/011 і VID-019–024: команди, ізольовані міграції, браузерні докази та точний checksum пакета перед VID-025.
 - [qa/reports/RELEASE-20260828-03.md](qa/reports/RELEASE-20260828-03.md) — підготовка публікації VID-025, стан Git/Vercel та необхідні міграції 012/013.

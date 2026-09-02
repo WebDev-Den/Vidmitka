@@ -7,11 +7,17 @@
 - Vercel scope: `webdevdens-projects`
 - Git repository: `https://github.com/WebDev-Den/Vidmitka.git`
 - Production branch: `main`
-- Домени проєкту: лише `vidmitka.vercel.app`, verified, без redirect.
-- Колишній домен `web-dev.pp.ua` відв’язано від проєкту 28.08.2026 за запитом користувача (VID-008).
-- DNS колишнього домену керується окремо в Cloudflare; його записи й реєстрацію цією операцією не змінювали.
+- Домени проєкту: `vidmitka.vercel.app` і `web-dev.pp.ua`, обидва verified, без redirect.
+- Домен `web-dev.pp.ua` повторно прив’язано 02.09.2026 за прямим запитом VID-028; попереднє відв’язування VID-008 збережено нижче як історію.
+- DNS `web-dev.pp.ua` керується в Cloudflare; чинний A-запис `76.76.21.21` уже вказував на Vercel, тому під час VID-028 DNS не змінювали.
 - Authentication: власні облікові записи та сесії в Neon; зовнішня auth-інтеграція не використовується.
 - Database integration: Neon (`vidmitka-db`), підключено для Production, Preview і Development.
+
+## Реліз 02.09.2026 — VID-028
+
+Головну денну сітку VID-026 перевірено незалежним [QA-20260902-01](qa/reports/QA-20260902-01.md): TypeScript, 348 unit-тестів, production build і browser UI 1440 / 820 / 390 PASS. Після точного allowlist staging commit `f0bb5e27b9122e28141830b978ebe4a6bf2c75f5` завантажено до `main`; Vercel Git deployment `dpl_HUQWo2dohmnd3JxuWkyngqGMfG8t` став `READY` / production і підтвердив source SHA `f0bb5e2`.
+
+`web-dev.pp.ua` повторно додано до проєкту `vidmitka`. Vercel API повернув `verified: true`, `redirect: null`; HTTPS і SSL працюють. Обидві адреси — `https://vidmitka.vercel.app/` та `https://web-dev.pp.ua/` — повернули HTTP 200 без redirect і HTML із брендом «Відмітка» та новим заголовком денного розкладу. Після smoke пошук error-рівня у runtime logs нового deployment не знайшов записів. DNS, робоча БД, міграції, env, ролі та дані не змінювалися. Деталі — [RELEASE-20260902-01](qa/reports/RELEASE-20260902-01.md).
 
 ## Реліз 28.08.2026 — VID-009
 

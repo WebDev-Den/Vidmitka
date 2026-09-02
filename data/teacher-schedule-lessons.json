@@ -1,0 +1,7773 @@
+[
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-113",
+    "groups": [
+      "КІ-25-2ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Безпека та якість інформаційних систем та технологій",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-101",
+    "groups": [
+      "КБЗІ-24-2ал",
+      "КІ2-24-2ал",
+      "ІСТс-25-1ал",
+      "КІ-25-1ал"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-113",
+    "groups": [
+      "КІ-25-2ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Безпека та якість інформаційних систем та технологій",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Безпека та якість інформаційних систем та технологій",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-106",
+    "groups": [
+      "КІ2-24-1ал",
+      "КІ2с-24-1ал",
+      "ІСТ-25-1ал",
+      "КІ-25-2ал",
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-23-1ал",
+      "КІ2-23-1ал",
+      "КІ2-23-2ал",
+      "КІ2-23-3ал",
+      "КІ2-23-4ал",
+      "ІСТ-24-1ал",
+      "КБЗІ-24-2ал",
+      "КІ2-24-1ал",
+      "КІ2-24-2ал",
+      "КІ2с-24-1ал",
+      "ІСТ-25-1ал",
+      "ІСТс-25-1ал",
+      "КІ-25-1ал",
+      "КІ-25-2ал",
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-101",
+    "groups": [
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-206",
+    "groups": [
+      "КІ2с-24-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Як. ПЗ КС",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1а",
+      "КІ2-23-2а",
+      "КІ2-24-1а",
+      "КІ-25-1а",
+      "КІ-25-2а",
+      "КІс-25-1а"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-206",
+    "groups": [
+      "КІ2с-24-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Як. ПЗ КС",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1а",
+      "КІ2-23-2а",
+      "КІ2-24-1а",
+      "КІ-25-1а",
+      "КІ-25-2а",
+      "КІс-25-1а"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 7,
+    "weekType": "numerator",
+    "subject": "Як. ПЗ КС",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1а",
+      "КІ2-23-2а",
+      "КІ2-24-1а",
+      "КІ-25-1а",
+      "КІ-25-2а",
+      "КІс-25-1а"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1ал",
+      "ІСТс-25-1ал",
+      "КІ-25-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-101",
+    "groups": [
+      "КБЗІ-24-2ал",
+      "КІ2-24-2ал",
+      "ІСТс-25-1ал",
+      "КІ-25-1ал"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-208",
+    "groups": [
+      "КБЗІ-24-2ал",
+      "КІ2-24-2ал",
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1ал",
+      "ІСТс-25-1ал",
+      "КІ-25-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-208",
+    "groups": [
+      "КБЗІ-24-2ал",
+      "КІ2-24-2ал",
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-106",
+    "groups": [
+      "КІ2-24-1ал",
+      "КІ2с-24-1ал",
+      "ІСТ-25-1ал",
+      "КІ-25-2ал",
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-23-1ал",
+      "КІ2-23-1ал",
+      "КІ2-23-2ал",
+      "КІ2-23-3ал",
+      "КІ2-23-4ал",
+      "ІСТ-24-1ал",
+      "КБЗІ-24-2ал",
+      "КІ2-24-1ал",
+      "КІ2-24-2ал",
+      "КІ2с-24-1ал",
+      "ІСТ-25-1ал",
+      "ІСТс-25-1ал",
+      "КІ-25-1ал",
+      "КІ-25-2ал",
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-101",
+    "groups": [
+      "КІс-25-1ал"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-116",
+    "groups": [
+      "КІ2-24-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Як. ПЗ КС",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1а",
+      "КІ2-23-2а",
+      "КІ2-24-1а",
+      "КІ-25-1а",
+      "КІ-25-2а",
+      "КІс-25-1а"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-116",
+    "groups": [
+      "КІ2-24-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Як. ПЗ КС",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1а",
+      "КІ2-23-2а",
+      "КІ2-24-1а",
+      "КІ-25-1а",
+      "КІ-25-2а",
+      "КІс-25-1а"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексейко В.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 7,
+    "weekType": "denominator",
+    "subject": "Як. ПЗ КС",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1а",
+      "КІ2-23-2а",
+      "КІ2-24-1а",
+      "КІ-25-1а",
+      "КІ-25-2а",
+      "КІс-25-1а"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1н",
+      "КІ2-23-2н",
+      "КІ2-23-3н",
+      "КІ2-23-4н",
+      "КІ2-24-2н",
+      "КІ2с-24-1н",
+      "АКІТР-25-1н",
+      "ІСТс-25-1н",
+      "КІс-25-1н"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-2н",
+      "КІ2-23-3н",
+      "АКІТР-25-1н",
+      "ІСТс-25-1н",
+      "КІс-25-1н"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-210",
+    "groups": [
+      "ІСТс-25-1м",
+      "КІс-25-1м"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-4м",
+      "ІСТс-24-1м",
+      "КІ2-24-1м",
+      "КІ2с-24-1м",
+      "АКІТР-25-1м",
+      "ІСТ-25-1м",
+      "ІСТс-25-1м",
+      "КІ-25-1м",
+      "КІ-25-2м",
+      "КІс-25-1м"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-4м",
+      "ІСТс-24-1м",
+      "КІ2-24-1м",
+      "КІ2с-24-1м",
+      "АКІТР-25-1м",
+      "ІСТ-25-1м",
+      "КІ-25-1м",
+      "КІ-25-2м"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-107",
+    "groups": [
+      "КІ2-23-1н",
+      "КІ2-23-4н",
+      "КІ2-24-2н",
+      "КІ2с-24-1н"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-210",
+    "groups": [
+      "АКІТР-23-1е",
+      "КІ2-23-1е",
+      "КІ2-23-2е",
+      "КІ2-23-4е",
+      "ІСТ-24-1е",
+      "КІ2-24-1е",
+      "ІСТ-25-1е",
+      "КІ-25-1е",
+      "КІ-25-2е",
+      "КІс-25-1е"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-1е",
+      "КІ2-23-2е",
+      "КІ2-23-4е",
+      "КІ2-24-1е"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Функційне програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1н",
+      "КІ2-23-2н",
+      "КІ2-23-3н",
+      "КІ2-23-4н",
+      "КІ2-24-2н",
+      "КІ2с-24-1н",
+      "АКІТР-25-1н",
+      "ІСТс-25-1н",
+      "КІс-25-1н"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Функційне програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-2н",
+      "КІ2-23-3н",
+      "АКІТР-25-1н",
+      "ІСТс-25-1н",
+      "КІс-25-1н"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-210",
+    "groups": [
+      "ІСТс-25-1м",
+      "КІс-25-1м"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-4м",
+      "ІСТс-24-1м",
+      "КІ2-24-1м",
+      "КІ2с-24-1м",
+      "АКІТР-25-1м",
+      "ІСТ-25-1м",
+      "ІСТс-25-1м",
+      "КІ-25-1м",
+      "КІ-25-2м",
+      "КІс-25-1м"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-4м",
+      "ІСТс-24-1м",
+      "КІ2-24-1м",
+      "КІ2с-24-1м",
+      "АКІТР-25-1м",
+      "ІСТ-25-1м",
+      "КІ-25-1м",
+      "КІ-25-2м"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Функційне програмування",
+    "room": "1-107",
+    "groups": [
+      "КІ2-23-1н",
+      "КІ2-23-4н",
+      "КІ2-24-2н",
+      "КІ2с-24-1н"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-210",
+    "groups": [
+      "АКІТР-23-1е",
+      "КІ2-23-1е",
+      "КІ2-23-2е",
+      "КІ2-23-4е",
+      "ІСТ-24-1е",
+      "КІ2-24-1е",
+      "ІСТ-25-1е",
+      "КІ-25-1е",
+      "КІ-25-2е",
+      "КІс-25-1е"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Мельниченко О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-1е",
+      "КІ2-23-2е",
+      "КІ2-23-4е",
+      "КІ2-24-1е"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Павлова О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Методолог.та організ.наук.дослід",
+    "room": "1-107",
+    "groups": [
+      "КІм-26-1",
+      "КІм-26-2",
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Павлова О.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Інформ. с-ми для обробки зображ. та розп. образів",
+    "room": "1-117",
+    "groups": [
+      "ІСТас-25-1",
+      "ІСТпас-25-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Павлова О.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Інформ. с-ми для обробки зображ. та розп. образів",
+    "room": "1-117",
+    "groups": [
+      "ІСТас-25-1",
+      "ІСТпас-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Павлова О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Проєктування інтерфейсів користувача програмних систем",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1б",
+      "КІм-25-2б"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Павлова О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Інформ. с-ми для обробки зображ. та розп. образів",
+    "room": "1-117",
+    "groups": [
+      "ІСТас-25-1",
+      "ІСТпас-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Павлова О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Інформ. с-ми для обробки зображ. та розп. образів",
+    "room": "1-117",
+    "groups": [
+      "ІСТас-25-1",
+      "ІСТпас-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур Ю.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Оцінювання якості та експертиза програмного забезпечення",
+    "room": "1-103",
+    "groups": [
+      "КІас-25-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур Ю.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Організація та управління бізнес-проектами в галузі інформаційних технологій",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур Ю.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Оцінювання якості та експертиза програмного забезпечення",
+    "room": "1-103",
+    "groups": [
+      "КІас-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур Ю.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Оцінювання якості та експертиза програмного забезпечення",
+    "room": "1-103",
+    "groups": [
+      "КІас-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур Ю.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Організація та управління бізнес-проектами в галузі інформаційних технологій",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур Ю.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Оцінювання якості та експертиза програмного забезпечення",
+    "room": "1-103",
+    "groups": [
+      "КІас-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-108",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-108",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-23-1",
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Decision support systems",
+    "room": "1-107",
+    "groups": [
+      "ІПЗін-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1в",
+      "ІСТс-24-1в",
+      "КІ2-24-1в",
+      "КІ2с-24-1в",
+      "МР-24-1в",
+      "МР-24-2в",
+      "АКІТРс-25-1в",
+      "ІСТ-25-1в",
+      "КІ-25-1в",
+      "КІ-25-2в",
+      "КІс-25-1в"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Decision support systems",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-23-1в",
+      "КІ2с-24-1в"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Decision support systems",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-23-1в",
+      "КІ2с-24-1в"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Decision support systems",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-23-1в",
+      "КІ2с-24-1в"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-107",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1в",
+      "ІСТс-24-1в",
+      "КІ2-24-1в",
+      "КІ2с-24-1в",
+      "МР-24-1в",
+      "МР-24-2в",
+      "АКІТРс-25-1в",
+      "ІСТ-25-1в",
+      "КІ-25-1в",
+      "КІ-25-2в",
+      "КІс-25-1в"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Decision support systems",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-23-1в",
+      "КІ2с-24-1в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Менеджмент проєктів інформаційних систем та бізнес-аналітика",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гнатчук Є.Г.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Decision support systems",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-23-1в",
+      "КІ2с-24-1в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк В.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-204",
+    "groups": [
+      "КІ2-24-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк В.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-210",
+    "groups": [
+      "КІ2-24-1",
+      "КІ2-24-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк В.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-108",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк В.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-108",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк В.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-116",
+    "groups": [
+      "КІ2-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-107",
+    "groups": [
+      "КІ-26-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-107",
+    "groups": [
+      "КІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-2н",
+      "КІ2-23-3н",
+      "АКІТР-25-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-208",
+    "groups": [
+      "КІс-25-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-2н",
+      "КІ2-23-3н",
+      "АКІТР-25-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-208",
+    "groups": [
+      "КІс-25-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1н",
+      "КІ2-23-4н",
+      "КІ2-24-2н",
+      "ІСТс-25-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Функційне програмування",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1н",
+      "КІ2-23-4н",
+      "КІ2-24-2н",
+      "ІСТс-25-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-24-1е",
+      "ІСТ-25-1е",
+      "КІ-25-1е",
+      "КІ-25-2е",
+      "КІс-25-1е"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-107",
+    "groups": [
+      "КІ-26-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Функційне програмування",
+    "room": "1-208",
+    "groups": [
+      "КІ2с-24-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-107",
+    "groups": [
+      "КІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-113",
+    "groups": [
+      "ІСТс-24-1м",
+      "ІСТс-25-1м"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Функційне програмування",
+    "room": "1-208",
+    "groups": [
+      "КІ2с-24-1н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-208",
+    "groups": [
+      "КІс-25-1м"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-113",
+    "groups": [
+      "ІСТс-24-1м",
+      "ІСТс-25-1м"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-208",
+    "groups": [
+      "КІс-25-1м"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-25-1м"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Структури даних і алгоритми",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-25-1м"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-24-1е",
+      "ІСТ-25-1е",
+      "КІ-25-1е",
+      "КІ-25-2е",
+      "КІс-25-1е"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лигун О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-106",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Станд. та зас. інф. безп.",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1к",
+      "КІ2-23-3к",
+      "КІ2-23-4к",
+      "АКІТРс-25-1к",
+      "КІ-25-2к",
+      "КІс-25-1к"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1в",
+      "КІ-25-1в",
+      "КІ-25-2в"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-106",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Станд. та зас. інф. безп.",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1к",
+      "КІ2-23-3к",
+      "КІ2-23-4к",
+      "АКІТРс-25-1к",
+      "КІ-25-2к",
+      "КІс-25-1к"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-108",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Станд. та зас. інф. безп.",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1к",
+      "КІ2-23-3к",
+      "КІ2-23-4к",
+      "АКІТРс-25-1к",
+      "КІ-25-2к",
+      "КІс-25-1к"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-116",
+    "groups": [
+      "КІм-26-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-108",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-116",
+    "groups": [
+      "КІм-26-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-108",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-204",
+    "groups": [
+      "ІСТс-24-1в",
+      "КІ2-24-1в",
+      "КІ2с-24-1в",
+      "МР-24-1в",
+      "МР-24-2в",
+      "АКІТРс-25-1в",
+      "ІСТ-25-1в",
+      "КІс-25-1в"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Станд. та зас. інф. безп.",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1к",
+      "КІ2-23-3к",
+      "КІ2-23-4к",
+      "АКІТРс-25-1к",
+      "КІ-25-2к",
+      "КІс-25-1к"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-204",
+    "groups": [
+      "КІ2-23-1в",
+      "КІ-25-1в",
+      "КІ-25-2в"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Станд. та зас. інф. безп.",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1к",
+      "КІ2-23-3к",
+      "КІ2-23-4к",
+      "АКІТРс-25-1к",
+      "КІ-25-2к",
+      "КІс-25-1к"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-108",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-108",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Станд. та зас. інф. безп.",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1к",
+      "КІ2-23-3к",
+      "КІ2-23-4к",
+      "АКІТРс-25-1к",
+      "КІ-25-2к",
+      "КІс-25-1к"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-108",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-108",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-208",
+    "groups": [
+      "КІ2-24-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-108",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-208",
+    "groups": [
+      "КІ2-24-2ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-204",
+    "groups": [
+      "ІСТс-24-1в",
+      "КІ2-24-1в",
+      "КІ2с-24-1в",
+      "МР-24-1в",
+      "МР-24-2в",
+      "АКІТРс-25-1в",
+      "ІСТ-25-1в",
+      "КІс-25-1в"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Методологія забезпечення безпеки та захисту комп\"ютерних систем",
+    "room": "1-108",
+    "groups": [
+      "КІм-25-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Капустян М.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 7,
+    "weekType": "denominator",
+    "subject": "Методологія забезпечення безпеки та захисту комп\"ютерних систем",
+    "room": "1-108",
+    "groups": [
+      "КІм-25-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-106",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Методолог.та організ.наук.дослід",
+    "room": "1-107",
+    "groups": [
+      "КІм-26-1",
+      "КІм-26-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-106",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-107",
+    "groups": [
+      "КІ-25-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1ал",
+      "КІ2-23-2ал",
+      "КІ2-23-3ал",
+      "КІ2-23-4ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-210",
+    "groups": [
+      "КІ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-108",
+    "groups": [
+      "КІ-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Штучні нейронні мережі",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1ал",
+      "КІ2-23-2ал",
+      "КІ2-23-3ал",
+      "КІ2-23-4ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-108",
+    "groups": [
+      "КІ-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Проєктування інтерфейсів користувача програмних систем",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1б",
+      "КІм-25-2б"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-107",
+    "groups": [
+      "КІ-25-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-210",
+    "groups": [
+      "КІ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-108",
+    "groups": [
+      "КІ-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Атаманюк О.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-108",
+    "groups": [
+      "КІ-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Веб-візуалізація та веб-орієнтовані системи керування",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-23-1н",
+      "АКІТР-24-1н",
+      "ІСТ-25-1н",
+      "КІ-25-2н"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-25-1",
+      "АКІТРс-25-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТРс-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-426а",
+    "groups": [
+      "АКІТР-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-204",
+    "groups": [
+      "КІ2-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТРс-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-426а",
+    "groups": [
+      "АКІТР-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2-24-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Веб-візуалізація та веб-орієнтовані системи керування",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-23-1н",
+      "АКІТР-24-1н",
+      "ІСТ-25-1н",
+      "КІ-25-2н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2-24-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Веб-візуалізація та веб-орієнтовані системи керування",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-23-1н",
+      "АКІТР-24-1н",
+      "ІСТ-25-1н",
+      "КІ-25-2н"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Веб-візуалізація та веб-орієнтовані системи керування",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-23-1н",
+      "АКІТР-24-1н",
+      "ІСТ-25-1н",
+      "КІ-25-2н"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-210",
+    "groups": [
+      "КІ2-24-1",
+      "КІ2-24-2",
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-205",
+    "groups": [
+      "КІ2-24-1в",
+      "д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-426а",
+    "groups": [
+      "АКІТР-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-26-1",
+      "АКІТРс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-204",
+    "groups": [
+      "КІ2-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-205",
+    "groups": [
+      "КІ2-24-1ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-426а",
+    "groups": [
+      "АКІТР-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТРс-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2-24-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Веб-візуалізація та веб-орієнтовані системи керування",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-23-1н",
+      "АКІТР-24-1н",
+      "ІСТ-25-1н",
+      "КІ-25-2н"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТРс-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2-24-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Корецька Л.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Веб-технології та бази даних",
+    "room": "4-317",
+    "groups": [
+      "АКІТР-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексов С.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Алексов С.В.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Говорущенко Т.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-107",
+    "groups": [
+      "КІм-26-1",
+      "КІм-26-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Говорущенко Т.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-25-1",
+      "КІ-25-1",
+      "КІ-25-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Говорущенко Т.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Організація та управління бізнес-проектами в галузі інформаційних технологій",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1",
+      "КІм-25-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Говорущенко Т.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна логіка",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-25-1",
+      "КІ-25-1",
+      "КІ-25-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Дрозд А.І.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Дрозд А.І.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-24-1е",
+      "КІ-25-1е",
+      "КІ-25-2е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-24-1е",
+      "КІ-25-1е",
+      "КІ-25-2е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Безпека та захист інформаційних систем і технологій",
+    "room": "1-206",
+    "groups": [
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Безпека та захист інформаційних систем і технологій",
+    "room": "1-206",
+    "groups": [
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Безпека та захист інформаційних систем і технологій",
+    "room": "1-206",
+    "groups": [
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-12",
+    "dayOfWeek": 6,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-25-1е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-12",
+    "dayOfWeek": 6,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-25-1е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-12",
+    "dayOfWeek": 6,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-206",
+    "groups": [
+      "АКІТР-23-1е",
+      "КІ2-23-1е",
+      "КІ2-23-4е",
+      "КІ2-24-1е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко Б.О.",
+    "date": "2026-09-12",
+    "dayOfWeek": 6,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-206",
+    "groups": [
+      "АКІТР-23-1е",
+      "КІ2-23-1е",
+      "КІ2-23-4е",
+      "КІ2-24-1е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-24-1",
+      "КІ2-24-1",
+      "КІ2-24-2",
+      "КІ2-24-3",
+      "ІСТс-25-1",
+      "КІс-25-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Дискретна математика",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-26-1",
+      "ІСШІ-26-1",
+      "КІ-26-1",
+      "КІ-26-2",
+      "КІс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Методологія забезпечення безпеки та захисту комп\"ютерних систем",
+    "room": "1-210",
+    "groups": [
+      "КІм-25-1",
+      "КІм-25-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-26-1",
+      "ІСШІ-26-1",
+      "КІ-26-1",
+      "КІ-26-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-2е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Програмування веб-сервісів",
+    "room": "1-106",
+    "groups": [
+      "КІ2-23-2е"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Дискретна математика",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-26-1",
+      "ІСШІ-26-1",
+      "КІ-26-1",
+      "КІ-26-2",
+      "КІс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Савенко О.С.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-26-1",
+      "ІСШІ-26-1",
+      "КІ-26-1",
+      "КІ-26-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Нічепорук А.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Смарт-технології та Інтернет речей",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Нічепорук А.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-1",
+      "КІ2-23-2",
+      "КІ2-23-3",
+      "КІ2-23-4",
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Нічепорук А.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-1",
+      "КІ2-23-2",
+      "КІ2-23-3",
+      "КІ2-23-4",
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Нічепорук А.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Теорія, проєктування та моделювання спеціалізованих комп'ютерних систем",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1",
+      "КІм-25-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Нічепорук А.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Теорія, проєктування та моделювання спеціалізованих комп'ютерних систем",
+    "room": "1-204",
+    "groups": [
+      "КІм-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Нічепорук А.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-1",
+      "КІ2-23-2",
+      "КІ2-23-3",
+      "КІ2-23-4",
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-205",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Напрямки досліджень і розвитку комп'ютерної інженерії",
+    "room": "1-206",
+    "groups": [
+      "КІм-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-205",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Теорія, проєктування та моделювання спеціалізованих комп'ютерних систем",
+    "room": "1-208",
+    "groups": [
+      "КІм-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Напрямки досліджень і розвитку комп'ютерної інженерії",
+    "room": "1-206",
+    "groups": [
+      "КІм-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-206",
+    "groups": [
+      "КІс-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-106",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-206",
+    "groups": [
+      "КІс-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-106",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-206",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-206",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-108",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-108",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-101",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-206",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-101",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Технології проєктування програмних систем",
+    "room": "1-206",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-106",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Методологія забезпечення безпеки та захисту комп\"ютерних систем",
+    "room": "1-205",
+    "groups": [
+      "КІм-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Козельський О.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 7,
+    "weekType": "denominator",
+    "subject": "Методологія забезпечення безпеки та захисту комп\"ютерних систем",
+    "room": "1-205",
+    "groups": [
+      "КІм-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Каштальян А.С.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Аналіз даних",
+    "room": "1-101",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-108",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Проєктування багаторівневих систем керування і збору даних",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-23-1",
+      "АКІТРс-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-108",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-107",
+    "groups": [
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "3D-моделювання",
+    "room": "Фізична",
+    "groups": [
+      "АКІТР-23-1ф",
+      "АКІТР-24-1ф",
+      "АКІТРс-24-1ф",
+      "КІ2-24-1ф",
+      "МР-24-2ф",
+      "АКІТР-25-1ф",
+      "АКІТРс-25-1ф",
+      "КІ-25-1ф",
+      "МН-25-2ф"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Проєктування систем автоматизації та системи автоматизації проєктувальних робіт",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-23-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Людино-машиний інтерфейс та програмування систем реального часу",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Теорія,моделювання і оптимізація інтелектуальних і складних систем керування",
+    "room": "4-324",
+    "groups": [
+      "АКІТРм-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Проєктування багаторівневих систем керування і збору даних",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-23-1",
+      "АКІТРс-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "3D-моделювання",
+    "room": "Фізична",
+    "groups": [
+      "АКІТР-23-1ф",
+      "АКІТР-24-1ф",
+      "АКІТРс-24-1ф",
+      "КІ2-24-1ф",
+      "МР-24-2ф",
+      "АКІТР-25-1ф",
+      "АКІТРс-25-1ф",
+      "КІ-25-1ф",
+      "МН-25-2ф"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Проєктування систем автоматизації та системи автоматизації проєктувальних робіт",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-23-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Обробка інформації та мультимедійні системи",
+    "room": "1-113",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Федула М.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Людино-машиний інтерфейс та програмування систем реального часу",
+    "room": "4-324",
+    "groups": [
+      "АКІТР-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Напрямки досліджень і розвитку комп'ютерної інженерії",
+    "room": "1-208",
+    "groups": [
+      "КІм-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Методологічні основи створення інформаційних систем і технологій",
+    "room": "1-103",
+    "groups": [
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Напрямки досліджень і розвитку комп'ютерної інженерії",
+    "room": "1-208",
+    "groups": [
+      "КІм-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Методологічні основи створення інформаційних систем і технологій",
+    "room": "1-103",
+    "groups": [
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ-25-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-210",
+    "groups": [
+      "ІСТс-24-1",
+      "ІСТ-25-1",
+      "КІ-25-1",
+      "КІ-25-2",
+      "КІс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Методологічні основи створення інформаційних систем і технологій",
+    "room": "1-103",
+    "groups": [
+      "ІСТм-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-205",
+    "groups": [
+      "КІ-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-205",
+    "groups": [
+      "КІ-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Напрямки досліджень і розвитку комп'ютерної інженерії",
+    "room": "1-204",
+    "groups": [
+      "КІм-25-1",
+      "КІм-25-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Напрямки досліджень і розвитку комп'ютерної інженерії",
+    "room": "1-204",
+    "groups": [
+      "КІм-25-1",
+      "КІм-25-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ-25-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-204",
+    "groups": [
+      "КІ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-205",
+    "groups": [
+      "КІ-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Лисенко С.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-205",
+    "groups": [
+      "КІ-25-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк Ю.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-116",
+    "groups": [
+      "КІ-25-1х"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк Ю.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-116",
+    "groups": [
+      "КІ-25-1х"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк Ю.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-116",
+    "groups": [
+      "КІ-25-1х",
+      "д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Стецюк Ю.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-116",
+    "groups": [
+      "КІ-25-1х",
+      "д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-208",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-204",
+    "groups": [
+      "ІСТс-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-208",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-205",
+    "groups": [
+      "КІ2-24-2ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-108",
+    "groups": [
+      "КІ2-24-2с"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-205",
+    "groups": [
+      "КІ2-24-2ал"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-108",
+    "groups": [
+      "КІ2-24-2с"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-208",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-208",
+    "groups": [
+      "КІ2-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-108",
+    "groups": [
+      "ІСТс-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Гуральник О.Б.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-108",
+    "groups": [
+      "ІСТс-25-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Аналітика великих даних",
+    "room": "1-108",
+    "groups": [
+      "КІм-25-1к"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Математичні методи дослідження операцій та прийняття рішень",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Аналітика великих даних",
+    "room": "1-108",
+    "groups": [
+      "КІм-25-1к"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-108",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-108",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Математичні методи дослідження операцій та прийняття рішень",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-116",
+    "groups": [
+      "КІм-26-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-116",
+    "groups": [
+      "КІм-26-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Матем.основи інформ.технол",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль В.В.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Вища математика",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Архітектура комп'ютерів",
+    "room": "1-113",
+    "groups": [
+      "КІс-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Архітектура комп'ютерів",
+    "room": "1-113",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-101",
+    "groups": [
+      "КІм-26-1",
+      "КІм-26-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-116",
+    "groups": [
+      "КІм-26-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-116",
+    "groups": [
+      "КІм-26-2"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні системи та мережі",
+    "room": "1-204",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Архітектура комп'ютерів",
+    "room": "1-113",
+    "groups": [
+      "КІс-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-106",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Архітектура комп'ютерів",
+    "room": "1-113",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-116",
+    "groups": [
+      "КІ2-23-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Теорія і проєктування комп'ютерних та кіберфізичних систем і мереж",
+    "room": "1-106",
+    "groups": [
+      "КІм-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-210",
+    "groups": [
+      "КІ2-23-1",
+      "КІ2-23-2",
+      "КІ2-23-3",
+      "КІ2-23-4",
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-116",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-113",
+    "groups": [
+      "КІ2-23-3"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-106",
+    "groups": [
+      "КІ2с-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні системи та мережі",
+    "room": "1-204",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Регіда П.Г.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-208",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-107",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 7,
+    "weekType": "numerator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-107",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Задніпровський В.Г.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 7,
+    "weekType": "denominator",
+    "subject": "Програмування",
+    "room": "1-206",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "ТЕД",
+    "room": "1-204",
+    "groups": [
+      "ЕКОЛ-23-1г"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-101",
+    "groups": [
+      "КІ2-23-1д",
+      "КІ2-23-2д",
+      "КІ2-23-3д",
+      "КІ2-23-4д",
+      "ІСТс-24-1д",
+      "КІ2-24-1д",
+      "ІСТ-25-1д",
+      "КІ-25-2д"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-205",
+    "groups": [
+      "КІ2-23-1д",
+      "КІ2-23-2д",
+      "КІ2-23-4д",
+      "КІ2-24-1д",
+      "ІСТ-25-1д",
+      "КІ-25-2д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-101",
+    "groups": [
+      "КІ2-23-1д",
+      "КІ2-23-2д",
+      "КІ2-23-3д",
+      "КІ2-23-4д",
+      "ІСТс-24-1д",
+      "КІ2-24-1д",
+      "ІСТ-25-1д",
+      "КІ-25-2д"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-205",
+    "groups": [
+      "КІ2-23-1д",
+      "КІ2-23-2д",
+      "КІ2-23-4д",
+      "КІ2-24-1д",
+      "ІСТ-25-1д",
+      "КІ-25-2д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-101",
+    "groups": [
+      "КІ2-23-1д",
+      "КІ2-23-2д",
+      "КІ2-23-3д",
+      "КІ2-23-4д",
+      "ІСТс-24-1д",
+      "КІ2-24-1д",
+      "ІСТ-25-1д",
+      "КІ-25-2д"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-205",
+    "groups": [
+      "КІ2-23-3д",
+      "ІСТс-24-1д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-101",
+    "groups": [
+      "КІ2-23-1д",
+      "КІ2-23-2д",
+      "КІ2-23-3д",
+      "КІ2-23-4д",
+      "ІСТс-24-1д",
+      "КІ2-24-1д",
+      "ІСТ-25-1д",
+      "КІ-25-2д"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Денисюк Д.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Кроспл. прогр-ня",
+    "room": "1-205",
+    "groups": [
+      "КІ2-23-3д",
+      "ІСТс-24-1д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Смарт-технології та Інтернет речей",
+    "room": "1-106",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-116",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-116",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-208",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-208",
+    "groups": [
+      "КІ2с-24-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-108",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-108",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні системи та мережі",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-205",
+    "groups": [
+      "КІ2-24-2с"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні системи та мережі",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-23-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Комп'ютерна схемотехніка та системи автоматизованого проєктування",
+    "room": "1-205",
+    "groups": [
+      "КІ2-24-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-101",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Бохонько О.О.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Комп'ютерні та кіберфізичні системи",
+    "room": "1-101",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-116",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-116",
+    "groups": [
+      "КІ2-23-4"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Марценков О.І.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-208",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Віжевський П.В.",
+    "date": "2026-09-17",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Аналіз даних",
+    "room": "1-106",
+    "groups": [
+      "КІс-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 3,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Віжевський П.В.",
+    "date": "2026-09-17",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Аналіз даних",
+    "room": "1-106",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 3,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Віжевський П.В.",
+    "date": "2026-09-17",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Аналіз даних",
+    "room": "1-106",
+    "groups": [
+      "КІс-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 3,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-205",
+    "groups": [
+      "КІ2с-24-1в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-205",
+    "groups": [
+      "МР-24-1в",
+      "МР-24-2в",
+      "ІСТ-25-1в",
+      "КІс-25-1в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Проєктування інтерфейсів користувача програмних систем",
+    "room": "1-208",
+    "groups": [
+      "КІм-25-1б"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-205",
+    "groups": [
+      "ІСТс-24-1в",
+      "КІ2-24-1в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Проєктування інтерфейсів користувача програмних систем",
+    "room": "1-208",
+    "groups": [
+      "КІм-25-2б"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-205",
+    "groups": [
+      "ІСТс-24-1в",
+      "КІ2-24-1в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-205",
+    "groups": [
+      "ГД-23-1д",
+      "ГД-24-1д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1в",
+      "КІ-25-1в",
+      "КІ-25-2в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-205",
+    "groups": [
+      "ГД-23-1д",
+      "ГД-24-1д"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кузьмін А.А.",
+    "date": "2026-09-09",
+    "dayOfWeek": 3,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Веб-диз. та граф. диз.",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1в",
+      "КІ-25-1в",
+      "КІ-25-2в"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Аналітика великих даних",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1к",
+      "КІм-25-2к"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Математичні методи дослідження операцій та прийняття рішень",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-24-1",
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "КІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Математичні методи дослідження операцій та прийняття рішень",
+    "room": "1-116",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп.сист.штучн.інтел.",
+    "room": "1-101",
+    "groups": [
+      "КІм-26-1",
+      "КІм-26-2"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "КІ-26-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Big data analytics",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1а",
+      "КІм-25-2а"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Big data analytics",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1а",
+      "КІм-25-2а"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Аналітика великих даних",
+    "room": "1-107",
+    "groups": [
+      "КІм-25-1к",
+      "КІм-25-2к"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Математичні методи дослідження операцій та прийняття рішень",
+    "room": "1-106",
+    "groups": [
+      "ІСТс-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "КІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Математичні методи дослідження операцій та прийняття рішень",
+    "room": "1-204",
+    "groups": [
+      "ІСТ-24-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Матем.основи інформ.технол",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Вища математика",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "КІ-26-2"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "КІс-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Big data analytics",
+    "room": "1-106",
+    "groups": [
+      "КІм-25-1а",
+      "КІм-25-2а"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Big data analytics",
+    "room": "1-106",
+    "groups": [
+      "КІм-25-1а",
+      "КІм-25-2а"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Кисіль Т.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Дискретна математика",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-113",
+    "groups": [
+      "КІс-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-01",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-113",
+    "groups": [
+      "КІс-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-05",
+    "dayOfWeek": 6,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-113",
+    "groups": [
+      "КІс-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-02",
+    "dayOfWeek": 3,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Комп'ютерні мережі, системне адміністрування та кібербезпека",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 1,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-3п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-08",
+    "dayOfWeek": 2,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Системне програмування та Інтернет речей",
+    "room": "1-206",
+    "groups": [
+      "КІ2-23-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-12",
+    "dayOfWeek": 6,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-113",
+    "groups": [
+      "КІс-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Клейн О.М.",
+    "date": "2026-09-12",
+    "dayOfWeek": 6,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Сист.прогр.забезп.",
+    "room": "1-113",
+    "groups": [
+      "КІс-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Медзатий Д.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Медзатий Д.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1м",
+      "е",
+      "с"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Медзатий Д.М.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1м",
+      "е",
+      "с"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Медзатий Д.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1"
+    ],
+    "lessonType": "Практична",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Медзатий Д.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Медзатий Д.М.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Об'єктно-орієнтоване програмування",
+    "room": "1-113",
+    "groups": [
+      "ІСТ-25-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-210",
+    "groups": [
+      "ІСТ-26-1",
+      "КІ-26-1",
+      "КІ-26-2",
+      "КІс-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Системи креативного штучного інтелекту",
+    "room": "1-101",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лекція",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "numerator",
+    "subject": "Системи креативного штучного інтелекту",
+    "room": "1-205",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-03",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "numerator",
+    "subject": "Системи креативного штучного інтелекту",
+    "room": "1-205",
+    "groups": [
+      "ІСШІ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-08-31",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "numerator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 1,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 2,
+    "weekType": "denominator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 3,
+    "weekType": "denominator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-2п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 4,
+    "weekType": "denominator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-10",
+    "dayOfWeek": 4,
+    "period": 5,
+    "weekType": "denominator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "ІСТ-26-1"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  },
+  {
+    "teacher": "Войчур О.Ю.",
+    "date": "2026-09-07",
+    "dayOfWeek": 1,
+    "period": 6,
+    "weekType": "denominator",
+    "subject": "Інформаційні технології",
+    "room": "1-205",
+    "groups": [
+      "КІ-26-1п"
+    ],
+    "lessonType": "Лабораторна",
+    "substitution": {
+      "dayOfWeek": 2,
+      "weekType": "numerator"
+    }
+  }
+]

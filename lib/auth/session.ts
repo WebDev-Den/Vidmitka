@@ -15,6 +15,7 @@ import {
   type AccountApproval,
   type AppRole,
 } from "./roles";
+import { isApprovedAdministrator } from "./authorization";
 
 const SESSION_COOKIE = process.env.NODE_ENV === "production"
   ? "__Host-vidmitka_session"
@@ -87,28 +88,12 @@ export async function endAppSession(): Promise<void> {
   cookieStore.delete(SESSION_COOKIE);
 }
 
-export const getAuthenticatedAppUser = cache(async (): Promise<AppUser> => {
+export async function requireAdminPanelUser(): Promise<AppUser> {
   const user = await getOptionalAppUser();
-  if (!user) redirect("/sign-in");
+
+  if (!isApprovedAdministrator(user)) {
+    redirect("/admin/login");
+  }
+
   return user;
-});
-
-export async function requireAppUser(): Promise<AppUser> {
-  const user = await getAuthenticatedAppUser();
-
-  if (user.approval === "pending") redirect("/approval-pending");
-  return user;
-}
-
-export async function requireAdministrator(): Promise<AppUser> {
-  const user = await requireAppUser();
-
-  if (user.role !== "administrator") redirect("/dashboard?access=denied");
-  return user;
-}
-
-export async function requireTeacher(): Promise<AppUser> {
-  // Обидві ролі мають власний викладацький простір. Власника даних
-  // сторінки та дії визначають за id цієї сесії, а не за даними форми.
-  return requireAppUser();
 }

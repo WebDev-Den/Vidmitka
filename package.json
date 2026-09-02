@@ -7,12 +7,12 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
+    "test:schedule-v2-integration": "node --env-file=.env.local scripts/run-schedule-v2-integration.mjs",
     "icons:generate": "node info/scripts/generate-icons.mjs",
     "icons:check": "node info/scripts/generate-icons.mjs --check",
     "db:check": "node --env-file=.env.local scripts/check-db.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
-    "db:verify-semester": "node --env-file=.env.local scripts/verify-student-semester.mjs",
-    "db:verify-import": "node --env-file=.env.local scripts/verify-schedule-import.mjs"
+    "admin:init": "node --env-file=.env.local scripts/init-admin.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

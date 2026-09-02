@@ -1140,82 +1140,6 @@ textarea:focus-visible {
   font-weight: 800;
 }
 
-/* Account approval */
-
-.approval-shell {
-  display: grid;
-  min-height: 100svh;
-  padding: 24px clamp(20px, 5vw, 72px) 56px;
-  grid-template-rows: auto 1fr;
-  background: var(--paper);
-}
-
-.approval-header {
-  display: flex;
-  width: min(100%, 1280px);
-  min-height: 52px;
-  margin: 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.approval-card {
-  display: grid;
-  width: min(100%, 680px);
-  margin: auto;
-  padding: clamp(32px, 6vw, 64px);
-  justify-items: start;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
-}
-
-.approval-icon {
-  display: grid;
-  width: 58px;
-  height: 58px;
-  margin-bottom: 28px;
-  place-items: center;
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-  border-radius: 18px;
-}
-
-.approval-card h1 {
-  margin: 14px 0 0;
-  font-size: clamp(34px, 6vw, 58px);
-  line-height: 1.02;
-  letter-spacing: -0.055em;
-}
-
-.approval-card > p {
-  max-width: 540px;
-  margin: 22px 0 0;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-.approval-card > p strong {
-  color: var(--ink);
-  overflow-wrap: anywhere;
-}
-
-.approval-actions {
-  display: flex;
-  margin-top: 32px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.approval-secondary {
-  color: var(--ink);
-  background: var(--surface);
-  border-color: var(--line);
-}
-
 /* Private shell */
 
 .private-shell {
@@ -1651,92 +1575,6 @@ textarea:focus-visible {
   font-weight: 800;
 }
 
-.teacher-list {
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-}
-
-.teacher-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto minmax(148px, auto);
-  min-height: 86px;
-  padding: 16px 20px;
-  align-items: center;
-  gap: 16px;
-  border-bottom: 1px solid var(--line);
-}
-
-.teacher-row:last-child {
-  border-bottom: 0;
-}
-
-.teacher-avatar {
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-  border-radius: 13px;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.teacher-identity {
-  display: grid;
-  min-width: 0;
-  gap: 4px;
-}
-
-.teacher-identity strong,
-.teacher-identity small {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.teacher-identity strong {
-  font-size: 14px;
-}
-
-.teacher-identity small,
-.teacher-approved-note {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.approval-badge {
-  display: inline-flex;
-  min-height: 30px;
-  padding: 0 10px;
-  align-items: center;
-  gap: 6px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 850;
-}
-
-.approval-badge.is-pending {
-  color: #7a4a18;
-  background: #fff1dc;
-}
-
-.approval-badge.is-approved {
-  color: var(--success);
-  background: #e4f3ec;
-}
-
-.teacher-row form,
-.teacher-row form .button {
-  width: 100%;
-}
-
-.teacher-approved-note {
-  text-align: center;
-}
-
 .notice {
   display: flex;
   max-width: 920px;
@@ -1938,8 +1776,7 @@ textarea:focus-visible {
   margin: 0;
 }
 
-.subject-manager,
-.student-manager {
+.subject-manager {
   display: grid;
   max-width: 980px;
   gap: 28px;
@@ -1987,14 +1824,11 @@ textarea:focus-visible {
   grid-column: 1 / -1;
 }
 
-.subject-list,
-.student-list,
-.student-list-section {
+.subject-list {
   display: grid;
 }
 
-.subject-row,
-.student-row {
+.subject-row {
   display: grid;
   padding: 18px 20px;
   align-items: center;
@@ -2004,13 +1838,11 @@ textarea:focus-visible {
   border-bottom: 0;
 }
 
-.subject-row:first-child,
-.student-row:first-child {
+.subject-row:first-child {
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
-.subject-row:last-child,
-.student-row:last-child {
+.subject-row:last-child {
   border-bottom: 1px solid var(--line);
   border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
@@ -2019,43 +1851,15 @@ textarea:focus-visible {
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
-.subject-row > div,
-.student-identity {
+.subject-row > div {
   display: grid;
   min-width: 0;
   gap: 5px;
 }
 
-.subject-row span,
-.student-identity span {
+.subject-row span {
   color: var(--muted);
   font-size: 13px;
-}
-
-.student-list-section {
-  gap: 16px;
-}
-
-.student-row {
-  grid-template-columns: auto minmax(0, 1fr) minmax(140px, 0.7fr) auto;
-}
-
-.student-avatar {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.student-subject {
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: 700;
 }
 
 .period-manager {
@@ -2534,15 +2338,6 @@ textarea:focus-visible {
     grid-column: 2;
   }
 
-  .teacher-row {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-
-  .teacher-row form,
-  .teacher-approved-note {
-    grid-column: 2 / -1;
-  }
-
   .period-row-actions {
     grid-column: 1 / -1;
     justify-content: flex-start;
@@ -2648,34 +2443,6 @@ textarea:focus-visible {
 
   .auth-story h1 {
     font-size: 42px;
-  }
-
-  .approval-shell {
-    padding: 16px 16px 32px;
-  }
-
-  .approval-card {
-    padding: 28px 22px;
-  }
-
-  .approval-card h1 {
-    font-size: 38px;
-  }
-
-  .approval-actions,
-  .approval-actions .button {
-    width: 100%;
-  }
-
-  .teacher-row {
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: 16px;
-  }
-
-  .approval-badge,
-  .teacher-row form,
-  .teacher-approved-note {
-    grid-column: 1 / -1;
   }
 
   .private-topbar {
@@ -2805,40 +2572,17 @@ textarea:focus-visible {
     align-items: flex-start;
   }
 
-  .subject-create-form,
-  .student-row {
+  .subject-create-form {
     grid-template-columns: 1fr;
   }
 
   .subject-create-form .button,
   .subject-row .button,
-  .student-row .button,
   .semester-end-panel .button {
     width: 100%;
   }
 
-  .student-avatar {
-    display: none;
-  }
-
-  .student-subject {
-    padding-top: 8px;
-    border-top: 1px solid var(--line);
-  }
 }
-
-.journal-page > * + *, .journal-form > * + * { margin-top: 20px; }
-.journal-wide { grid-column: 1 / -1; }
-.journal-import { margin-block: 20px; }
-.journal-import summary { cursor: pointer; color: var(--accent-strong); font-weight: 600; }
-.journal-table td { padding: 16px; border-bottom: 1px solid var(--line); }
-.journal-table select { min-width: 215px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: inherit; }
-.journal-table { min-width: 650px; }
-.journal-controls { margin-bottom: 0; }
-.lesson-editor .lesson-group-picker, .lesson-editor .lesson-student-picker { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
-.lesson-group-students { display: grid; gap: 12px; padding-block: 12px; border-top: 1px solid var(--line); }
-.lesson-group-students h3 { margin: 0; }
-.lesson-group-students > .button { justify-self: start; }
 
 /* Compact CRUD surfaces; public pages and authentication keep their own rhythm. */
 .management-page {
@@ -3013,7 +2757,6 @@ textarea:focus-visible {
 }
 
 .management-table form > .period-action-message { margin-top: 8px; }
-.management-table .teacher-approved-note { display: block; min-width: 180px; text-align: left; }
 .management-table .lesson-type-picker {
   grid-template-columns: minmax(160px, 1fr) auto;
   min-width: 300px;
@@ -3072,9 +2815,6 @@ textarea:focus-visible {
 .management-panel { padding: 16px; gap: 16px; }
 .management-panel h2 { font-size: 18px; }
 .management-panel p { font-size: 14px; line-height: 1.5; }
-.management-page .journal-import { margin-block: 0 16px; }
-.journal-import > summary { min-height: 44px; padding-block: 10px; font-size: 14px; }
-
 @media (max-width: 640px) {
   .management-page .page-intro { gap: 12px; margin-bottom: 16px; }
   .lesson-editor.compact-form { grid-template-columns: minmax(0, 1fr); padding: 12px; gap: 12px; }

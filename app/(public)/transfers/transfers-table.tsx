@@ -1,43 +1,37 @@
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { connection } from "next/server";
 
 import { ManagementTable } from "@/components/private/management-table";
-import { LESSON_DAYS } from "@/lib/lessons/rules";
-import { scheduleDateHref } from "@/lib/schedule-calendar/presentation";
-import { listPublicMakeupDays } from "@/lib/schedule-calendar/repository";
-import type { PublicMakeupDay } from "@/lib/schedule-calendar/rules";
-import { formatWeekTypeLabel } from "@/lib/schedule-week/rules";
+import { listScheduleExceptions } from "@/lib/schedule-v2/exceptions";
+
+const LABELS: Record<string, string> = { move: "Перенесення", reschedule: "Зміна дати або часу",
+  room_change: "Зміна аудиторії", teacher_change: "Заміна викладача", discipline_change: "Заміна дисципліни",
+  type_change: "Зміна типу заняття", cancel: "Скасування" };
 
 export async function TransfersTable() {
-  await connection();
-  let days: PublicMakeupDay[];
+  let changes;
   try {
-    days = await listPublicMakeupDays();
+    changes = (await listScheduleExceptions()).filter((item) => item.status === "active" && item.kind !== "one_time");
   } catch {
     return <p className="notice" role="alert">
       Не вдалося завантажити перенесення пар. Спробуйте оновити сторінку.
     </p>;
   }
 
-  return <ManagementTable caption="Календар перенесення пар" minWidth={600}
-    columns={["Дата відпрацювання", "За розкладом дня", "Тип тижня", "Розклад"]}>
+  return <ManagementTable caption="Перенесення та зміни розкладу" minWidth={760}
+    columns={["Початкова дата", "Тип зміни", "Заняття", "Нова дата", "Причина", "Розклад"]}>
     <tbody>
-      {days.length === 0 && <tr><td colSpan={4}>
-        <p className="management-description">Перенесень пар ще немає. Тут з’являться дати, додані адміністратором.</p>
+      {changes.length === 0 && <tr><td colSpan={6}>
+        <p className="management-description">Активних переносів і замін немає.</p>
       </td></tr>}
-      {days.map((day) => {
-        const dateLabel = day.date.split("-").reverse().join(".");
-        return <tr key={day.date}>
-          <th scope="row"><time dateTime={day.date}>{dateLabel}</time></th>
-          <td>{LESSON_DAYS[day.dayOfWeek - 1]}</td>
-          <td><span className="management-status">{formatWeekTypeLabel(day.weekType)}</span></td>
-          <td className="management-actions-cell">
-            <Link className="button button-light" href={scheduleDateHref("/schedule", day.date)}
-              aria-label={`Переглянути розклад на ${dateLabel}`}>
-              Переглянути <ArrowRight size={16} aria-hidden="true" />
-            </Link>
-          </td>
+      {changes.map((item) => {
+        const dateLabel = item.originalDate.split("-").reverse().join(".");
+        return <tr key={item.id}>
+          <th scope="row"><time dateTime={item.originalDate}>{dateLabel}</time></th>
+          <td><span className="management-status">{LABELS[item.kind] ?? "Зміна"}</span></td>
+          <td>{item.baseLabel ?? "Разове заняття"}</td>
+          <td>{item.newDate ? <time dateTime={item.newDate}>{item.newDate.split("-").reverse().join(".")}</time> : "—"}</td>
+          <td>{item.reason || item.note || "—"}</td>
+          <td><Link className="button button-light" href={`/schedule?date=${encodeURIComponent(item.newDate ?? item.originalDate)}`}>Переглянути</Link></td>
         </tr>;
       })}
     </tbody>

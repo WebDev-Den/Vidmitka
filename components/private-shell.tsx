@@ -5,14 +5,12 @@ import {
   Building2,
   CalendarDays,
   Clock3,
-  CircleUserRound,
   GraduationCap,
   LayoutDashboard,
   LogOut,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
-  Plus,
   Settings2,
   Upload,
   UsersRound,
@@ -25,7 +23,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Brand } from "@/components/brand";
 import { NavigationLinkContent } from "@/components/private/navigation-link-content";
-import { signOutAction } from "@/app/(auth)/actions";
+import { adminSignOutAction } from "@/app/admin/actions";
 import type { AppUser } from "@/lib/auth/session";
 import {
   getRoleNavigation,
@@ -35,15 +33,12 @@ import {
 const iconByName: Record<NavigationIcon, LucideIcon> = {
   overview: LayoutDashboard,
   schedule: CalendarDays,
-  lessons: BookOpen,
   import: Upload,
-  create: Plus,
   teachers: UsersRound,
   subjects: BookOpen,
   rooms: Building2,
   periods: Clock3,
-  students: GraduationCap,
-  profile: CircleUserRound,
+  groups: GraduationCap,
   settings: Settings2,
 };
 
@@ -65,7 +60,7 @@ export function PrivateShell({
     navigation.find(
       (item) =>
         pathname === item.href ||
-        (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`)),
+        (item.href !== "/admin" && pathname.startsWith(`${item.href}/`)),
     ) ?? navigation[0];
 
   useEffect(() => {
@@ -182,7 +177,7 @@ export function PrivateShell({
             const Icon = iconByName[item.icon];
             const active =
               pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(`${item.href}/`));
+              (item.href !== "/admin" && pathname.startsWith(`${item.href}/`));
 
             return (
               <Link
@@ -235,7 +230,7 @@ export function PrivateShell({
           </div>
           <div className="topbar-actions">
             <span className={`role-badge role-${user.role}`}>{user.roleLabel}</span>
-            <form action={signOutAction}>
+            <form action={adminSignOutAction}>
               <button className="icon-control" type="submit" aria-label="Вийти">
                 <LogOut size={19} />
               </button>

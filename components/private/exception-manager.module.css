@@ -1,0 +1,16 @@
+.stack { display: grid; gap: 16px; min-width: 0; }
+.form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.form label { display: grid; align-content: start; gap: 6px; min-width: 0; color: var(--ink); font-size: .8125rem; font-weight: 700; }
+.form input, .form select, .form textarea { width: 100%; min-width: 0; min-height: 44px; padding: 9px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font: inherit; }
+.form select[multiple] { min-height: 106px; }
+.form textarea { min-height: 72px; resize: vertical; }
+.wide { grid-column: 1 / -1; }
+.double { grid-column: span 2; }
+.actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.message { grid-column: 1 / -1; margin: 0; }
+.source { display: block; color: var(--muted); font-size: .75rem; margin-top: 4px; }
+.editCell { padding: 0 !important; background: var(--paper); }
+.editCell .form { border: 0; border-radius: 0; }
+:global(.management-actions) > label input[type="search"] { width: min(100%, 380px); min-height: 44px; padding: 0 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+@media (max-width: 880px) { .form { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .form { grid-template-columns: minmax(0, 1fr); padding: 12px; } .wide, .double, .actions, .message { grid-column: 1; } }

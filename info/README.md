@@ -35,6 +35,8 @@
 - [qa/reports/RELEASE-20260828-01.md](qa/reports/RELEASE-20260828-01.md) — журнал дозволеного релізу VID-009: передрелізний стан, міграції, Git і фактичний deployment.
 - [qa/reports/RELEASE-20260902-03.md](qa/reports/RELEASE-20260902-03.md) — реліз VID-033–VID-037: незалежний QA PASS, Git, Vercel READY і live smoke.
 - [qa/reports/QA-20260902-06.md](qa/reports/QA-20260902-06.md) — docs-only перевірка релізних метаданих VID-037 і доказ уже наявних 12/12 production-дат.
+- [qa/reports/QA-20260902-07.md](qa/reports/QA-20260902-07.md) — незалежний PASS VID-038–VID-041: recurring-імпорт, денний public UI, термінологія тижнів, DB і browser QA.
+- [qa/reports/RELEASE-20260902-04.md](qa/reports/RELEASE-20260902-04.md) — production deployment VID-038–VID-041, Vercel READY і live smoke без записів у production-БД.
 - [architecture.md](architecture.md) — функціональна архітектура системи керування розкладом.
 - [data-model.md](data-model.md) — концептуальна модель даних для подальшого проєктування БД без вибору технології або способу зберігання.
 - [database-setup.md](database-setup.md) — підключення Neon Postgres через Vercel, локальні env-файли та перевірка з'єднання.

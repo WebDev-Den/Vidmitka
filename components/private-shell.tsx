@@ -4,6 +4,7 @@ import {
   BookOpen,
   Building2,
   CalendarDays,
+  ChevronDown,
   Clock3,
   GraduationCap,
   LayoutDashboard,
@@ -42,6 +43,15 @@ const iconByName: Record<NavigationIcon, LucideIcon> = {
   settings: Settings2,
 };
 
+const directoryNavigationIds = new Set([
+  "groups",
+  "teachers",
+  "subjects",
+  "rooms",
+  "lesson-types",
+  "periods",
+]);
+
 export function PrivateShell({
   user,
   children,
@@ -56,6 +66,18 @@ export function PrivateShell({
   const mobileTriggerRef = useRef<HTMLButtonElement>(null);
   const mobileCloseRef = useRef<HTMLButtonElement>(null);
   const navigation = useMemo(() => getRoleNavigation(user.role), [user.role]);
+  const primaryNavigation = navigation.filter(
+    (item) => !directoryNavigationIds.has(item.id),
+  );
+  const directoryNavigation = navigation.filter((item) =>
+    directoryNavigationIds.has(item.id),
+  );
+  const directoryActive = directoryNavigation.some(
+    (item) =>
+      pathname === item.href || pathname.startsWith(`${item.href}/`),
+  );
+  const [directoryOpen, setDirectoryOpen] = useState(false);
+  const directoryExpanded = !collapsed && (directoryOpen || directoryActive);
   const activeItem =
     navigation.find(
       (item) =>
@@ -167,13 +189,8 @@ export function PrivateShell({
           </button>
         </div>
 
-        <div className="role-caption">
-          <span>{user.roleLabel}</span>
-          <small>{user.role === "administrator" ? "Керування системою" : "Робочий простір"}</small>
-        </div>
-
         <nav className="role-navigation" aria-label={`Меню ролі ${user.roleLabel}`}>
-          {navigation.map((item) => {
+          {primaryNavigation.map((item) => {
             const Icon = iconByName[item.icon];
             const active =
               pathname === item.href ||
@@ -192,6 +209,61 @@ export function PrivateShell({
               </Link>
             );
           })}
+
+          {directoryNavigation.length ? (
+            <div className="navigation-group">
+              <button
+                className={`role-link navigation-group-toggle${
+                  directoryActive ? " is-active" : ""
+                }`}
+                type="button"
+                onClick={() => {
+                  if (collapsed) {
+                    setCollapsed(false);
+                    setDirectoryOpen(true);
+                    return;
+                  }
+                  setDirectoryOpen((value) => !value);
+                }}
+                aria-expanded={directoryExpanded}
+                aria-controls="admin-directory-navigation"
+                title={collapsed ? "Довідники" : undefined}
+              >
+                <span className="role-link-icon" aria-hidden="true">
+                  <BookOpen size={19} />
+                </span>
+                <span className="role-link-label">Довідники</span>
+                <ChevronDown
+                  className="role-link-chevron navigation-group-chevron"
+                  size={16}
+                  aria-hidden="true"
+                />
+              </button>
+              <div
+                id="admin-directory-navigation"
+                className="navigation-submenu"
+                hidden={!directoryExpanded}
+              >
+                {directoryNavigation.map((item) => {
+                  const Icon = iconByName[item.icon];
+                  const active =
+                    pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+                  return (
+                    <Link
+                      key={item.id}
+                      className={active ? "role-link is-active" : "role-link"}
+                      href={item.href}
+                      aria-label={item.label}
+                      aria-current={active ? "page" : undefined}
+                    >
+                      <NavigationLinkContent icon={Icon} label={item.label} active={active} />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
         </nav>
 
         <div className="sidebar-user">
@@ -200,6 +272,11 @@ export function PrivateShell({
             <strong>{user.name}</strong>
             <small>{user.email}</small>
           </span>
+          <form action={adminSignOutAction}>
+            <button className="icon-control" type="submit" aria-label="Вийти">
+              <LogOut size={18} />
+            </button>
+          </form>
         </div>
       </aside>
 
@@ -225,16 +302,7 @@ export function PrivateShell({
             <Menu size={21} />
           </button>
           <div className="topbar-title">
-            <span>{user.roleLabel}</span>
             <strong>{activeItem?.label ?? "Кабінет"}</strong>
-          </div>
-          <div className="topbar-actions">
-            <span className={`role-badge role-${user.role}`}>{user.roleLabel}</span>
-            <form action={adminSignOutAction}>
-              <button className="icon-control" type="submit" aria-label="Вийти">
-                <LogOut size={19} />
-              </button>
-            </form>
           </div>
         </header>
         <main className="private-content">{children}</main>

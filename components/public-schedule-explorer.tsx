@@ -1,14 +1,15 @@
 "use client";
 
 import Link, { useLinkStatus } from "next/link";
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 
 import { periodColorForeground } from "@/lib/class-periods/colors";
+import { calendarDayLabel } from "@/lib/schedule-v2/calendar-override-rules";
 import type {
-  PublicGroup,
   PublicPeriod,
   PublicScheduleDay,
   PublicScheduleItem,
+  PublicTeacher,
 } from "@/lib/schedule-v2/public-schedule";
 
 import styles from "./public-schedule-explorer.module.css";
@@ -22,6 +23,7 @@ const CHANGE_LABELS: Record<string, string> = {
   type_change: "Змінено тип",
   cancel: "Скасовано",
   one_time: "Разове заняття",
+  calendar_override: "Перенесення дня",
 };
 
 type NavigationDay = Readonly<{ date: string; shortLabel: string; dayLabel: string }>;
@@ -34,9 +36,9 @@ function PendingLinkStatus({ label }: { label: string }) {
   </>;
 }
 
-function scheduleHref(input: { date: string; groupId: string; view: "day" | "week" }): string {
+function scheduleHref(input: { date: string; teacherId: string; view: "day" | "week" }): string {
   const query = new URLSearchParams({ date: input.date, view: input.view });
-  if (input.groupId) query.set("group", input.groupId);
+  if (input.teacherId) query.set("teacher", input.teacherId);
   return `/schedule?${query.toString()}`;
 }
 
@@ -98,38 +100,11 @@ function periodStatus(period: PublicPeriod, dayDate: string, clock: ReturnType<t
   return clock.minutes > end ? "past" : "upcoming";
 }
 
-function GroupLinks({ groups, selectedGroupId, date, view, query }: {
-  groups: readonly PublicGroup[];
-  selectedGroupId: string;
-  date: string;
-  view: "day" | "week";
-  query: string;
-}) {
-  const normalized = query.normalize("NFC").trim().toLocaleLowerCase("uk-UA");
-  const visible = normalized
-    ? groups.filter((group) => group.name.toLocaleLowerCase("uk-UA").includes(normalized))
-    : groups;
-  if (!groups.length) return <p className={styles.groupsEmpty}>Активних груп ще немає.</p>;
-  if (!visible.length) return <p className={styles.groupsEmpty}>Групу не знайдено.</p>;
-  return <div className={styles.groupLinks}>
-    {visible.map((group) => <Link
-      key={group.id}
-      href={scheduleHref({ date, groupId: group.id, view })}
-      className={styles.groupLink}
-      aria-current={group.id === selectedGroupId ? "page" : undefined}
-      scroll={false}
-    >
-      <span>{group.name}</span>
-      {group.id === selectedGroupId ? <small>Обрано</small> : null}
-      <PendingLinkStatus label={`розклад групи ${group.name}`} />
-    </Link>)}
-  </div>;
-}
-
 function LessonCard({ item }: { item: PublicScheduleItem }) {
   return <article
     className={`${styles.lessonCard} ${item.cancelled ? styles.cancelled : ""}`}
     style={{ "--lesson-color": item.lessonTypeColor } as CSSProperties}
+    tabIndex={item.groups.length ? 0 : undefined}
   >
     <div className={styles.lessonTop}>
       <span className={styles.lessonType}>{item.lessonType}</span>
@@ -139,6 +114,10 @@ function LessonCard({ item }: { item: PublicScheduleItem }) {
     <span className={styles.lessonTeacher}>{item.teachers.join(", ") || "Викладача не вказано"}</span>
     {item.changeKind ? <span className={styles.changeBadge}>{CHANGE_LABELS[item.changeKind] ?? "Змінено"}</span> : null}
     {item.changeReason || item.note ? <small className={styles.lessonNote}>{item.changeReason || item.note}</small> : null}
+    {item.groups.length ? <div className={styles.lessonGroups} aria-label="Навчальні групи заняття">
+      <span>Групи</span>
+      <strong>{item.groups.join(", ")}</strong>
+    </div> : null}
   </article>;
 }
 
@@ -159,8 +138,11 @@ function DaySchedule({ day, periods, clock }: {
 
   return <section className={styles.dayPanel} aria-labelledby={`day-${day.date}`}>
     <header className={styles.dayHeader}>
-      <div><span className={styles.dayEyebrow}>Розклад групи</span><h2 id={`day-${day.date}`}>{dateLabel(day.date)}</h2></div>
-      <span className={styles.dayWeek}>{day.weekType === "numerator" ? "Чисельник" : "Знаменник"}</span>
+      <div><span className={styles.dayEyebrow}>Розклад занять</span><h2 id={`day-${day.date}`}>{dateLabel(day.date)}</h2></div>
+      <div className={styles.dayFlags}>
+        {day.isTransfer ? <span className={styles.transferBadge}>За розкладом: {calendarDayLabel(day.scheduleDayOfWeek)}</span> : null}
+        <span className={styles.dayWeek}>{day.weekType === "numerator" ? "Чисельник" : "Знаменник"}</span>
+      </div>
     </header>
     <div className={styles.periodGrid}>
       {periods.map((period) => {
@@ -185,18 +167,24 @@ function DaySchedule({ day, periods, clock }: {
   </section>;
 }
 
-export function PublicScheduleExplorer({ groups, periods, days, navigationDays, selectedDate, selectedGroupId, view }: {
-  groups: readonly PublicGroup[];
+export function PublicScheduleExplorer({
+  periods,
+  days,
+  navigationDays,
+  selectedDate,
+  selectedTeacherId,
+  teachers,
+  view,
+}: {
   periods: readonly PublicPeriod[];
   days: readonly PublicScheduleDay[];
   navigationDays: readonly NavigationDay[];
   selectedDate: string;
-  selectedGroupId: string;
+  selectedTeacherId: string;
+  teachers: readonly PublicTeacher[];
   view: "day" | "week";
 }) {
   const [now, setNow] = useState<Date | null>(null);
-  const [groupQuery, setGroupQuery] = useState("");
-  const mobileGroupsRef = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
     const update = () => setNow(new Date());
     update();
@@ -204,18 +192,16 @@ export function PublicScheduleExplorer({ groups, periods, days, navigationDays, 
     return () => window.clearInterval(timer);
   }, []);
   const clock = kyivClock(now);
-  const selectedGroup = groups.find((group) => group.id === selectedGroupId) ?? null;
   const dayStep = view === "week" ? 7 : 1;
 
   return <main className={styles.workspace}>
     <section className={styles.statusBar} aria-label="Поточний стан розкладу">
       <div className={styles.clock}><strong suppressHydrationWarning>{clock.time}</strong><span suppressHydrationWarning>{clock.date}</span></div>
-      <div className={styles.currentGroup}><span>Обрана група</span><strong>{selectedGroup?.name ?? "Оберіть групу"}</strong></div>
       <div className={styles.statusActions}>
         <span className={styles.weekBadge}>{days[0]?.weekType === "denominator" ? "Знаменник" : "Чисельник"}</span>
         <nav className={styles.mode} aria-label="Формат розкладу">
-          <Link href={scheduleHref({ date: selectedDate, groupId: selectedGroupId, view: "day" })} aria-current={view === "day" ? "page" : undefined}>День<PendingLinkStatus label="денний розклад" /></Link>
-          <Link href={scheduleHref({ date: selectedDate, groupId: selectedGroupId, view: "week" })} aria-current={view === "week" ? "page" : undefined}>Тиждень<PendingLinkStatus label="тижневий розклад" /></Link>
+          <Link href={scheduleHref({ date: selectedDate, teacherId: selectedTeacherId, view: "day" })} aria-current={view === "day" ? "page" : undefined}>День<PendingLinkStatus label="денний розклад" /></Link>
+          <Link href={scheduleHref({ date: selectedDate, teacherId: selectedTeacherId, view: "week" })} aria-current={view === "week" ? "page" : undefined}>Тиждень<PendingLinkStatus label="тижневий розклад" /></Link>
         </nav>
       </div>
     </section>
@@ -223,54 +209,46 @@ export function PublicScheduleExplorer({ groups, periods, days, navigationDays, 
     <nav className={styles.dayTabs} aria-label="Дні поточного тижня">
       {navigationDays.map((day) => <Link
         key={day.date}
-        href={scheduleHref({ date: day.date, groupId: selectedGroupId, view: "day" })}
+        href={scheduleHref({ date: day.date, teacherId: selectedTeacherId, view: "day" })}
         aria-current={day.date === selectedDate ? "date" : undefined}
       ><span>{day.shortLabel}</span><small>{day.dayLabel}</small><PendingLinkStatus label={`розклад на ${day.dayLabel}`} /></Link>)}
     </nav>
 
-    <div className={styles.workspaceGrid}>
-      <aside className={styles.groupsPanel} aria-label="Список навчальних груп">
-        <header><div><span className={styles.panelEyebrow}>Навчальні групи</span><strong>{groups.length} активних</strong></div></header>
-        <label className={styles.groupSearch}><span className="sr-only">Пошук групи</span><input type="search" placeholder="Пошук групи…" value={groupQuery} onChange={(event) => setGroupQuery(event.target.value)} /></label>
-        <GroupLinks groups={groups} selectedGroupId={selectedGroupId} date={selectedDate} view={view} query={groupQuery} />
-      </aside>
-
-      <section className={styles.scheduleArea}>
-        <details
-          className={styles.mobileGroups}
-          ref={mobileGroupsRef}
-          onKeyDown={(event) => {
-            if (event.key !== "Escape" || !mobileGroupsRef.current?.open) return;
-            event.preventDefault();
-            mobileGroupsRef.current.open = false;
-            mobileGroupsRef.current.querySelector("summary")?.focus();
-          }}
-        >
-          <summary>Групи <span>{selectedGroup?.name ?? "Оберіть"}</span></summary>
-          <div className={styles.mobileGroupsBody}>
-            <label className={styles.groupSearch}><span className="sr-only">Пошук групи</span><input type="search" placeholder="Пошук групи…" value={groupQuery} onChange={(event) => setGroupQuery(event.target.value)} /></label>
-            <GroupLinks groups={groups} selectedGroupId={selectedGroupId} date={selectedDate} view={view} query={groupQuery} />
-          </div>
-        </details>
-
-        <div className={styles.scheduleToolbar}>
-          <div className={styles.dateNavigation}>
-            <Link aria-label={view === "week" ? "Попередній тиждень" : "Попередній день"} href={scheduleHref({ date: addDays(selectedDate, -dayStep), groupId: selectedGroupId, view })}>←<PendingLinkStatus label={view === "week" ? "попередній тиждень" : "попередній день"} /></Link>
-            <Link href={scheduleHref({ date: clock.dateKey || selectedDate, groupId: selectedGroupId, view })}>Сьогодні<PendingLinkStatus label="розклад на сьогодні" /></Link>
-            <Link aria-label={view === "week" ? "Наступний тиждень" : "Наступний день"} href={scheduleHref({ date: addDays(selectedDate, dayStep), groupId: selectedGroupId, view })}>→<PendingLinkStatus label={view === "week" ? "наступний тиждень" : "наступний день"} /></Link>
-          </div>
-          <form method="get" className={styles.dateForm}>
-            <label><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} /></label>
-            <input type="hidden" name="group" value={selectedGroupId} />
-            <input type="hidden" name="view" value={view} />
-            <button type="submit">Перейти</button>
-          </form>
+    <section className={styles.scheduleArea}>
+      <div className={styles.scheduleToolbar}>
+        <div className={styles.dateNavigation}>
+          <Link aria-label={view === "week" ? "Попередній тиждень" : "Попередній день"} href={scheduleHref({ date: addDays(selectedDate, -dayStep), teacherId: selectedTeacherId, view })}>←<PendingLinkStatus label={view === "week" ? "попередній тиждень" : "попередній день"} /></Link>
+          <Link href={scheduleHref({ date: clock.dateKey || selectedDate, teacherId: selectedTeacherId, view })}>Сьогодні<PendingLinkStatus label="розклад на сьогодні" /></Link>
+          <Link aria-label={view === "week" ? "Наступний тиждень" : "Наступний день"} href={scheduleHref({ date: addDays(selectedDate, dayStep), teacherId: selectedTeacherId, view })}>→<PendingLinkStatus label={view === "week" ? "наступний тиждень" : "наступний день"} /></Link>
         </div>
+        <form method="get" className={styles.teacherFilter}>
+          <label>
+            <span className="sr-only">Викладач у розкладі</span>
+            <select
+              key={selectedTeacherId || "all"}
+              name="teacher"
+              defaultValue={selectedTeacherId}
+              onChange={(event) => event.currentTarget.form?.requestSubmit()}
+            >
+              <option value="">Всі викладачі</option>
+              {teachers.map((teacher) => <option key={teacher.id} value={teacher.id}>{teacher.name}</option>)}
+            </select>
+          </label>
+          <input type="hidden" name="date" value={selectedDate} />
+          <input type="hidden" name="view" value={view} />
+          <button className="sr-only" type="submit">Показати розклад викладача</button>
+        </form>
+        <form method="get" className={styles.dateForm}>
+          <label><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} /></label>
+          <input type="hidden" name="view" value={view} />
+          {selectedTeacherId ? <input type="hidden" name="teacher" value={selectedTeacherId} /> : null}
+          <button type="submit">Перейти</button>
+        </form>
+      </div>
 
-        {!selectedGroupId ? <p className={styles.emptySelection}>Оберіть групу зі списку, щоб переглянути її розклад.</p> : <div className={styles.days}>
-          {days.map((day) => <DaySchedule key={day.date} day={day} periods={periods} clock={clock} />)}
-        </div>}
-      </section>
-    </div>
+      <div className={styles.days}>
+        {days.map((day) => <DaySchedule key={day.date} day={day} periods={periods} clock={clock} />)}
+      </div>
+    </section>
   </main>;
 }

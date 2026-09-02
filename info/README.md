@@ -9,10 +9,15 @@
 - [teacher-schedule-json-mapping.md](teacher-schedule-json-mapping.md) — фактична структура й mapping наданого JSON.
 - [schedule-v2-operations.md](schedule-v2-operations.md) — маршрути, міграція, створення адміністратора, імпорт, resolver і QA-порядок VID-029.
 - [my-schedule-adoption.md](my-schedule-adoption.md) — зіставлення Vite-прототипу `my-schedule` з чинною серверною архітектурою та план публічного workspace VID-031.
+- [minimal-admin.md](minimal-admin.md) — VID-033: мінімальна адміністративна оболонка, згрупована навігація й відкладений QA без зміни функцій.
+- [calendar-transfers-2026.md](calendar-transfers-2026.md) — VID-034: 12 календарних перенесень 2026 року, чинна модель `makeup_days` і план безпечного production-запису.
+- [public-group-context.md](public-group-context.md) — VID-035: загальний розклад без вибору груп і доступне відображення груп біля картки заняття.
+- [public-teacher-filter.md](public-teacher-filter.md) — VID-036: серверний фільтр публічного розкладу за одним викладачем або всіма викладачами.
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.
 - [qa/handoff-template.md](qa/handoff-template.md) — доручення незалежному QA-агенту.
 - [qa/handoffs/QA-20260902-01.md](qa/handoffs/QA-20260902-01.md) — незалежна перевірка головної сітки VID-026 перед дозволеним релізом VID-028.
+- [qa/handoffs/QA-20260902-05.md](qa/handoffs/QA-20260902-05.md) — фінальна незалежна перевірка пакета VID-033–VID-036 перед дозволеним релізом VID-037.
 - [qa/reports/QA-20260902-01.md](qa/reports/QA-20260902-01.md) — PASS VID-026: typecheck, 348 тестів, build і browser UI 1440/820/390.
 - [qa/reports/RELEASE-20260902-01.md](qa/reports/RELEASE-20260902-01.md) — production deployment VID-028 і повторна verified-прив’язка `web-dev.pp.ua`.
 - [qa/handoffs/QA-20260828-04.md](qa/handoffs/QA-20260828-04.md) — передрелізний QA накопичених кольорів, календаря, копіювання й публічних розділів VID-025.

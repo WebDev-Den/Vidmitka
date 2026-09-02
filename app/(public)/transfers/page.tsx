@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Перенесення пар" };
 const intro = {
   eyebrow: "ПУБЛІЧНИЙ ДОСТУП",
   title: "Перенесення пар",
-  description: "Опубліковані перенесення, заміни та скасування базового розкладу.",
+  description: "Дати, у які заняття проводяться за розкладом іншого дня, а також окремі заміни й скасування.",
 };
 
 export default function PublicTransfersPage() {

@@ -2,15 +2,17 @@ import "server-only";
 
 import { parsePeriodColor, type PeriodColor } from "@/lib/class-periods/colors";
 import { getDb } from "@/lib/db";
-import { getScheduleWeekSettings } from "@/lib/schedule-week/repository";
-import { getDateKeyInTimeZone, getWeekTypeForDate, type AlternatingWeekType } from "@/lib/schedule-week/rules";
+import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 
+import { getCalendarDayContext, findImportedTemplateDate } from "./calendar-overrides";
+import type { CalendarWeekType } from "./calendar-override-rules";
 import { shouldShowBaseOccurrence } from "./occurrence-rules";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
 export type PublicGroup = Readonly<{ id: string; name: string }>;
+export type PublicTeacher = Readonly<{ id: string; name: string }>;
 export type PublicPeriod = Readonly<{
   id: string;
   number: number;
@@ -25,7 +27,13 @@ export type PublicScheduleItem = Readonly<{
   note: string; changeKind: string | null; changeReason: string; cancelled: boolean; originalDate: string | null;
 }>;
 export type PublicScheduleDay = Readonly<{
-  date: string; weekType: AlternatingWeekType; weekConfigured: boolean; items: readonly PublicScheduleItem[];
+  date: string;
+  calendarDayOfWeek: number;
+  scheduleDayOfWeek: number;
+  weekType: CalendarWeekType;
+  weekConfigured: boolean;
+  isTransfer: boolean;
+  items: readonly PublicScheduleItem[];
 }>;
 
 type PublicRow = {
@@ -33,18 +41,13 @@ type PublicRow = {
   discipline: string; lesson_type: string; lesson_type_color: string; groups: string[] | null;
   teachers: string[] | null; rooms: string[] | null; note: string | null; change_kind: string | null;
   change_reason: string | null; cancelled: boolean; original_date: string | null;
-  new_date: string | null;
+  new_date: string | null; source_kind?: string | null;
 };
 
 function validDate(value: string | undefined): string {
   const timestamp = value && DATE_PATTERN.test(value) ? Date.parse(`${value}T00:00:00Z`) : Number.NaN;
   if (!value || !Number.isFinite(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== value) return getDateKeyInTimeZone(new Date());
   return value;
-}
-
-function dayOfWeek(date: string): number {
-  const value = new Date(`${date}T00:00:00Z`).getUTCDay();
-  return value === 0 ? 7 : value;
 }
 
 function mapRows(rows: PublicRow[]): PublicScheduleItem[] {
@@ -60,6 +63,17 @@ function mapRows(rows: PublicRow[]): PublicScheduleItem[] {
 export async function listPublicGroups(): Promise<PublicGroup[]> {
   const sql = getDb();
   const rows = await sql`SELECT id, code AS name FROM academic_groups WHERE is_active ORDER BY code` as unknown as PublicGroup[];
+  return rows;
+}
+
+export async function listPublicTeachers(): Promise<PublicTeacher[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT id::TEXT, display_name AS name
+    FROM teachers
+    WHERE is_active
+    ORDER BY display_name
+  ` as unknown as PublicTeacher[];
   return rows;
 }
 
@@ -87,15 +101,23 @@ export async function listPublicPeriods(): Promise<PublicPeriod[]> {
   }));
 }
 
-export async function getPublicScheduleDay(input: { date?: string; groupId?: string | null }): Promise<PublicScheduleDay> {
+export async function getPublicScheduleDay(input: {
+  date?: string;
+  groupId?: string | null;
+  teacherId?: string | null;
+}): Promise<PublicScheduleDay> {
   const date = validDate(input.date);
   const groupId = input.groupId && UUID_PATTERN.test(input.groupId) ? input.groupId : null;
-  const settings = await getScheduleWeekSettings();
-  const weekType = settings ? getWeekTypeForDate(date, settings) : "numerator";
-  const weekday = dayOfWeek(date);
+  const teacherId = input.teacherId && UUID_PATTERN.test(input.teacherId) ? input.teacherId : null;
+  const context = await getCalendarDayContext(date);
+  const weekType = context.weekType ?? "numerator";
+  const weekday = context.dayOfWeek;
+  const importedTemplateDate = context.isOverride
+    ? await findImportedTemplateDate({ targetDate: date, dayOfWeek: weekday, weekType })
+    : null;
   const sql = getDb();
 
-  const [baseRows, movedRows, oneTimeRows] = await Promise.all([
+  const [baseRows, movedRows, oneTimeRows, importedTemplateRows] = await Promise.all([
     sql`
       SELECT entry.id, ${date}::DATE::TEXT AS occurrence_date, period.number AS period_number,
         COALESCE(exception.custom_start_time, MAKE_TIME(period.start_minute/60, period.start_minute%60, 0))::TEXT AS start_time,
@@ -131,6 +153,13 @@ export async function getPublicScheduleDay(input: { date?: string; groupId?: str
             AND EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id AND group_id=${groupId}::UUID))
           OR (NOT EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id)
             AND EXISTS (SELECT 1 FROM schedule_entry_groups WHERE entry_id=entry.id AND group_id=${groupId}::UUID))))
+        AND (${teacherId}::UUID IS NULL
+          OR NOT EXISTS (SELECT 1 FROM teachers selected_teacher WHERE selected_teacher.id=${teacherId}::UUID AND selected_teacher.is_active)
+          OR (
+          (exception.id IS NOT NULL AND EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id)
+            AND EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id AND teacher_id=${teacherId}::UUID))
+          OR (NOT EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id)
+            AND EXISTS (SELECT 1 FROM schedule_entry_teachers WHERE entry_id=entry.id AND teacher_id=${teacherId}::UUID))))
     ` as unknown as Promise<PublicRow[]>,
     sql`
       SELECT exception.id, ${date}::DATE::TEXT AS occurrence_date, period.number AS period_number,
@@ -164,6 +193,13 @@ export async function getPublicScheduleDay(input: { date?: string; groupId?: str
             AND EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id AND group_id=${groupId}::UUID))
           OR (NOT EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id)
             AND EXISTS (SELECT 1 FROM schedule_entry_groups WHERE entry_id=entry.id AND group_id=${groupId}::UUID))))
+        AND (${teacherId}::UUID IS NULL
+          OR NOT EXISTS (SELECT 1 FROM teachers selected_teacher WHERE selected_teacher.id=${teacherId}::UUID AND selected_teacher.is_active)
+          OR (
+          (EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id)
+            AND EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id AND teacher_id=${teacherId}::UUID))
+          OR (NOT EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id)
+            AND EXISTS (SELECT 1 FROM schedule_entry_teachers WHERE entry_id=entry.id AND teacher_id=${teacherId}::UUID))))
     ` as unknown as Promise<PublicRow[]>,
     sql`
       SELECT exception.id, exception.original_date::TEXT AS occurrence_date, period.number AS period_number,
@@ -174,26 +210,72 @@ export async function getPublicScheduleDay(input: { date?: string; groupId?: str
         ARRAY(SELECT teacher.display_name FROM schedule_exception_teachers link JOIN teachers teacher ON teacher.id=link.teacher_id WHERE link.exception_id=exception.id ORDER BY teacher.display_name) AS teachers,
         ARRAY(SELECT room.name FROM schedule_exception_rooms link JOIN schedule_rooms room ON room.id=link.room_id WHERE link.exception_id=exception.id ORDER BY room.name) AS rooms,
         exception.note, exception.kind AS change_kind, exception.reason AS change_reason, FALSE AS cancelled,
-        NULL::TEXT AS original_date, NULL::TEXT AS new_date
+        NULL::TEXT AS original_date, NULL::TEXT AS new_date, exception.source_kind
       FROM schedule_exceptions exception
       JOIN disciplines discipline ON discipline.id=exception.discipline_id
       JOIN schedule_lesson_types lesson_type ON lesson_type.id=exception.lesson_type_id
       JOIN class_periods period ON period.id=exception.class_period_id
       WHERE exception.status='active' AND exception.kind='one_time' AND exception.original_date=${date}
         AND (${groupId}::UUID IS NULL OR EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id AND group_id=${groupId}::UUID))
+        AND (${teacherId}::UUID IS NULL
+          OR NOT EXISTS (SELECT 1 FROM teachers selected_teacher WHERE selected_teacher.id=${teacherId}::UUID AND selected_teacher.is_active)
+          OR EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id AND teacher_id=${teacherId}::UUID))
+    ` as unknown as Promise<PublicRow[]>,
+    sql`
+      SELECT exception.id, ${date}::DATE::TEXT AS occurrence_date, period.number AS period_number,
+        COALESCE(exception.custom_start_time, MAKE_TIME(period.start_minute/60, period.start_minute%60, 0))::TEXT AS start_time,
+        COALESCE(exception.custom_end_time, MAKE_TIME(period.end_minute/60, period.end_minute%60, 0))::TEXT AS end_time,
+        discipline.name AS discipline, lesson_type.name AS lesson_type, lesson_type.color AS lesson_type_color,
+        ARRAY(SELECT group_item.code FROM schedule_exception_groups link JOIN academic_groups group_item ON group_item.id=link.group_id WHERE link.exception_id=exception.id ORDER BY group_item.code) AS groups,
+        ARRAY(SELECT teacher.display_name FROM schedule_exception_teachers link JOIN teachers teacher ON teacher.id=link.teacher_id WHERE link.exception_id=exception.id ORDER BY teacher.display_name) AS teachers,
+        ARRAY(SELECT room.name FROM schedule_exception_rooms link JOIN schedule_rooms room ON room.id=link.room_id WHERE link.exception_id=exception.id ORDER BY room.name) AS rooms,
+        exception.note, 'calendar_override'::TEXT AS change_kind,
+        CONCAT('За розкладом ', ${importedTemplateDate}::DATE::TEXT) AS change_reason,
+        FALSE AS cancelled, ${importedTemplateDate}::DATE::TEXT AS original_date, NULL::TEXT AS new_date
+      FROM schedule_exceptions exception
+      JOIN disciplines discipline ON discipline.id=exception.discipline_id
+      JOIN schedule_lesson_types lesson_type ON lesson_type.id=exception.lesson_type_id
+      JOIN class_periods period ON period.id=exception.class_period_id
+      WHERE ${context.isOverride} AND ${importedTemplateDate}::DATE IS NOT NULL
+        AND exception.status='active' AND exception.kind='one_time'
+        AND exception.source_kind='teacher_schedule_json'
+        AND exception.original_date=${importedTemplateDate}::DATE
+        AND (${groupId}::UUID IS NULL OR EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id AND group_id=${groupId}::UUID))
+        AND (${teacherId}::UUID IS NULL
+          OR NOT EXISTS (SELECT 1 FROM teachers selected_teacher WHERE selected_teacher.id=${teacherId}::UUID AND selected_teacher.is_active)
+          OR EXISTS (SELECT 1 FROM schedule_exception_teachers WHERE exception_id=exception.id AND teacher_id=${teacherId}::UUID))
     ` as unknown as Promise<PublicRow[]>,
   ]);
   const visibleBaseRows = baseRows.filter((row) => shouldShowBaseOccurrence({ exceptionKind: row.change_kind, selectedDate: date, newDate: row.new_date }));
-  const items = mapRows([...visibleBaseRows, ...movedRows, ...oneTimeRows]).sort((a,b) => a.startTime.localeCompare(b.startTime) || a.discipline.localeCompare(b.discipline, "uk"));
-  return { date, weekType, weekConfigured: Boolean(settings), items };
+  const effectiveTemplateRows = visibleBaseRows.length > 0
+    || oneTimeRows.some((row) => row.source_kind === "teacher_schedule_json")
+    ? []
+    : importedTemplateRows;
+  const items = mapRows([...visibleBaseRows, ...movedRows, ...oneTimeRows, ...effectiveTemplateRows])
+    .sort((a,b) => a.startTime.localeCompare(b.startTime) || a.discipline.localeCompare(b.discipline, "uk"));
+  return {
+    date,
+    calendarDayOfWeek: context.calendarDayOfWeek,
+    scheduleDayOfWeek: context.dayOfWeek,
+    weekType,
+    weekConfigured: context.weekType !== null,
+    isTransfer: context.isOverride,
+    items,
+  };
 }
 
-export async function getPublicScheduleWeek(input: { date?: string; groupId?: string | null }): Promise<PublicScheduleDay[]> {
+export async function getPublicScheduleWeek(input: {
+  date?: string;
+  groupId?: string | null;
+  teacherId?: string | null;
+}): Promise<PublicScheduleDay[]> {
   const selected = validDate(input.date);
   const value = new Date(`${selected}T00:00:00Z`);
   const offset = (value.getUTCDay() + 6) % 7;
   const monday = new Date(value.getTime() - offset * 86_400_000);
   return Promise.all(Array.from({ length: 7 }, (_, index) => getPublicScheduleDay({
-    date: new Date(monday.getTime() + index * 86_400_000).toISOString().slice(0, 10), groupId: input.groupId,
+    date: new Date(monday.getTime() + index * 86_400_000).toISOString().slice(0, 10),
+    groupId: input.groupId,
+    teacherId: input.teacherId,
   })));
 }

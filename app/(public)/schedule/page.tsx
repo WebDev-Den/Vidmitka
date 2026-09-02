@@ -6,8 +6,8 @@ import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 import {
   getPublicScheduleDay,
   getPublicScheduleWeek,
-  listPublicGroups,
   listPublicPeriods,
+  listPublicTeachers,
 } from "@/lib/schedule-v2/public-schedule";
 
 export const metadata: Metadata = { title: "Публічний розклад" };
@@ -41,29 +41,38 @@ function navigationWeek(date: string) {
 }
 
 export default async function PublicSchedulePage({ searchParams }: {
-  searchParams: Promise<{ date?: string | string[]; group?: string | string[]; view?: string | string[] }>;
+  searchParams: Promise<{
+    date?: string | string[];
+    teacher?: string | string[];
+    view?: string | string[];
+  }>;
 }) {
   const params = await searchParams;
   const date = normalizeDate(typeof params.date === "string" ? params.date : undefined);
   const view = params.view === "week" ? "week" : "day";
-  const [groups, periods] = await Promise.all([listPublicGroups(), listPublicPeriods()]);
-  const requestedGroup = typeof params.group === "string" ? params.group : "";
-  const group = groups.some((item) => item.id === requestedGroup) ? requestedGroup : (groups[0]?.id ?? "");
-  const schedule = await (view === "week"
-    ? getPublicScheduleWeek({ date, groupId: group })
-    : getPublicScheduleDay({ date, groupId: group }).then((day) => [day]));
+  const requestedTeacherId = typeof params.teacher === "string" ? params.teacher : "";
+  const [teachers, periods, schedule] = await Promise.all([
+    listPublicTeachers(),
+    listPublicPeriods(),
+    view === "week"
+      ? getPublicScheduleWeek({ date, groupId: null, teacherId: requestedTeacherId || null })
+      : getPublicScheduleDay({ date, groupId: null, teacherId: requestedTeacherId || null }).then((day) => [day]),
+  ]);
+  const selectedTeacherId = teachers.some((teacher) => teacher.id === requestedTeacherId)
+    ? requestedTeacherId
+    : "";
   return (
     <>
       <div className="public-header-surface">
         <PublicHeader />
       </div>
       <PublicScheduleExplorer
-        groups={groups}
         periods={periods}
         days={schedule}
         navigationDays={navigationWeek(date)}
         selectedDate={date}
-        selectedGroupId={group}
+        selectedTeacherId={selectedTeacherId}
+        teachers={teachers}
         view={view}
       />
     </>

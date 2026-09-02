@@ -89,10 +89,14 @@ async function createPrerequisites(sql) {
     anchor_week_type TEXT NOT NULL CHECK (anchor_week_type IN ('numerator', 'denominator')),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   )`);
+  await sql.query(`CREATE TABLE attendance_sessions (
+    id TEXT PRIMARY KEY,
+    held_on DATE NOT NULL
+  )`);
 }
 
-async function applyScheduleV2Migration(sql) {
-  const source = await readFile(path.resolve(process.cwd(), "db/migrations/014_schedule_v2.sql"), "utf8");
+async function applyMigration(sql, fileName) {
+  const source = await readFile(path.resolve(process.cwd(), "db/migrations", fileName), "utf8");
   const statements = source.split("-- statement-breakpoint").map((statement) => statement.trim()).filter(Boolean);
   for (const statement of statements) await sql.query(statement);
   return statements.length;
@@ -152,8 +156,9 @@ export async function createScheduleV2TestDatabase(baseConnectionString) {
     const [scope] = await sql`SELECT current_schema() AS schema_name`;
     if (scope?.schema_name !== schemaName) throw new Error("Не вдалося довести ізоляцію search_path.");
     await createPrerequisites(sql);
-    const statementCount = await applyScheduleV2Migration(sql);
-    await applyScheduleV2Migration(sql);
+    await applyMigration(sql, "009_makeup_days.sql");
+    const statementCount = await applyMigration(sql, "014_schedule_v2.sql");
+    await applyMigration(sql, "014_schedule_v2.sql");
     const fixture = await seedFixture(sql);
     return { schemaName, connectionString, sql, fixture, statementCount };
   } catch (error) {

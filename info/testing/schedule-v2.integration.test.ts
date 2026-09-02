@@ -21,6 +21,7 @@ type ImportRepository = typeof import("@/lib/schedule-import-v2/repository");
 type CatalogRepository = typeof import("@/lib/schedule-v2/catalogs");
 type EntryRepository = typeof import("@/lib/schedule-v2/entries");
 type ExceptionRepository = typeof import("@/lib/schedule-v2/exceptions");
+type CalendarRepository = typeof import("@/lib/schedule-v2/calendar-overrides");
 type PublicRepository = typeof import("@/lib/schedule-v2/public-schedule");
 type AuthRepository = typeof import("@/lib/auth/repository");
 
@@ -31,6 +32,7 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
   let catalogRepository: CatalogRepository;
   let entryRepository: EntryRepository;
   let exceptionRepository: ExceptionRepository;
+  let calendarRepository: CalendarRepository;
   let publicRepository: PublicRepository;
   let authRepository: AuthRepository;
 
@@ -39,11 +41,12 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     process.env.DATABASE_URL = database.connectionString;
     process.env.QA_TEST_SCHEMA = database.schemaName;
     vi.resetModules();
-    [importRepository, catalogRepository, entryRepository, exceptionRepository, publicRepository, authRepository] = await Promise.all([
+    [importRepository, catalogRepository, entryRepository, exceptionRepository, calendarRepository, publicRepository, authRepository] = await Promise.all([
       import("@/lib/schedule-import-v2/repository"),
       import("@/lib/schedule-v2/catalogs"),
       import("@/lib/schedule-v2/entries"),
       import("@/lib/schedule-v2/exceptions"),
+      import("@/lib/schedule-v2/calendar-overrides"),
       import("@/lib/schedule-v2/public-schedule"),
       import("@/lib/auth/repository"),
     ]);
@@ -137,6 +140,9 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     const groups = await publicRepository.listPublicGroups();
     expect(groups).toContainEqual({ id: database.fixture.groupId, name: "QA-1" });
 
+    const teachers = await publicRepository.listPublicTeachers();
+    expect(teachers).toContainEqual({ id: database.fixture.teacherId, name: "Тестовий Викладач" });
+
     const periods = await publicRepository.listPublicPeriods();
     expect(periods).toHaveLength(8);
     expect(periods.map((period) => period.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
@@ -146,6 +152,32 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
       endTime: "10:55",
     });
     expect(periods.every((period) => /^#[0-9A-F]{6}$/u.test(period.color))).toBe(true);
+
+    const unfilteredDay = await publicRepository.getPublicScheduleDay({ date: "2026-09-02", groupId: null });
+    expect(unfilteredDay.items.find((item) => item.discipline === "Тестова дисципліна")?.groups).toEqual(["QA-1"]);
+
+    const teacherDay = await publicRepository.getPublicScheduleDay({
+      date: "2026-09-02",
+      groupId: null,
+      teacherId: database.fixture.teacherId,
+    });
+    expect(teacherDay.items.find((item) => item.discipline === "Тестова дисципліна")?.teachers).toEqual(["Тестовий Викладач"]);
+
+    const otherTeacherId = randomUUID();
+    await database.sql`INSERT INTO teachers (id, display_name, display_name_normalized)
+      VALUES (${otherTeacherId}, 'Інший Викладач', 'інший викладач')`;
+    expect((await publicRepository.getPublicScheduleDay({
+      date: "2026-09-02",
+      groupId: null,
+      teacherId: otherTeacherId,
+    })).items.some((item) => item.discipline === "Тестова дисципліна")).toBe(false);
+
+    const staleTeacherDay = await publicRepository.getPublicScheduleDay({
+      date: "2026-09-02",
+      groupId: null,
+      teacherId: randomUUID(),
+    });
+    expect(staleTeacherDay.items.some((item) => item.discipline === "Тестова дисципліна")).toBe(true);
   });
 
   it("enforces conflicts and resolves move, replacement, cancel and one-time exceptions", async () => {
@@ -194,5 +226,39 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     expect(response.status).toBe(200);
     const payload = await response.json() as Record<string, unknown>;
     expect(JSON.stringify(payload)).not.toMatch(/password|email|created_by|updated_by/iu);
+  });
+
+  it("applies a calendar transfer to the public schedule without copying the base entry", async () => {
+    const saved = await calendarRepository.saveCalendarOverride(qaAdministrator.id, {
+      date: "2026-09-04",
+      dayOfWeek: "4",
+      weekType: "numerator",
+      version: "0",
+    });
+    expect(saved.success).toBe(true);
+
+    const context = await calendarRepository.getCalendarDayContext("2026-09-04");
+    expect(context).toMatchObject({
+      calendarDayOfWeek: 5,
+      dayOfWeek: 4,
+      weekType: "numerator",
+      isOverride: true,
+    });
+    const day = await publicRepository.getPublicScheduleDay({
+      date: "2026-09-04",
+      groupId: database.fixture.groupId,
+    });
+    expect(day).toMatchObject({
+      scheduleDayOfWeek: 4,
+      weekType: "numerator",
+      isTransfer: true,
+    });
+    expect(day.items.some((item) => item.discipline === "Тестова дисципліна")).toBe(true);
+
+    const [item] = await calendarRepository.listCalendarOverrides();
+    expect((await calendarRepository.deleteCalendarOverride(qaAdministrator.id, {
+      date: item.date,
+      version: String(item.version),
+    })).success).toBe(true);
   });
 });

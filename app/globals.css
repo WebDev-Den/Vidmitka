@@ -1144,14 +1144,14 @@ textarea:focus-visible {
 
 .private-shell {
   display: grid;
-  grid-template-columns: 272px minmax(0, 1fr);
+  grid-template-columns: 232px minmax(0, 1fr);
   min-height: 100svh;
   background: var(--paper);
   transition: grid-template-columns 180ms ease;
 }
 
 .private-shell.is-collapsed {
-  grid-template-columns: 84px minmax(0, 1fr);
+  grid-template-columns: 72px minmax(0, 1fr);
 }
 
 .private-sidebar {
@@ -1165,7 +1165,7 @@ textarea:focus-visible {
   overflow-y: auto;
   overscroll-behavior-y: contain;
   scrollbar-width: thin;
-  padding: 20px 16px;
+  padding: 14px 10px;
   flex-direction: column;
   color: var(--ink);
   background: var(--surface);
@@ -1189,8 +1189,8 @@ textarea:focus-visible {
 }
 
 .private-sidebar .brand-mark {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
 .icon-control {
@@ -1216,46 +1216,30 @@ textarea:focus-visible {
   color: var(--muted);
 }
 
-.role-caption {
-  display: grid;
-  gap: 4px;
-  margin: 38px 10px 14px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.role-caption span {
-  color: var(--ink);
-  font-size: 11px;
-  font-weight: 850;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.role-caption small {
-  color: var(--muted);
-  font-size: 12px;
-}
-
 .role-navigation {
   display: grid;
-  gap: 5px;
+  margin-top: 18px;
+  gap: 3px;
 }
 
 .role-link {
   position: relative;
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr) auto;
-  min-height: 48px;
-  padding: 0 12px;
+  min-height: 44px;
+  padding: 0 10px;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   overflow: hidden;
   color: var(--muted);
-  border-radius: 12px;
-  font-size: 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .role-link:hover {
@@ -1267,6 +1251,42 @@ textarea:focus-visible {
   color: var(--accent-strong);
   background: var(--surface-soft);
   box-shadow: inset 3px 0 0 var(--accent-strong);
+}
+
+.navigation-group {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.navigation-group-toggle {
+  width: 100%;
+  text-align: left;
+}
+
+.navigation-group-toggle[aria-expanded="true"] .navigation-group-chevron {
+  transform: rotate(180deg);
+}
+
+.navigation-group-chevron {
+  transition: transform 160ms ease;
+}
+
+.navigation-submenu {
+  display: grid;
+  margin: 2px 0 5px 20px;
+  padding-left: 8px;
+  gap: 2px;
+  border-left: 1px solid var(--line);
+}
+
+.navigation-submenu[hidden] {
+  display: none;
+}
+
+.navigation-submenu .role-link {
+  min-height: 44px;
+  padding-left: 8px;
 }
 
 .role-link-icon {
@@ -1316,27 +1336,26 @@ textarea:focus-visible {
 }
 
 .sidebar-user {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   min-width: 0;
-  min-height: 62px;
+  min-height: 56px;
   margin-top: auto;
-  padding: 10px;
+  padding: 6px;
   align-items: center;
-  gap: 11px;
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  gap: 8px;
+  border-top: 1px solid var(--line);
 }
 
 .user-initials {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   flex: 0 0 auto;
   place-items: center;
   color: var(--accent-strong);
   background: var(--accent-soft);
-  border-radius: 11px;
+  border-radius: 9px;
   font-size: 12px;
   font-weight: 900;
 }
@@ -1367,7 +1386,7 @@ textarea:focus-visible {
 /* Collapsing is a desktop preference, never an icon-only mobile drawer. */
 @media (min-width: 861px) {
   .is-collapsed .private-sidebar {
-    padding-inline: 12px;
+    padding-inline: 8px;
   }
 
   .is-collapsed .private-brand-row {
@@ -1376,7 +1395,6 @@ textarea:focus-visible {
   }
 
   .is-collapsed .brand-copy,
-  .is-collapsed .role-caption,
   .is-collapsed .role-link-label,
   .is-collapsed .role-link-chevron,
   .is-collapsed .sidebar-user-copy {
@@ -1385,14 +1403,20 @@ textarea:focus-visible {
 
   .is-collapsed .role-link {
     grid-template-columns: 1fr;
-    width: 48px;
+    width: 44px;
     padding: 0;
     place-items: center;
   }
 
   .is-collapsed .sidebar-user {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding: 5px;
+    padding: 6px 0 0;
+  }
+
+  .is-collapsed .navigation-submenu {
+    display: none;
   }
 }
 
@@ -1404,7 +1428,7 @@ textarea:focus-visible {
   position: sticky;
   z-index: 30;
   top: 0;
-  display: flex;
+  display: none;
   min-height: 72px;
   padding: 0 clamp(24px, 4vw, 56px);
   align-items: center;
@@ -1420,45 +1444,14 @@ textarea:focus-visible {
   gap: 3px;
 }
 
-.topbar-title span {
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-}
-
 .topbar-title strong {
   font-size: 16px;
 }
 
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.role-badge {
-  display: inline-flex;
-  min-height: 30px;
-  padding: 0 10px;
-  align-items: center;
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 850;
-}
-
-.role-badge.role-administrator {
-  color: #74431c;
-  background: #f7e7d5;
-}
-
 .private-content {
-  width: min(100%, 1480px);
+  width: min(100%, 1600px);
   margin: 0 auto;
-  padding: clamp(32px, 4.5vw, 64px) clamp(24px, 4vw, 56px) 88px;
+  padding: clamp(24px, 3vw, 40px) clamp(20px, 3vw, 40px) 64px;
 }
 
 .metric-strip {
@@ -2308,12 +2301,9 @@ textarea:focus-visible {
   }
 
   .private-topbar {
+    display: flex;
     padding-inline: 24px;
     justify-content: flex-start;
-  }
-
-  .topbar-actions {
-    margin-left: auto;
   }
 
   .private-content {
@@ -2449,11 +2439,6 @@ textarea:focus-visible {
     min-height: 64px;
     padding-inline: 16px;
     gap: 10px;
-  }
-
-  .topbar-title span,
-  .role-badge {
-    display: none;
   }
 
   .private-content {
@@ -2596,8 +2581,12 @@ textarea:focus-visible {
   align-items: flex-start;
 }
 
+.management-page .page-intro .eyebrow {
+  display: none;
+}
+
 .management-page .page-intro h1 {
-  margin-block: 8px;
+  margin: 0 0 4px;
   font-size: clamp(24px, 2.5vw, 32px);
   line-height: 1.2;
 }
@@ -2606,6 +2595,103 @@ textarea:focus-visible {
   margin-block: 0;
   font-size: 14px;
   line-height: 1.5;
+}
+
+.admin-index {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-index-group {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-index-group:last-child {
+  border-bottom: 0;
+}
+
+.admin-index-group h2 {
+  margin: 0;
+  padding: 15px 12px 15px 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-index-list {
+  border-left: 1px solid var(--line);
+}
+
+.admin-index-link {
+  display: flex;
+  min-height: 54px;
+  padding: 9px 12px 9px 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-index-link:last-child {
+  border-bottom: 0;
+}
+
+.admin-index-link:hover {
+  color: var(--accent-strong);
+  background: color-mix(in srgb, var(--accent-soft) 24%, transparent);
+}
+
+.admin-index-link > span {
+  display: grid;
+  gap: 2px;
+}
+
+.admin-index-link strong {
+  font-size: 14px;
+}
+
+.admin-index-link small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.admin-index-link svg {
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+
+.management-page .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.management-page .dashboard-card {
+  display: grid;
+  min-width: 0;
+  padding: 12px;
+  gap: 2px;
+  border-right: 1px solid var(--line);
+}
+
+.management-page .dashboard-card:last-child {
+  border-right: 0;
+}
+
+.management-page .dashboard-card strong {
+  font-size: 20px;
+}
+
+.management-page .dashboard-card span {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .management-stack {
@@ -2732,6 +2818,28 @@ textarea:focus-visible {
 }
 
 .management-table form { margin: 0; }
+
+.management-section-stack,
+.management-section {
+  display: grid;
+  gap: 14px;
+}
+
+.management-section-stack {
+  gap: 26px;
+}
+
+.management-section-heading h2 {
+  margin: 0 0 5px;
+  color: #18283d;
+  font-size: clamp(21px, 2vw, 26px);
+  font-weight: 620;
+}
+
+.management-section-heading p {
+  margin: 0;
+  color: #71807b;
+}
 .management-cell-stack { display: grid; gap: 6px; }
 
 .management-status {
@@ -2817,6 +2925,13 @@ textarea:focus-visible {
 .management-panel p { font-size: 14px; line-height: 1.5; }
 @media (max-width: 640px) {
   .management-page .page-intro { gap: 12px; margin-bottom: 16px; }
+  .admin-index-group { grid-template-columns: minmax(0, 1fr); }
+  .admin-index-group h2 { padding: 14px 0 8px; }
+  .admin-index-list { border-left: 0; }
+  .admin-index-link { padding-inline: 0; }
+  .management-page .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .management-page .dashboard-card:nth-child(2) { border-right: 0; }
+  .management-page .dashboard-card:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
   .lesson-editor.compact-form { grid-template-columns: minmax(0, 1fr); padding: 12px; gap: 12px; }
   .compact-form fieldset { padding: 8px; }
   .management-table input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),

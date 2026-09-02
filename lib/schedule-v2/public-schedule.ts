@@ -4,7 +4,7 @@ import { parsePeriodColor, type PeriodColor } from "@/lib/class-periods/colors";
 import { getDb } from "@/lib/db";
 import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 
-import { getCalendarDayContext, findImportedTemplateDate } from "./calendar-overrides";
+import { getCalendarDayContext } from "./calendar-overrides";
 import type { CalendarWeekType } from "./calendar-override-rules";
 import { shouldShowBaseOccurrence } from "./occurrence-rules";
 
@@ -112,12 +112,9 @@ export async function getPublicScheduleDay(input: {
   const context = await getCalendarDayContext(date);
   const weekType = context.weekType ?? "numerator";
   const weekday = context.dayOfWeek;
-  const importedTemplateDate = context.isOverride
-    ? await findImportedTemplateDate({ targetDate: date, dayOfWeek: weekday, weekType })
-    : null;
   const sql = getDb();
 
-  const [baseRows, movedRows, oneTimeRows, importedTemplateRows] = await Promise.all([
+  const [baseRows, movedRows, oneTimeRows, legacyImportedRows] = await Promise.all([
     sql`
       SELECT entry.id, ${date}::DATE::TEXT AS occurrence_date, period.number AS period_number,
         COALESCE(exception.custom_start_time, MAKE_TIME(period.start_minute/60, period.start_minute%60, 0))::TEXT AS start_time,
@@ -216,6 +213,7 @@ export async function getPublicScheduleDay(input: {
       JOIN schedule_lesson_types lesson_type ON lesson_type.id=exception.lesson_type_id
       JOIN class_periods period ON period.id=exception.class_period_id
       WHERE exception.status='active' AND exception.kind='one_time' AND exception.original_date=${date}
+        AND exception.source_kind IS DISTINCT FROM 'teacher_schedule_json'
         AND (${groupId}::UUID IS NULL OR EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id AND group_id=${groupId}::UUID))
         AND (${teacherId}::UUID IS NULL
           OR NOT EXISTS (SELECT 1 FROM teachers selected_teacher WHERE selected_teacher.id=${teacherId}::UUID AND selected_teacher.is_active)
@@ -229,17 +227,24 @@ export async function getPublicScheduleDay(input: {
         ARRAY(SELECT group_item.code FROM schedule_exception_groups link JOIN academic_groups group_item ON group_item.id=link.group_id WHERE link.exception_id=exception.id ORDER BY group_item.code) AS groups,
         ARRAY(SELECT teacher.display_name FROM schedule_exception_teachers link JOIN teachers teacher ON teacher.id=link.teacher_id WHERE link.exception_id=exception.id ORDER BY teacher.display_name) AS teachers,
         ARRAY(SELECT room.name FROM schedule_exception_rooms link JOIN schedule_rooms room ON room.id=link.room_id WHERE link.exception_id=exception.id ORDER BY room.name) AS rooms,
-        exception.note, 'calendar_override'::TEXT AS change_kind,
-        CONCAT('За розкладом ', ${importedTemplateDate}::DATE::TEXT) AS change_reason,
-        FALSE AS cancelled, ${importedTemplateDate}::DATE::TEXT AS original_date, NULL::TEXT AS new_date
+        NULL::TEXT AS note, NULL::TEXT AS change_kind, NULL::TEXT AS change_reason,
+        FALSE AS cancelled, NULL::TEXT AS original_date, NULL::TEXT AS new_date
       FROM schedule_exceptions exception
       JOIN disciplines discipline ON discipline.id=exception.discipline_id
       JOIN schedule_lesson_types lesson_type ON lesson_type.id=exception.lesson_type_id
       JOIN class_periods period ON period.id=exception.class_period_id
-      WHERE ${context.isOverride} AND ${importedTemplateDate}::DATE IS NOT NULL
-        AND exception.status='active' AND exception.kind='one_time'
+      CROSS JOIN LATERAL get_schedule_day(exception.original_date) source_context
+      WHERE exception.status='active' AND exception.kind='one_time'
         AND exception.source_kind='teacher_schedule_json'
-        AND exception.original_date=${importedTemplateDate}::DATE
+        AND exception.original_date<=${date}::DATE
+        AND ${date}::DATE<=MAKE_DATE(EXTRACT(YEAR FROM exception.original_date)::INTEGER, 12, 31)
+        AND source_context.calendar_day=${weekday}
+        AND source_context.week_type=${weekType}
+        AND NOT source_context.is_makeup
+        AND NOT EXISTS (
+          SELECT 1 FROM schedule_entries migrated
+          WHERE migrated.source_kind=exception.source_kind AND migrated.source_id=exception.source_id
+        )
         AND (${groupId}::UUID IS NULL OR EXISTS (SELECT 1 FROM schedule_exception_groups WHERE exception_id=exception.id AND group_id=${groupId}::UUID))
         AND (${teacherId}::UUID IS NULL
           OR NOT EXISTS (SELECT 1 FROM teachers selected_teacher WHERE selected_teacher.id=${teacherId}::UUID AND selected_teacher.is_active)
@@ -247,11 +252,7 @@ export async function getPublicScheduleDay(input: {
     ` as unknown as Promise<PublicRow[]>,
   ]);
   const visibleBaseRows = baseRows.filter((row) => shouldShowBaseOccurrence({ exceptionKind: row.change_kind, selectedDate: date, newDate: row.new_date }));
-  const effectiveTemplateRows = visibleBaseRows.length > 0
-    || oneTimeRows.some((row) => row.source_kind === "teacher_schedule_json")
-    ? []
-    : importedTemplateRows;
-  const items = mapRows([...visibleBaseRows, ...movedRows, ...oneTimeRows, ...effectiveTemplateRows])
+  const items = mapRows([...visibleBaseRows, ...movedRows, ...oneTimeRows, ...legacyImportedRows])
     .sort((a,b) => a.startTime.localeCompare(b.startTime) || a.discipline.localeCompare(b.discipline, "uk"));
   return {
     date,

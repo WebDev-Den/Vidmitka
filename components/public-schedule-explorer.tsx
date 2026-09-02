@@ -36,8 +36,8 @@ function PendingLinkStatus({ label }: { label: string }) {
   </>;
 }
 
-function scheduleHref(input: { date: string; teacherId: string; view: "day" | "week" }): string {
-  const query = new URLSearchParams({ date: input.date, view: input.view });
+function scheduleHref(input: { date: string; teacherId: string }): string {
+  const query = new URLSearchParams({ date: input.date });
   if (input.teacherId) query.set("teacher", input.teacherId);
   return `/schedule?${query.toString()}`;
 }
@@ -174,7 +174,6 @@ export function PublicScheduleExplorer({
   selectedDate,
   selectedTeacherId,
   teachers,
-  view,
 }: {
   periods: readonly PublicPeriod[];
   days: readonly PublicScheduleDay[];
@@ -182,7 +181,6 @@ export function PublicScheduleExplorer({
   selectedDate: string;
   selectedTeacherId: string;
   teachers: readonly PublicTeacher[];
-  view: "day" | "week";
 }) {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
@@ -192,24 +190,19 @@ export function PublicScheduleExplorer({
     return () => window.clearInterval(timer);
   }, []);
   const clock = kyivClock(now);
-  const dayStep = view === "week" ? 7 : 1;
 
   return <main className={styles.workspace}>
     <section className={styles.statusBar} aria-label="Поточний стан розкладу">
       <div className={styles.clock}><strong suppressHydrationWarning>{clock.time}</strong><span suppressHydrationWarning>{clock.date}</span></div>
       <div className={styles.statusActions}>
         <span className={styles.weekBadge}>{days[0]?.weekType === "denominator" ? "Знаменник" : "Чисельник"}</span>
-        <nav className={styles.mode} aria-label="Формат розкладу">
-          <Link href={scheduleHref({ date: selectedDate, teacherId: selectedTeacherId, view: "day" })} aria-current={view === "day" ? "page" : undefined}>День<PendingLinkStatus label="денний розклад" /></Link>
-          <Link href={scheduleHref({ date: selectedDate, teacherId: selectedTeacherId, view: "week" })} aria-current={view === "week" ? "page" : undefined}>Тиждень<PendingLinkStatus label="тижневий розклад" /></Link>
-        </nav>
       </div>
     </section>
 
     <nav className={styles.dayTabs} aria-label="Дні поточного тижня">
       {navigationDays.map((day) => <Link
         key={day.date}
-        href={scheduleHref({ date: day.date, teacherId: selectedTeacherId, view: "day" })}
+        href={scheduleHref({ date: day.date, teacherId: selectedTeacherId })}
         aria-current={day.date === selectedDate ? "date" : undefined}
       ><span>{day.shortLabel}</span><small>{day.dayLabel}</small><PendingLinkStatus label={`розклад на ${day.dayLabel}`} /></Link>)}
     </nav>
@@ -217,9 +210,9 @@ export function PublicScheduleExplorer({
     <section className={styles.scheduleArea}>
       <div className={styles.scheduleToolbar}>
         <div className={styles.dateNavigation}>
-          <Link aria-label={view === "week" ? "Попередній тиждень" : "Попередній день"} href={scheduleHref({ date: addDays(selectedDate, -dayStep), teacherId: selectedTeacherId, view })}>←<PendingLinkStatus label={view === "week" ? "попередній тиждень" : "попередній день"} /></Link>
-          <Link href={scheduleHref({ date: clock.dateKey || selectedDate, teacherId: selectedTeacherId, view })}>Сьогодні<PendingLinkStatus label="розклад на сьогодні" /></Link>
-          <Link aria-label={view === "week" ? "Наступний тиждень" : "Наступний день"} href={scheduleHref({ date: addDays(selectedDate, dayStep), teacherId: selectedTeacherId, view })}>→<PendingLinkStatus label={view === "week" ? "наступний тиждень" : "наступний день"} /></Link>
+          <Link aria-label="Попередній день" href={scheduleHref({ date: addDays(selectedDate, -1), teacherId: selectedTeacherId })}>←<PendingLinkStatus label="попередній день" /></Link>
+          <Link href={scheduleHref({ date: clock.dateKey || selectedDate, teacherId: selectedTeacherId })}>Сьогодні<PendingLinkStatus label="розклад на сьогодні" /></Link>
+          <Link aria-label="Наступний день" href={scheduleHref({ date: addDays(selectedDate, 1), teacherId: selectedTeacherId })}>→<PendingLinkStatus label="наступний день" /></Link>
         </div>
         <form method="get" className={styles.teacherFilter}>
           <label>
@@ -235,12 +228,10 @@ export function PublicScheduleExplorer({
             </select>
           </label>
           <input type="hidden" name="date" value={selectedDate} />
-          <input type="hidden" name="view" value={view} />
           <button className="sr-only" type="submit">Показати розклад викладача</button>
         </form>
         <form method="get" className={styles.dateForm}>
           <label><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} /></label>
-          <input type="hidden" name="view" value={view} />
           {selectedTeacherId ? <input type="hidden" name="teacher" value={selectedTeacherId} /> : null}
           <button type="submit">Перейти</button>
         </form>

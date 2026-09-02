@@ -11,7 +11,7 @@ import styles from "./schedule-manager.module.css";
 
 const initialState: ScheduleEntryMutationResult = { success: false, message: "" };
 const DAYS = ["Понеділок", "Вівторок", "Середа", "Четвер", "П’ятниця", "Субота", "Неділя"];
-const WEEK_LABELS = { numerator: "Перший тиждень", denominator: "Другий тиждень", both: "Щотижня" } as const;
+const WEEK_LABELS = { numerator: "Чисельник", denominator: "Знаменник", both: "Щотижня" } as const;
 
 function Fields({ options, entry }: { options: ScheduleEditorOptions; entry?: ScheduleEntryView }) {
   return <>
@@ -28,7 +28,7 @@ function Fields({ options, entry }: { options: ScheduleEditorOptions; entry?: Sc
       <option value="" disabled>Оберіть пару</option>{options.periods.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
     </select></label>
     <label>Тип тижня<select name="weekPattern" defaultValue={entry?.weekPattern ?? "both"} required>
-      <option value="both">Щотижня</option><option value="numerator">Перший тиждень</option><option value="denominator">Другий тиждень</option>
+      <option value="both">Щотижня</option><option value="numerator">Чисельник</option><option value="denominator">Знаменник</option>
     </select></label>
     <label>Групи<select name="groupIds" multiple defaultValue={entry?.groups.map((item) => item.id) ?? []} required>
       {options.groups.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}

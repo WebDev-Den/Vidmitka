@@ -6,9 +6,6 @@
 .dayEyebrow { color: var(--muted); font-size: .65rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .statusActions { display: flex; align-items: center; gap: 10px; }
 .weekBadge { display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px; color: var(--accent-strong); background: var(--accent-soft); border-radius: 999px; font-size: .72rem; font-weight: 800; }
-.mode { display: flex; gap: 3px; padding: 3px; background: var(--surface-soft); border-radius: 9px; }
-.mode a { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--muted); border-radius: 7px; font-size: .75rem; font-weight: 800; }
-.mode a[aria-current="page"] { color: #fff; background: var(--accent-strong); }
 .dayTabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
 .dayTabs a { position: relative; display: grid; justify-items: center; gap: 2px; min-height: 50px; padding: 7px 4px; color: var(--muted); background: var(--surface); font-size: .75rem; font-weight: 800; text-transform: capitalize; }
 .dayTabs a:hover { color: var(--accent-strong); background: color-mix(in srgb, var(--accent-soft) 45%, white); }
@@ -100,7 +97,6 @@
   .statusBar { display: grid; grid-template-columns: minmax(0, 1fr) auto; padding: 12px 10px; }
   .statusActions { gap: 6px; }
   .weekBadge { padding-inline: 8px; }
-  .mode a { padding-inline: 9px; }
   .scheduleToolbar { grid-template-columns: minmax(0, 1fr); }
   .dateNavigation { grid-column: 1; grid-row: auto; display: grid; grid-template-columns: 44px 1fr 44px; }
   .teacherFilter { grid-column: 1; grid-row: auto; }
@@ -111,6 +107,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dayTabs a, .dateNavigation a, .mode a, .lessonGroups { scroll-behavior: auto; transition: none; }
+  .dayTabs a, .dateNavigation a, .lessonGroups { scroll-behavior: auto; transition: none; }
   .pendingSpinner { animation: none; border-top-color: transparent; }
 }

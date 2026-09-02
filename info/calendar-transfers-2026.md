@@ -23,7 +23,7 @@
 
 ## Module та seam
 
-`lib/schedule-v2/calendar-overrides.ts` — глибокий module над чинною таблицею `makeup_days` і функцією `get_schedule_day`. Його interface повертає готовий календарний контекст, список активних переносів, CRUD/batch-результат і найближчу імпортовану дату-шаблон. Споживачі не знають про optimistic version, advisory locks, legacy-назву таблиці чи спосіб пошуку шаблону.
+`lib/schedule-v2/calendar-overrides.ts` — глибокий module над чинною таблицею `makeup_days` і функцією `get_schedule_day`. Його interface повертає готовий календарний контекст, список активних переносів і CRUD/batch-результат. Споживачі не знають про optimistic version, advisory locks або legacy-назву таблиці.
 
 Pure interface у `calendar-override-rules.ts` володіє валідацією, назвами днів і точним погодженим набором. Це тестова межа для значень зі скриншота; repository та public resolver — інтеграційні межі.
 
@@ -34,16 +34,16 @@ Pure interface у `calendar-override-rules.ts` володіє валідаціє
 ## Реалізація
 
 - `calendar-override-rules.ts` містить валідацію, підписи й точний набір зі скриншота.
-- `calendar-overrides.ts` інкапсулює context, optimistic version, advisory lock, захист журналу, ручні зміни, пакет 2026 та пошук імпортованого шаблону.
+- `calendar-overrides.ts` інкапсулює context, optimistic version, advisory lock, захист журналу, ручні зміни та пакет 2026.
 - `/admin/exceptions` має компактну таблицю ручного керування й окрему підтверджувану дію для 12 дат.
 - `/transfers` спочатку показує глобальні перенесення, а точкові зміни занять — окремою таблицею.
-- Публічний день / тиждень використовує ефективні день і тип тижня. Якщо JSON зберіг розклад як `one_time`, заняття читаються з найближчої звичайної імпортованої дати з потрібним днем / типом; за наявності власних імпортованих записів цільової дати шаблон не додається вдруге.
+- Публічний день / тиждень використовує ефективні день і тип тижня. Нові імпортовані записи є базовими recurring-заняттями. Legacy `one_time` із джерелом `teacher_schedule_json` тимчасово проєктуються як повторювані записи від своєї дати до 31 грудня без технічних позначок і без дублювання після міграційного повторного імпорту.
 
 Статус: **реалізовано; QA очікується**. Production-дані не змінені.
 
 ## Відкладений QA
 
 - Pure: 12 точних відповідностей, валідні/невалідні дати, день 1–7, два типи тижня, версії.
-- DB: create/update/deactivate, batch, повторний batch, захищений журнал, конкуренція, effective context і template date.
-- Public resolver: звичайний день, перенесення recurring-записів, імпортований template, точковий виняток поверх календаря, тижневий view.
+- DB: create/update/deactivate, batch, повторний batch, захищений журнал, конкуренція й effective context.
+- Public resolver: звичайний день, перенесення recurring-записів, legacy-сумісність імпорту, точковий виняток поверх календаря, тижневий view.
 - Browser: `/admin/exceptions` і `/transfers` на 1440 / 820 / 390 px, keyboard, pending, confirm, console та overflow.

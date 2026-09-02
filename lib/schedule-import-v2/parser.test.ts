@@ -39,12 +39,28 @@ describe("analyzeTeacherScheduleJson", () => {
       teacherName: "Алексейко В.О.",
       disciplineName: "Штучні нейронні мережі",
       groups: ["КІ-25-2ал"],
-      occurrenceDate: "2026-09-01",
+      validFrom: "2026-09-01",
+      validUntil: "2026-12-31",
+      dayOfWeek: 2,
+      weekPattern: "numerator",
       sourceScheduleDay: 1,
       sourceScheduleWeek: "numerator",
     });
     expect(result.rows[0]?.sourceId).toMatch(/^[a-f0-9]{64}$/u);
     expect(result.catalogs.disciplines).toEqual(["Штучні нейронні мережі"]);
+  });
+
+  it("sets the recurring schedule end to December 31 of the imported date year", () => {
+    const result = analyzeTeacherScheduleJson(JSON.stringify([
+      { ...validLesson, date: "2027-09-07" },
+    ]));
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.rows[0]).toMatchObject({
+      validFrom: "2027-09-07",
+      validUntil: "2027-12-31",
+    });
   });
 
   it("uses a stable row key regardless of whitespace and group order", () => {

@@ -7,10 +7,11 @@ export type TeacherScheduleImportRow = Readonly<{
   sourceId: string;
   payloadHash: string;
   teacherName: string;
-  occurrenceDate: string;
+  validFrom: string;
+  validUntil: string;
   dayOfWeek: number;
   periodNumber: number;
-  calendarWeek: ImportWeekType;
+  weekPattern: ImportWeekType;
   disciplineName: string;
   roomName: string;
   groups: readonly string[];
@@ -89,6 +90,10 @@ function isoDayOfWeek(value: string): number {
   return day === 0 ? 7 : day;
 }
 
+function endOfYear(value: string): string {
+  return `${value.slice(0, 4)}-12-31`;
+}
+
 function asInteger(value: unknown): number | null {
   return typeof value === "number" && Number.isInteger(value) ? value : null;
 }
@@ -108,10 +113,10 @@ function validateRow(raw: unknown, rowNumber: number):
 
   const errors: ImportIssue[] = [];
   const teacherName = normalizeText(raw.teacher);
-  const occurrenceDate = normalizeText(raw.date);
+  const validFrom = normalizeText(raw.date);
   const dayOfWeek = asInteger(raw.dayOfWeek);
   const periodNumber = asInteger(raw.period);
-  const calendarWeek = asWeekType(raw.weekType);
+  const weekPattern = asWeekType(raw.weekType);
   const disciplineName = normalizeText(raw.subject);
   const roomName = normalizeText(raw.room);
   const lessonTypeName = normalizeText(raw.lessonType);
@@ -135,18 +140,18 @@ function validateRow(raw: unknown, rowNumber: number):
   requireText(roomName, "room", "invalid_room", 120);
   requireText(lessonTypeName, "lessonType", "invalid_lesson_type", 100);
 
-  if (!validDate(occurrenceDate)) {
+  if (!validDate(validFrom)) {
     errors.push({ rowNumber, code: "invalid_date", message: `Запис ${rowNumber}: дата має формат YYYY-MM-DD.` });
   }
   if (dayOfWeek === null || dayOfWeek < 1 || dayOfWeek > 7) {
     errors.push({ rowNumber, code: "invalid_day", message: `Запис ${rowNumber}: dayOfWeek має бути числом від 1 до 7.` });
-  } else if (validDate(occurrenceDate) && isoDayOfWeek(occurrenceDate) !== dayOfWeek) {
-    errors.push({ rowNumber, code: "date_day_mismatch", message: `Запис ${rowNumber}: dayOfWeek не відповідає даті ${occurrenceDate}.` });
+  } else if (validDate(validFrom) && isoDayOfWeek(validFrom) !== dayOfWeek) {
+    errors.push({ rowNumber, code: "date_day_mismatch", message: `Запис ${rowNumber}: dayOfWeek не відповідає даті ${validFrom}.` });
   }
   if (periodNumber === null || periodNumber < 1 || periodNumber > 99) {
     errors.push({ rowNumber, code: "invalid_period", message: `Запис ${rowNumber}: period має бути цілим числом від 1 до 99.` });
   }
-  if (!calendarWeek) {
+  if (!weekPattern) {
     errors.push({ rowNumber, code: "invalid_week_type", message: `Запис ${rowNumber}: weekType має бути numerator або denominator.` });
   }
   if (groups.length === 0) {
@@ -168,10 +173,11 @@ function validateRow(raw: unknown, rowNumber: number):
     row: {
       rowNumber,
       teacherName,
-      occurrenceDate,
+      validFrom,
+      validUntil: endOfYear(validFrom),
       dayOfWeek: dayOfWeek as number,
       periodNumber: periodNumber as number,
-      calendarWeek: calendarWeek as ImportWeekType,
+      weekPattern: weekPattern as ImportWeekType,
       disciplineName,
       roomName,
       groups,
@@ -184,7 +190,7 @@ function validateRow(raw: unknown, rowNumber: number):
 
 function identityPayload(row: Omit<TeacherScheduleImportRow, "rowNumber" | "sourceId" | "payloadHash">): string {
   return JSON.stringify({
-    date: row.occurrenceDate,
+    date: row.validFrom,
     period: row.periodNumber,
     teacher: normalizedKey(row.teacherName),
     groups: row.groups.map(normalizedKey).sort(),
@@ -199,7 +205,7 @@ function normalizedPayload(row: Omit<TeacherScheduleImportRow, "rowNumber" | "so
     subject: normalizedKey(row.disciplineName),
     room: normalizedKey(row.roomName),
     lessonType: normalizedKey(row.lessonTypeName),
-    calendarWeek: row.calendarWeek,
+    calendarWeek: row.weekPattern,
     dayOfWeek: row.dayOfWeek,
   });
 }
@@ -283,13 +289,13 @@ export function analyzeTeacherScheduleJson(content: string): TeacherScheduleImpo
   });
 
   addCollisionWarnings(rows, warnings, "teacher_conflict", "Можливий конфлікт викладача", (row) => [
-    `${row.occurrenceDate}|${row.periodNumber}|${normalizedKey(row.teacherName)}`,
+    `${row.validFrom}|${row.periodNumber}|${normalizedKey(row.teacherName)}`,
   ]);
   addCollisionWarnings(rows, warnings, "room_conflict", "Можливий конфлікт аудиторії", (row) => [
-    `${row.occurrenceDate}|${row.periodNumber}|${normalizedKey(row.roomName)}`,
+    `${row.validFrom}|${row.periodNumber}|${normalizedKey(row.roomName)}`,
   ]);
   addCollisionWarnings(rows, warnings, "group_conflict", "Можливий конфлікт групи", (row) =>
-    row.groups.map((group) => `${row.occurrenceDate}|${row.periodNumber}|${normalizedKey(group)}`),
+    row.groups.map((group) => `${row.validFrom}|${row.periodNumber}|${normalizedKey(group)}`),
   );
 
   const catalogs = {

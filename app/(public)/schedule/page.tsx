@@ -5,7 +5,6 @@ import { PublicScheduleExplorer } from "@/components/public-schedule-explorer";
 import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 import {
   getPublicScheduleDay,
-  getPublicScheduleWeek,
   listPublicPeriods,
   listPublicTeachers,
 } from "@/lib/schedule-v2/public-schedule";
@@ -44,19 +43,15 @@ export default async function PublicSchedulePage({ searchParams }: {
   searchParams: Promise<{
     date?: string | string[];
     teacher?: string | string[];
-    view?: string | string[];
   }>;
 }) {
   const params = await searchParams;
   const date = normalizeDate(typeof params.date === "string" ? params.date : undefined);
-  const view = params.view === "week" ? "week" : "day";
   const requestedTeacherId = typeof params.teacher === "string" ? params.teacher : "";
   const [teachers, periods, schedule] = await Promise.all([
     listPublicTeachers(),
     listPublicPeriods(),
-    view === "week"
-      ? getPublicScheduleWeek({ date, groupId: null, teacherId: requestedTeacherId || null })
-      : getPublicScheduleDay({ date, groupId: null, teacherId: requestedTeacherId || null }).then((day) => [day]),
+    getPublicScheduleDay({ date, groupId: null, teacherId: requestedTeacherId || null }).then((day) => [day]),
   ]);
   const selectedTeacherId = teachers.some((teacher) => teacher.id === requestedTeacherId)
     ? requestedTeacherId
@@ -73,7 +68,6 @@ export default async function PublicSchedulePage({ searchParams }: {
         selectedDate={date}
         selectedTeacherId={selectedTeacherId}
         teachers={teachers}
-        view={view}
       />
     </>
   );

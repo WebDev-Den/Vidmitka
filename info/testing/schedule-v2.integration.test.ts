@@ -90,6 +90,25 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
       fileSizeBytes: Buffer.byteLength(content), warningCount: analysis.warnings.length, rows: analysis.rows,
     });
     expect(first).toMatchObject({ createdCount: 431, updatedCount: 0, skippedCount: 0 });
+    const [importedSummary] = await database.sql`
+      SELECT COUNT(*)::INTEGER AS entries,
+        COUNT(*) FILTER (WHERE valid_until='2026-12-31'::DATE)::INTEGER AS ending_in_december
+      FROM schedule_entries
+      WHERE source_kind='teacher_schedule_json' AND is_active
+    `;
+    expect(importedSummary).toMatchObject({ entries: 431, ending_in_december: 431 });
+    const [firstImportedEntry] = await database.sql`
+      SELECT id::TEXT FROM schedule_entries
+      WHERE source_kind='teacher_schedule_json' AND source_id=${analysis.rows[0]!.sourceId}
+    `;
+    const recurringDate = new Date(`${analysis.rows[0]!.validFrom}T00:00:00Z`);
+    recurringDate.setUTCDate(recurringDate.getUTCDate() + 14);
+    const recurringItem = (await publicRepository.getPublicScheduleDay({
+      date: recurringDate.toISOString().slice(0, 10),
+    })).items.find((item) => item.id === firstImportedEntry!.id);
+    expect(recurringItem).toMatchObject({ changeKind: null, changeReason: "", note: "" });
+    expect((await publicRepository.getPublicScheduleDay({ date: "2027-01-04" }))
+      .items.some((item) => item.id === firstImportedEntry!.id)).toBe(false);
     expect(await importRepository.previewTeacherScheduleImport(analysis.rows)).toMatchObject({ createCount: 0, updateCount: 0, skipCount: 431 });
     const second = await importRepository.commitTeacherScheduleImport({
       administratorId: qaAdministrator.id, fileName: "teacher-schedule-lessons.json", fileHash: "a".repeat(64),
@@ -107,16 +126,50 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
       warningCount: changed.warnings.length, rows: changed.rows,
     })).toMatchObject({ updatedCount: 1 });
 
+    const migrationRow = analysis.rows.at(-1)!;
+    const [legacySource] = await database.sql`
+      SELECT id, discipline_id, lesson_type_id, class_period_id
+      FROM schedule_entries
+      WHERE source_kind='teacher_schedule_json' AND source_id=${migrationRow.sourceId}
+    `;
+    await database.sql`DELETE FROM schedule_entries WHERE id=${legacySource!.id}`;
+    const legacyExceptionId = randomUUID();
+    await database.sql`
+      INSERT INTO schedule_exceptions (
+        id, kind, original_date, class_period_id, discipline_id, lesson_type_id,
+        source_kind, source_id, source_payload_hash, created_by_user_id, updated_by_user_id
+      ) VALUES (
+        ${legacyExceptionId}, 'one_time', ${migrationRow.validFrom}, ${legacySource!.class_period_id},
+        ${legacySource!.discipline_id}, ${legacySource!.lesson_type_id}, 'teacher_schedule_json',
+        ${migrationRow.sourceId}, ${migrationRow.payloadHash}, ${qaAdministrator.id}, ${qaAdministrator.id}
+      )
+    `;
+    expect(await importRepository.previewTeacherScheduleImport([migrationRow]))
+      .toMatchObject({ createCount: 0, updateCount: 1, skipCount: 0 });
+    expect(await importRepository.commitTeacherScheduleImport({
+      administratorId: qaAdministrator.id, fileName: "legacy-migration.json", fileHash: "e".repeat(64),
+      fileSizeBytes: 1000, warningCount: 0, rows: [migrationRow],
+    })).toMatchObject({ createdCount: 0, updatedCount: 1, skippedCount: 0 });
+    const [migrationState] = await database.sql`
+      SELECT
+        (SELECT COUNT(*)::INTEGER FROM schedule_entries
+          WHERE source_kind='teacher_schedule_json' AND source_id=${migrationRow.sourceId}) AS entries,
+        (SELECT status FROM schedule_exceptions WHERE id=${legacyExceptionId}) AS legacy_status
+    `;
+    expect(migrationState).toMatchObject({ entries: 1, legacy_status: "superseded" });
+
     const invalidPeriod = analyzeTeacherScheduleJson(JSON.stringify([{ ...raw[0], period: 99 }]));
     expect(invalidPeriod.ok).toBe(true);
     if (!invalidPeriod.ok) return;
     const [before] = await database.sql`SELECT (SELECT COUNT(*) FROM schedule_import_runs)::INTEGER AS runs,
+      (SELECT COUNT(*) FROM schedule_entries)::INTEGER AS entries,
       (SELECT COUNT(*) FROM schedule_exceptions)::INTEGER AS exceptions`;
     await expect(importRepository.commitTeacherScheduleImport({
       administratorId: qaAdministrator.id, fileName: "rollback.json", fileHash: "c".repeat(64), fileSizeBytes: 1000,
       warningCount: 0, rows: invalidPeriod.rows,
     })).rejects.toThrow();
     const [after] = await database.sql`SELECT (SELECT COUNT(*) FROM schedule_import_runs)::INTEGER AS runs,
+      (SELECT COUNT(*) FROM schedule_entries)::INTEGER AS entries,
       (SELECT COUNT(*) FROM schedule_exceptions)::INTEGER AS exceptions`;
     expect(after).toEqual(before);
   }, 120_000);
@@ -180,6 +233,41 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     expect(staleTeacherDay.items.some((item) => item.discipline === "Тестова дисципліна")).toBe(true);
   });
 
+  it("projects legacy imported exceptions as recurring schedule without import labels", async () => {
+    const legacyId = randomUUID();
+    await database.sql`
+      INSERT INTO schedule_exceptions (
+        id, kind, original_date, class_period_id, discipline_id, lesson_type_id,
+        reason, note, source_kind, source_id, source_payload_hash,
+        created_by_user_id, updated_by_user_id
+      ) VALUES (
+        ${legacyId}, 'one_time', '2026-09-01', ${database.fixture.periodId},
+        ${database.fixture.disciplineId}, ${database.fixture.typeId},
+        'Імпортований датований розклад', 'Технічна примітка',
+        'teacher_schedule_json', ${`legacy-${legacyId}`}, ${"d".repeat(64)},
+        ${qaAdministrator.id}, ${qaAdministrator.id}
+      )
+    `;
+    await database.sql`INSERT INTO schedule_exception_groups (exception_id, group_id)
+      VALUES (${legacyId}, ${database.fixture.groupId})`;
+    await database.sql`INSERT INTO schedule_exception_teachers (exception_id, teacher_id)
+      VALUES (${legacyId}, ${database.fixture.teacherId})`;
+    await database.sql`INSERT INTO schedule_exception_rooms (exception_id, room_id)
+      VALUES (${legacyId}, ${database.fixture.roomId})`;
+
+    const recurring = (await publicRepository.getPublicScheduleDay({
+      date: "2026-09-15",
+      groupId: database.fixture.groupId,
+    })).items.find((item) => item.id === legacyId);
+    expect(recurring).toMatchObject({ changeKind: null, changeReason: "", note: "" });
+    expect((await publicRepository.getPublicScheduleDay({
+      date: "2027-01-05",
+      groupId: database.fixture.groupId,
+    })).items.some((item) => item.id === legacyId)).toBe(false);
+
+    await database.sql`DELETE FROM schedule_exceptions WHERE id=${legacyId}`;
+  });
+
   it("enforces conflicts and resolves move, replacement, cancel and one-time exceptions", async () => {
     const fixture = database.fixture;
     const secondRoomId = randomUUID();
@@ -193,11 +281,13 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     };
     expect((await entryRepository.createScheduleEntry(qaAdministrator.id, createEntryForm())).success).toBe(true);
     expect((await entryRepository.createScheduleEntry(qaAdministrator.id, createEntryForm())).message).toContain("Конфлікт");
-    const entry = (await entryRepository.listScheduleEntries()).find((item) => item.dayOfWeek === 4)!;
+    const entry = (await entryRepository.listScheduleEntries()).find((item) =>
+      item.dayOfWeek === 4 && item.groups.some((group) => group.id === fixture.groupId))!;
 
     const move = new FormData(); move.set("kind", "move"); move.set("baseEntryId", entry.id); move.set("originalDate", "2026-09-03"); move.set("newDate", "2026-09-04");
     expect((await exceptionRepository.createScheduleException(qaAdministrator.id, move)).success).toBe(true);
-    expect((await publicRepository.getPublicScheduleDay({ date: "2026-09-03", groupId: fixture.groupId })).items).toHaveLength(0);
+    expect((await publicRepository.getPublicScheduleDay({ date: "2026-09-03", groupId: fixture.groupId }))
+      .items.some((item) => item.id === entry.id)).toBe(false);
     expect((await publicRepository.getPublicScheduleDay({ date: "2026-09-04", groupId: fixture.groupId })).items.filter((item) => item.changeKind === "move")).toHaveLength(1);
     const moveId = (await exceptionRepository.listScheduleExceptions()).find((item) => item.kind === "move")!.id;
     await exceptionRepository.deleteScheduleException(moveId);

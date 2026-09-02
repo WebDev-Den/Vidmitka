@@ -13,6 +13,7 @@
 - [calendar-transfers-2026.md](calendar-transfers-2026.md) — VID-034: 12 календарних перенесень 2026 року, чинна модель `makeup_days` і план безпечного production-запису.
 - [public-group-context.md](public-group-context.md) — VID-035: загальний розклад без вибору груп і доступне відображення груп біля картки заняття.
 - [public-teacher-filter.md](public-teacher-filter.md) — VID-036: серверний фільтр публічного розкладу за одним викладачем або всіма викладачами.
+- [imported-recurring-schedule.md](imported-recurring-schedule.md) — VID-038: імпортований JSON як повторюваний розклад до 31.12.2026 без службових позначок у публічній картці.
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.
 - [qa/handoff-template.md](qa/handoff-template.md) — доручення незалежному QA-агенту.

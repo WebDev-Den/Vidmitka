@@ -200,26 +200,3 @@ export async function applyRequestedCalendarOverrides2026(
     message: `Календар 2026 оновлено: збережено ${changed}, уже були актуальні ${unchanged}.`,
   };
 }
-
-export async function findImportedTemplateDate(input: {
-  targetDate: string;
-  dayOfWeek: number;
-  weekType: CalendarWeekType;
-}): Promise<string | null> {
-  const sql = getDb();
-  const [row] = await sql`
-    SELECT source.original_date::TEXT AS template_date
-    FROM (
-      SELECT DISTINCT original_date
-      FROM schedule_exceptions
-      WHERE status='active' AND kind='one_time' AND source_kind='teacher_schedule_json'
-    ) source
-    CROSS JOIN LATERAL get_schedule_day(source.original_date) context
-    WHERE context.calendar_day=${input.dayOfWeek}
-      AND context.week_type=${input.weekType}
-      AND NOT context.is_makeup
-    ORDER BY ABS(source.original_date-${input.targetDate}::DATE), source.original_date
-    LIMIT 1
-  ` as unknown as Array<{ template_date: string }>;
-  return row?.template_date ?? null;
-}

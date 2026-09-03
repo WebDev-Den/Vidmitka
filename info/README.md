@@ -41,6 +41,7 @@
 - [qa/reports/QA-20260903-01.md](qa/reports/QA-20260903-01.md) — незалежний PASS VID-042: адаптивна щільність, фактичні вимірювання 1440/820/390, keyboard, auto-submit і pending у системному Edge.
 - [qa/handoffs/QA-20260903-02.md](qa/handoffs/QA-20260903-02.md) — передрелізне доручення незалежному QA для пакета VID-042–VID-045.
 - [qa/reports/QA-20260903-02.md](qa/reports/QA-20260903-02.md) — остаточний незалежний PASS VID-042–VID-045 після виправлення типізації combobox: typecheck, 77 тестів, production build і browser QA.
+- [qa/reports/RELEASE-20260903-01.md](qa/reports/RELEASE-20260903-01.md) — production deployment VID-042–VID-045, Vercel READY і read-only live smoke обох аліасів.
 - [architecture.md](architecture.md) — функціональна архітектура системи керування розкладом.
 - [data-model.md](data-model.md) — концептуальна модель даних для подальшого проєктування БД без вибору технології або способу зберігання.
 - [database-setup.md](database-setup.md) — підключення Neon Postgres через Vercel, локальні env-файли та перевірка з'єднання.

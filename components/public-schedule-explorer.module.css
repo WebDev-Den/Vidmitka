@@ -1,28 +1,44 @@
 .workspace { width: min(100% - 32px, 1480px); margin: 0 auto; padding: 20px 0 56px; }
-.statusBar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0; }
-.clock { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.statusBar { display: grid; grid-template-columns: auto auto minmax(220px, 1fr) auto auto; grid-template-areas: "clock navigation teacher date week"; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0; }
+.clock { grid-area: clock; display: flex; align-items: baseline; gap: 10px; min-width: 0; }
 .clock strong { color: var(--ink); font-size: 1.55rem; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
 .clock span { color: var(--muted); font-size: .75rem; text-transform: capitalize; }
 .dayEyebrow { color: var(--muted); font-size: .65rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
-.statusActions { display: flex; align-items: center; gap: 10px; }
+.statusActions { grid-area: week; display: flex; align-items: center; justify-self: end; gap: 10px; }
 .weekBadge { display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px; color: var(--accent-strong); background: var(--accent-soft); border-radius: 999px; font-size: .72rem; font-weight: 800; }
 .dayTabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
 .dayTabs a { position: relative; display: grid; justify-items: center; gap: 2px; min-height: 50px; padding: 7px 4px; color: var(--muted); background: var(--surface); font-size: .75rem; font-weight: 800; text-transform: capitalize; }
 .dayTabs a:hover { color: var(--accent-strong); background: color-mix(in srgb, var(--accent-soft) 45%, white); }
 .dayTabs a[aria-current="date"] { color: #fff; background: var(--accent-strong); }
 .dayTabs small { font-size: .65rem; font-weight: 650; opacity: .8; }
-.scheduleArea { min-width: 0; margin-top: 16px; }
-.scheduleToolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.dateNavigation { display: flex; gap: 5px; }
+.scheduleArea { min-width: 0; margin-top: 10px; }
+.dateNavigation { grid-area: navigation; display: flex; gap: 5px; }
 .dateNavigation a, .dateForm button { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: .8rem; font-weight: 800; }
 .dateNavigation a:hover, .dateForm button:hover { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
-.teacherFilter { flex: 1 1 320px; min-width: 190px; max-width: 420px; }
-.teacherFilter label { display: block; min-width: 0; }
-.teacherFilter select { width: 100%; min-height: 44px; padding: 0 38px 0 12px; overflow: hidden; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font: inherit; font-size: .82rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
-.teacherFilter select:hover { border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
-.teacherFilter select:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; border-color: var(--accent-strong); }
-.dateForm { display: flex; gap: 6px; }
-.dateForm input { min-height: 44px; padding: 0 10px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font: inherit; }
+.dateNavigation a:focus-visible, .dateForm button:focus-visible, .dateForm input:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; border-color: var(--accent-strong); }
+.teacherFilter { grid-area: teacher; min-width: 190px; }
+.teacherCombobox { display: grid; grid-template-columns: auto minmax(0, 1fr) 42px; align-items: center; min-height: 44px; overflow: hidden; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.teacherCombobox:hover { border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
+.teacherCombobox:focus-within { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; border-color: var(--accent-strong); }
+.teacherSearchIcon { width: 16px; height: 16px; margin-left: 12px; color: var(--muted); }
+.teacherComboboxInput { min-width: 0; height: 42px; padding: 0 8px; overflow: hidden; color: var(--ink); background: transparent; border: 0; outline: 0; font: inherit; font-size: .82rem; font-weight: 750; text-overflow: ellipsis; }
+.teacherComboboxInput::placeholder { color: var(--muted); font-weight: 650; }
+.teacherComboboxTrigger { display: grid; width: 42px; height: 42px; place-items: center; color: var(--muted); background: transparent; border: 0; cursor: pointer; }
+.teacherComboboxTrigger:hover { color: var(--accent-strong); background: color-mix(in srgb, var(--accent-soft) 38%, white); }
+.teacherComboboxTrigger svg { width: 16px; height: 16px; }
+.teacherComboboxPositioner { z-index: 40; width: var(--anchor-width); }
+.teacherComboboxPopup { width: 100%; overflow: hidden; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: 0 12px 30px rgba(24, 40, 61, .14); }
+.teacherComboboxList { max-height: min(320px, var(--available-height)); overflow-y: auto; padding: 4px; scrollbar-width: thin; }
+.teacherComboboxItem { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; min-height: 40px; padding: 8px 10px; border-radius: 6px; font-size: .82rem; cursor: pointer; }
+.teacherComboboxItem span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.teacherComboboxItem[data-highlighted] { color: var(--accent-strong); background: var(--accent-soft); outline: none; }
+.teacherComboboxItem[data-selected] { font-weight: 800; }
+.teacherComboboxIndicator { display: grid; width: 18px; height: 18px; place-items: center; color: var(--accent-strong); }
+.teacherComboboxIndicator svg { width: 15px; height: 15px; }
+.teacherComboboxEmpty { padding: 18px 12px; color: var(--muted); font-size: .8rem; text-align: center; }
+.dateForm { grid-area: date; display: flex; min-width: 0; gap: 6px; }
+.dateForm label { min-width: 0; }
+.dateForm input { width: 100%; min-width: 0; min-height: 44px; padding: 0 10px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font: inherit; font-variant-numeric: tabular-nums; }
 .days { display: grid; gap: 14px; }
 .dayPanel { min-width: 0; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: 0 10px 26px rgba(24, 40, 61, .04); }
 .dayHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
@@ -48,7 +64,6 @@
 .freeLabel { color: var(--muted); font-size: .8rem; }
 .lessonCard { position: relative; display: grid; gap: 5px; min-width: 0; padding: 10px 11px 10px 14px; overflow: hidden; background: color-mix(in srgb, var(--lesson-color) 7%, white); border: 1px solid color-mix(in srgb, var(--lesson-color) 28%, var(--line)); border-radius: 9px; }
 .lessonCard::before { position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--lesson-color); content: ""; }
-.lessonCard:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 38%, transparent); outline-offset: 2px; }
 .lessonTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
 .lessonType { width: fit-content; max-width: 65%; overflow: hidden; color: var(--accent-strong); font-size: .65rem; font-weight: 850; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
 .lessonRoom { overflow: hidden; color: var(--muted); font-size: .7rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
@@ -56,10 +71,9 @@
 .lessonTeacher { overflow: hidden; color: var(--muted); font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
 .changeBadge { width: fit-content; padding: 2px 6px; color: #7a4322; background: #f7e6d3; border-radius: 999px; font-size: .62rem; font-weight: 850; }
 .lessonNote { color: var(--muted); overflow-wrap: anywhere; }
-.lessonGroups { position: absolute; z-index: 2; inset: 8px 8px 8px auto; display: grid; align-content: center; gap: 3px; width: min(44%, 240px); padding: 9px 11px; opacity: 0; color: var(--ink); background: color-mix(in srgb, var(--surface) 96%, transparent); border: 1px solid var(--line); border-radius: 8px; box-shadow: -8px 0 20px rgba(24, 40, 61, .08); pointer-events: none; transform: translateX(8px); transition: opacity .14s ease, transform .14s ease; }
+.lessonGroups { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 6px; width: 100%; margin-top: 2px; padding-top: 6px; color: var(--ink); border-top: 1px solid color-mix(in srgb, var(--lesson-color) 18%, var(--line)); }
 .lessonGroups span { color: var(--accent-strong); font-size: .6rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
-.lessonGroups strong { overflow-wrap: anywhere; font-size: .75rem; line-height: 1.3; }
-.lessonCard:hover .lessonGroups, .lessonCard:focus .lessonGroups, .lessonCard:focus-within .lessonGroups { opacity: 1; transform: translateX(0); }
+.lessonGroups strong { min-width: 0; overflow-wrap: anywhere; font-size: .75rem; line-height: 1.3; }
 .cancelled { opacity: .62; }
 .cancelled .lessonSubject { text-decoration: line-through; }
 .noPeriods { margin: 0; padding: 48px 16px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); text-align: center; }
@@ -70,7 +84,8 @@
 
 @media (max-width: 900px) {
   .workspace { width: min(100% - 24px, 1480px); }
-  .statusBar { gap: 12px; }
+  .statusBar { grid-template-columns: auto minmax(210px, 1fr) auto; grid-template-areas: "clock teacher week" "navigation date date"; }
+  .dateForm { justify-self: end; }
   .lessonCell { grid-template-columns: 1fr; }
 }
 
@@ -81,32 +96,26 @@
   .clock strong { font-size: 1.3rem; }
   .dayTabs { grid-template-columns: repeat(7, 66px); overflow-x: auto; border-inline: 0; border-radius: 0; scrollbar-width: thin; }
   .scheduleArea { margin-top: 10px; padding: 0 10px; }
-  .scheduleToolbar { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: stretch; }
-  .teacherFilter { grid-column: 1 / -1; grid-row: 2; max-width: none; }
-  .dateForm { min-width: 0; }
-  .dateForm label { min-width: 0; }
-  .dateForm input { width: 100%; min-width: 0; }
+  .statusBar { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "clock week" "navigation navigation" "teacher teacher" "date date"; }
+  .dateNavigation { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; }
+  .teacherFilter { min-width: 0; }
+  .dateForm { display: grid; grid-template-columns: minmax(0, 1fr) auto; justify-self: stretch; }
   .dayPanel { border-radius: 10px; }
   .periodRow { grid-template-columns: 72px minmax(0, 1fr); min-height: 88px; }
   .periodCell { padding-inline: 5px; }
   .lessonCell { padding: 7px; }
-  .lessonGroups { position: static; display: flex; align-items: baseline; gap: 7px; width: auto; margin-top: 2px; padding: 6px 0 0; opacity: 1; background: transparent; border: 0; border-top: 1px solid color-mix(in srgb, var(--lesson-color) 18%, var(--line)); border-radius: 0; box-shadow: none; transform: none; }
 }
 
 @media (max-width: 430px) {
-  .statusBar { display: grid; grid-template-columns: minmax(0, 1fr) auto; padding: 12px 10px; }
+  .statusBar { padding: 12px 10px; }
   .statusActions { gap: 6px; }
   .weekBadge { padding-inline: 8px; }
-  .scheduleToolbar { grid-template-columns: minmax(0, 1fr); }
-  .dateNavigation { grid-column: 1; grid-row: auto; display: grid; grid-template-columns: 44px 1fr 44px; }
-  .teacherFilter { grid-column: 1; grid-row: auto; }
-  .dateForm { grid-column: 1; grid-row: auto; display: grid; grid-template-columns: 1fr auto; }
   .lessonTop { align-items: flex-start; flex-direction: column; gap: 3px; }
   .lessonType { max-width: 100%; }
   .lessonRoom, .lessonTeacher { white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dayTabs a, .dateNavigation a, .lessonGroups { scroll-behavior: auto; transition: none; }
+  .dayTabs a, .dateNavigation a { scroll-behavior: auto; transition: none; }
   .pendingSpinner { animation: none; border-top-color: transparent; }
 }

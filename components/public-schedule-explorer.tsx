@@ -1,7 +1,10 @@
 "use client";
 
+import { Combobox } from "@base-ui/react/combobox";
+import { Check, ChevronDown, Search } from "lucide-react";
 import Link, { useLinkStatus } from "next/link";
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState, useTransition, type CSSProperties } from "react";
 
 import { periodColorForeground } from "@/lib/class-periods/colors";
 import { calendarDayLabel } from "@/lib/schedule-v2/calendar-override-rules";
@@ -27,6 +30,7 @@ const CHANGE_LABELS: Record<string, string> = {
 };
 
 type NavigationDay = Readonly<{ date: string; shortLabel: string; dayLabel: string }>;
+type TeacherOption = Readonly<{ value: string; label: string }>;
 
 function PendingLinkStatus({ label }: { label: string }) {
   const { pending } = useLinkStatus();
@@ -104,7 +108,6 @@ function LessonCard({ item }: { item: PublicScheduleItem }) {
   return <article
     className={`${styles.lessonCard} ${item.cancelled ? styles.cancelled : ""}`}
     style={{ "--lesson-color": item.lessonTypeColor } as CSSProperties}
-    tabIndex={item.groups.length ? 0 : undefined}
   >
     <div className={styles.lessonTop}>
       <span className={styles.lessonType}>{item.lessonType}</span>
@@ -167,6 +170,74 @@ function DaySchedule({ day, periods, clock }: {
   </section>;
 }
 
+function TeacherFilter({
+  selectedDate,
+  selectedTeacherId,
+  teachers,
+}: {
+  selectedDate: string;
+  selectedTeacherId: string;
+  teachers: readonly PublicTeacher[];
+}) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const options = useMemo<readonly TeacherOption[]>(() => [
+    { value: "", label: "Всі викладачі" },
+    ...teachers.map((teacher) => ({ value: teacher.id, label: teacher.name })),
+  ], [teachers]);
+  const selectedTeacher = options.find((option) => option.value === selectedTeacherId) ?? options[0];
+
+  return <div className={styles.teacherFilter} aria-busy={isPending}>
+    <Combobox.Root
+      key={selectedTeacherId || "all"}
+      items={options}
+      defaultValue={selectedTeacher}
+      onValueChange={(option) => {
+        if (!option || option.value === selectedTeacherId) return;
+        startTransition(() => router.push(scheduleHref({ date: selectedDate, teacherId: option.value })));
+      }}
+      isItemEqualToValue={(option, value) => option.value === value.value}
+      autoHighlight
+      locale="uk"
+    >
+      <Combobox.InputGroup className={styles.teacherCombobox}>
+        <Search className={styles.teacherSearchIcon} aria-hidden="true" />
+        <Combobox.Input
+          className={styles.teacherComboboxInput}
+          aria-label="Пошук викладача"
+          placeholder="Знайти викладача"
+          autoComplete="off"
+        />
+        <Combobox.Trigger className={styles.teacherComboboxTrigger} aria-label="Відкрити список викладачів">
+          {isPending ? <span className={styles.pendingSpinner} aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}
+        </Combobox.Trigger>
+      </Combobox.InputGroup>
+      <Combobox.Portal>
+        <Combobox.Positioner className={styles.teacherComboboxPositioner} sideOffset={5} align="start">
+          <Combobox.Popup className={styles.teacherComboboxPopup}>
+            <Combobox.Empty className={styles.teacherComboboxEmpty}>Викладача не знайдено</Combobox.Empty>
+            <Combobox.List className={styles.teacherComboboxList}>
+              {(option: TeacherOption) => <Combobox.Item
+                key={option.value || "all"}
+                className={styles.teacherComboboxItem}
+                value={option}
+              >
+                <span>{option.label}</span>
+                <Combobox.ItemIndicator className={styles.teacherComboboxIndicator}>
+                  <Check aria-hidden="true" />
+                </Combobox.ItemIndicator>
+              </Combobox.Item>}
+            </Combobox.List>
+          </Combobox.Popup>
+        </Combobox.Positioner>
+      </Combobox.Portal>
+    </Combobox.Root>
+    <span className="sr-only" role="status" aria-live="polite">
+      {isPending ? "Завантаження розкладу викладача…" : ""}
+    </span>
+  </div>;
+}
+
 export function PublicScheduleExplorer({
   periods,
   days,
@@ -194,6 +265,17 @@ export function PublicScheduleExplorer({
   return <main className={styles.workspace}>
     <section className={styles.statusBar} aria-label="Поточний стан розкладу">
       <div className={styles.clock}><strong suppressHydrationWarning>{clock.time}</strong><span suppressHydrationWarning>{clock.date}</span></div>
+      <nav className={styles.dateNavigation} aria-label="Навігація за датою">
+        <Link aria-label="Попередній день" href={scheduleHref({ date: addDays(selectedDate, -1), teacherId: selectedTeacherId })}>←<PendingLinkStatus label="попередній день" /></Link>
+        <Link href={scheduleHref({ date: clock.dateKey || selectedDate, teacherId: selectedTeacherId })}>Сьогодні<PendingLinkStatus label="розклад на сьогодні" /></Link>
+        <Link aria-label="Наступний день" href={scheduleHref({ date: addDays(selectedDate, 1), teacherId: selectedTeacherId })}>→<PendingLinkStatus label="наступний день" /></Link>
+      </nav>
+      <TeacherFilter selectedDate={selectedDate} selectedTeacherId={selectedTeacherId} teachers={teachers} />
+      <form method="get" className={styles.dateForm} autoComplete="off">
+        <label><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} /></label>
+        {selectedTeacherId ? <input type="hidden" name="teacher" value={selectedTeacherId} /> : null}
+        <button type="submit">Перейти</button>
+      </form>
       <div className={styles.statusActions}>
         <span className={styles.weekBadge}>{days[0]?.weekType === "denominator" ? "Знаменник" : "Чисельник"}</span>
       </div>
@@ -208,35 +290,6 @@ export function PublicScheduleExplorer({
     </nav>
 
     <section className={styles.scheduleArea}>
-      <div className={styles.scheduleToolbar}>
-        <div className={styles.dateNavigation}>
-          <Link aria-label="Попередній день" href={scheduleHref({ date: addDays(selectedDate, -1), teacherId: selectedTeacherId })}>←<PendingLinkStatus label="попередній день" /></Link>
-          <Link href={scheduleHref({ date: clock.dateKey || selectedDate, teacherId: selectedTeacherId })}>Сьогодні<PendingLinkStatus label="розклад на сьогодні" /></Link>
-          <Link aria-label="Наступний день" href={scheduleHref({ date: addDays(selectedDate, 1), teacherId: selectedTeacherId })}>→<PendingLinkStatus label="наступний день" /></Link>
-        </div>
-        <form method="get" className={styles.teacherFilter}>
-          <label>
-            <span className="sr-only">Викладач у розкладі</span>
-            <select
-              key={selectedTeacherId || "all"}
-              name="teacher"
-              defaultValue={selectedTeacherId}
-              onChange={(event) => event.currentTarget.form?.requestSubmit()}
-            >
-              <option value="">Всі викладачі</option>
-              {teachers.map((teacher) => <option key={teacher.id} value={teacher.id}>{teacher.name}</option>)}
-            </select>
-          </label>
-          <input type="hidden" name="date" value={selectedDate} />
-          <button className="sr-only" type="submit">Показати розклад викладача</button>
-        </form>
-        <form method="get" className={styles.dateForm}>
-          <label><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} /></label>
-          {selectedTeacherId ? <input type="hidden" name="teacher" value={selectedTeacherId} /> : null}
-          <button type="submit">Перейти</button>
-        </form>
-      </div>
-
       <div className={styles.days}>
         {days.map((day) => <DaySchedule key={day.date} day={day} periods={periods} clock={clock} />)}
       </div>

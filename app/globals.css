@@ -285,8 +285,8 @@ textarea:focus-visible {
 
 .public-header-inner {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  width: min(1280px, calc(100% - 64px));
+  grid-template-columns: auto minmax(0, 1fr);
+  width: min(1480px, calc(100% - 32px));
   min-height: 76px;
   margin: 0 auto;
   align-items: center;
@@ -300,6 +300,7 @@ textarea:focus-visible {
 
 .public-navigation {
   display: flex;
+  justify-self: end;
   align-items: center;
   gap: 32px;
   color: var(--muted);
@@ -2185,16 +2186,13 @@ textarea:focus-visible {
   }
 
   .public-header-inner {
-    grid-template-columns: 1fr auto;
-    row-gap: 8px;
-    padding-block: 12px 0;
+    width: min(100% - 24px, 1480px);
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
   .public-navigation {
-    grid-column: 1 / -1;
-    grid-row: 2;
     min-width: 0;
-    justify-content: center;
+    justify-content: flex-end;
     flex-wrap: wrap;
     gap: 8px 24px;
   }
@@ -2344,8 +2342,21 @@ textarea:focus-visible {
   }
 
   .public-header-inner {
+    grid-template-columns: 1fr;
     min-height: 68px;
+    padding-block: 8px 0;
     gap: 12px;
+  }
+
+  .public-navigation {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    justify-self: stretch;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
   }
 
   .public-header .brand-copy small,

@@ -66,10 +66,10 @@
 | VID-048 | Ущільнити стилі списку пошуку викладачів | Баг (UI density / combobox popup) | Завершено | PASS — QA-20260904-02 retest | Опубліковано: 46f9176; Vercel READY |
 | VID-049 | Прибрати дубльовану навігацію й перенести панель розкладу в header | Фіча (UI layout / щільність) | Завершено | PASS — QA-20260904-02 retest | Опубліковано: 46f9176; Vercel READY |
 | VID-050 | Перевірити VID-048–VID-049 і задеплоїти після PASS | Технічна задача (QA / реліз) | Завершено | PASS — QA-20260904-02 retest | 46f9176; dpl_GcyW… READY; live smoke PASS |
-| VID-051 | Канонічний розклад на `/` без URL-стану, cookie викладача й автоматичний сьогоднішній день | Фіча (routing / client state / preference) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md) regression | Не опубліковано |
-| VID-052 | Встановлювана PWA без Web Push і додаткових секретів | Фіча (PWA; Web Push вилучено уточненням) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md) | Не опубліковано |
-| VID-053 | Popup вільних аудиторій для вибраної дати й номера пари | Фіча (публічний розклад / доступність аудиторій) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | Не опубліковано |
-| VID-054 | Перевірити VID-051–VID-053 і задеплоїти PWA без push-секретів | Технічна задача (QA / реліз) | QA PASS; deployment не виконувався QA-агентом | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | Не опубліковано |
+| VID-051 | Канонічний розклад на `/` без URL-стану, cookie викладача й автоматичний сьогоднішній день | Фіча (routing / client state / preference) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md) regression | Опубліковано: 3f77941; Vercel READY |
+| VID-052 | Встановлювана PWA без Web Push і додаткових секретів | Фіча (PWA; Web Push вилучено уточненням) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md) | Опубліковано: 3f77941; Vercel READY |
+| VID-053 | Popup вільних аудиторій для вибраної дати й номера пари | Фіча (публічний розклад / доступність аудиторій) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | Опубліковано: 3f77941; Vercel READY |
+| VID-054 | Перевірити VID-051–VID-053 і задеплоїти PWA без push-секретів | Технічна задача (QA / реліз) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | 3f77941; dpl_G1tB… READY; live smoke PASS |
 
 Наступний новий ID: **VID-055**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
@@ -88,7 +88,7 @@
 - Після актуального `PASS` у commit не потрапляють env-файли, секрети, `.next`, `*.tsbuildinfo` або сторонні generated-артефакти; push у `main` запускає штатний Vercel production deployment.
 - Потрібно дочекатися `READY` точного Git SHA та виконати read-only live smoke production-аліаса без записів до production-БД або міграцій.
 
-Доручення: [QA-20260904-04](qa/handoffs/QA-20260904-04.md). Геометричний ретест після `grid-auto-rows: max-content`: **PASS**. На 390×844 і 820×900 кожен periodRow охоплює periodCell/lessonCell, між сусідніми rows/cells/triggers немає перекриття; normal pointer-кліки всіх 7 наявних номерів відкривають правильний popup. Пройдені typecheck, unit, build, icons та isolated integration; 1440 regression, keyboard/Escape/focus, popup containment, current-period return, URL, overflow і console перевірено. Fingerprint: `35d7b0a8d04f240d66f6b90cae040b0b018943d1937b17d9d0522bedd6436e29`. QA не виконував commit, push або deployment.
+Доручення: [QA-20260904-04](qa/handoffs/QA-20260904-04.md). Геометричний ретест після `grid-auto-rows: max-content`: **PASS**. На 390×844 і 820×900 кожен periodRow охоплює periodCell/lessonCell, між сусідніми rows/cells/triggers немає перекриття; normal pointer-кліки всіх 7 наявних номерів відкривають правильний popup. Пройдені typecheck, unit, build, icons та isolated integration; 1440 regression, keyboard/Escape/focus, popup containment, current-period return, URL, overflow і console перевірено. Fingerprint: `35d7b0a8d04f240d66f6b90cae040b0b018943d1937b17d9d0522bedd6436e29`. Перевірений product commit `3f77941` завантажено в `main`; production deployment `dpl_G1tBevgS9M9v3gReDB179ooHmg73` має стан `READY`, обидва aliases та read-only PWA/API smoke — `PASS`. Деталі: [RELEASE-20260904-03](qa/reports/RELEASE-20260904-03.md).
 
 ## VID-053 — вільні аудиторії за номером пари
 
@@ -134,7 +134,7 @@ TDD-межі: manifest, service-worker headers, canonical icon generation/check 
 - Offline-кеш розкладу навмисно не додається, щоб не показувати застарілі перенесення; встановлена PWA потребує мережі для актуальних даних.
 - Зберігаються українська локалізація, 44 px touch targets, keyboard/focus, `prefers-reduced-motion`, адаптивність і відсутність document-level horizontal overflow.
 
-План: [pwa-and-push-notifications.md](pwa-and-push-notifications.md). **Завершено; QA PASS — QA-20260904-04.** Manifest, канонічні PWA-іконки, мінімальний service worker без кешу розкладу, registration і доступний install-control перевірені у production-mode browser. Web Push вилучено повністю: немає permission-flow, bell/modal, push routes, cron, VAPID/CRON env, push-міграцій або залежності `web-push`. Фінальний геометричний ретест VID-053 також має `PASS`, тому повний release gate відкритий для перевіреного fingerprint.
+План: [pwa-and-push-notifications.md](pwa-and-push-notifications.md). **Завершено; QA PASS — QA-20260904-04; опубліковано commit'ом `3f77941`.** Manifest, канонічні PWA-іконки, мінімальний service worker без кешу розкладу, registration і доступний install-control перевірені локально та read-only smoke у production. Web Push вилучено повністю: немає permission-flow, bell/modal, push routes, cron, VAPID/CRON env, push-міграцій або залежності `web-push`.
 
 ## VID-051 — розклад на кореневій адресі без URL-стану
 

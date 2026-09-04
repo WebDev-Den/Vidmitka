@@ -62,6 +62,14 @@ function isIosDevice(): boolean {
     || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 }
 
+type NavigatorWithStandalone = Navigator & { standalone?: boolean };
+
+function needsIosHomeScreenInstall(): boolean {
+  return isIosDevice()
+    && !window.matchMedia("(display-mode: standalone)").matches
+    && (navigator as NavigatorWithStandalone).standalone !== true;
+}
+
 function isValidTime(value: unknown): value is string {
   if (typeof value !== "string" || !/^\d{2}:\d{2}$/u.test(value)) return false;
   return value >= "07:00" && value <= "20:00";
@@ -215,7 +223,7 @@ export function PublicPushSettings({
   const [isSaving, setIsSaving] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
   const [isDisabling, setIsDisabling] = useState(false);
-  const [ios, setIos] = useState(false);
+  const [needsIosInstall, setNeedsIosInstall] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
 
   useEffect(() => {
@@ -225,7 +233,7 @@ export function PublicPushSettings({
       const browserPermission = currentPermission();
       if (cancelled) return;
       setPermission(browserPermission);
-      setIos(browserPermission !== "unsupported" && isIosDevice());
+      setNeedsIosInstall(browserPermission !== "unsupported" && needsIosHomeScreenInstall());
 
       if (browserPermission === "unsupported") {
         setIsChecking(false);
@@ -492,7 +500,7 @@ export function PublicPushSettings({
         {!isChecking && storageReady !== false && vapidPublicKey === null ? <p className={styles.configurationHint}>
           Сповіщення ще не налаштовані на сервері. Спробуйте пізніше.
         </p> : null}
-        {ios ? <p className={styles.iosHint}>
+        {needsIosInstall ? <p className={styles.iosHint}>
           На iPhone/iPad спочатку встановіть «Відмітку» на початковий екран, а потім дозвольте сповіщення.
         </p> : null}
 

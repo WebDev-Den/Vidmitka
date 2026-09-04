@@ -298,6 +298,7 @@
 
 .settings[data-variant="mobile"] .formBody {
   min-height: 0;
+  align-content: start;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 2px 13px 12px;

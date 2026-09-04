@@ -295,7 +295,9 @@ function DaySchedule({ day, periods, clock }: {
         </p> : null}
       </div>
       <div className={styles.dayFlags}>
-        {day.isTransfer ? <span className={styles.transferBadge}>За розкладом: {calendarDayLabel(day.scheduleDayOfWeek)}</span> : null}
+        {day.isTransfer ? <span className={styles.transferBadge}>
+          <span className={styles.transferBadgePrefix}>За розкладом: </span>{calendarDayLabel(day.scheduleDayOfWeek)}
+        </span> : null}
         <span className={styles.dayWeek}>{day.weekType === "numerator" ? "Чисельник" : "Знаменник"}</span>
       </div>
     </header>
@@ -425,6 +427,7 @@ function MobileScheduleOptions({
 }) {
   const [open, setOpen] = useState(false);
   const [screen, setScreen] = useState<"overview" | "push">("overview");
+  const [hasPwaControl, setHasPwaControl] = useState(false);
   const backButtonRef = useRef<HTMLButtonElement>(null);
   const pushLinkRef = useRef<HTMLButtonElement>(null);
   const previousScreenRef = useRef(screen);
@@ -503,9 +506,9 @@ function MobileScheduleOptions({
                   <button type="submit">Перейти<PendingControlStatus pending={isDatePending} label="вибрану дату" /></button>
                 </form>
               </section>
-              <section className={styles.mobileOptionsSection} aria-labelledby="mobile-app-label">
+              <section className={styles.mobileOptionsSection} aria-labelledby="mobile-app-label" hidden={!hasPwaControl}>
                 <h3 id="mobile-app-label">Застосунок</h3>
-                <div className={styles.mobilePwaControl}><PwaControls /></div>
+                <div className={styles.mobilePwaControl}><PwaControls onAvailabilityChange={setHasPwaControl} /></div>
               </section>
               <section className={styles.mobileOptionsSection} aria-label="Налаштування сповіщень">
                 <button

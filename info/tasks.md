@@ -75,8 +75,9 @@
 | VID-057 | Мобільний публічний розклад із фокусом на дні та парі | Фіча (mobile UX / інформаційна ієрархія) | Опубліковано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): нове компонування часу/дати, responsive/keyboard/overflow | `2207bb6`; Vercel `dpl_C9Rb51ebNENBD9VXZWVpn5ygKoxA` READY |
 | VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Опубліковано частково | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): availability/error lifecycle і mobile sheet | `2207bb6`; migrations `015`/`016` applied and readiness PASS; QStash scheduler потребує авторизованого доступу |
 | VID-059 | QA, production-реліз і запуск push scheduler-а для накопиченого пакета | Технічна задача (QA / release / операційна готовність) | Частково заблоковано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): code/release QA | Vercel deploy і migrations завершено; створення двох QStash schedules заблоковане відсутнім QStash account/API access |
+| VID-060 | iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу | Баг (mobile UX / visual density) | Реалізовано; QA очікується | BLOCKED — [QA-20260904-10](qa/reports/QA-20260904-10.md): code checks PASS; усі доступні browser paths не мають browser runtime | Поточні скріншоти показують порожній overview, розтягнутий iOS alert і багаторядковий transfer badge |
 
-Наступний новий ID: **VID-060**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
+Наступний новий ID: **VID-061**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
 ## VID-058 — публічні Web Push-сповіщення за розкладом викладача
 
@@ -159,6 +160,21 @@
 Виконання 04.09.2026: QA-08 дав актуальний `PASS`; commit `2207bb6` успішно відправлено в `main`, а Vercel deployment `dpl_C9Rb51ebNENBD9VXZWVpn5ygKoxA` отримав `READY` та aliases `https://vidmitka.vercel.app` / `https://web-dev.pp.ua`. Production migrations `015` → `016` застосовано в порядку; read-only DB verification підтвердила обидві таблиці й cooldown column, а `GET /api/public/push` повертає `200`, `storageReady: true` та наявний public VAPID key. Жодної нової browser subscription або delivery не створювали; в таблиці виявлено один уже наявний subscription і його не змінювали.
 
 Єдиний незавершений критерій: два QStash schedules не створено. Vercel не зберігає QStash API token (його раніше навмисно видалено як runtime-unneeded), а QStash Console відкрила неавторизовану форму входу; повторний GitHub SSO не дав сеанс. Без явного доступу до QStash account або нового API token, переданого захищеним способом, створювати або перевіряти schedules неможливо. **Частково заблоковано: QA `PASS`, deploy і migrations завершено; scheduler очікує QStash access.**
+
+## VID-060 — iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу
+
+Первинний запит: «Необхідно щоб ти перевірив і покращив дизайн на iPhone 15 pro max». Три скріншоти PWA показують: overview налаштувань займає всю висоту з порожньою нижньою частиною; на екрані сповіщень iOS-порада в standalone застосунку розтягується без потреби; позначка перенесення «За розкладом: Понеділок» займає три рядки та конкурує з датою. Попередній тип: **баг (mobile UX / visual density)**.
+
+Реалізовано; QA очікується: overview sheet тепер має висоту свого вмісту; недоступний control встановлення не займає місце у вже встановленій PWA; iOS-інструкція показується тільки до встановлення на початковий екран; вміст mobile push-екрана вирівнюється від початку, без штучного розтягування коротких повідомлень; позначка перенесеного дня на mobile показує один рядок із повною фразою для assistive technology.
+
+Критерії приймання:
+
+- На 430 × 932 (iPhone 15 Pro Max) overview modal sheet має висоту свого фактичного вмісту, не лишає порожню робочу площу та зберігає backdrop, focus trap, Escape, close і повернення фокуса.
+- PWA-контроль і його заголовок не резервують порожнє місце, коли застосунок уже standalone; iOS-підказка показується лише тоді, коли встановлення на початковий екран справді ще потрібне. Форма сповіщень не розтягує короткі alerts на вільну висоту.
+- У заголовку mobile-розкладу transfer badge має коротке візуальне значення дня, а повна фраза лишається доступною; дата, live-стан, чисельник/знаменник, часові колонки й картки занять не втрачають місця або контрасту.
+- Канонічні кольори, 44 px touch-цілі, keyboard, reduced motion, 1440/820/430 overflow і console входять до незалежного QA. Нового browser permission, підписки чи production даних не створювати.
+
+Візуальна теза, контент-план та interaction-thesis доповнено у документації public schedule і push. **Реалізовано; QA `BLOCKED`** — [QA-20260904-09](qa/reports/QA-20260904-09.md) підтвердив статичну реалізацію, typecheck, unit-тести й build, але обов’язковий browser/iPhone сценарій недоступний у локальному automation runtime.
 
 ## VID-056 — одне збереження для змінених рядків довідників і пар
 

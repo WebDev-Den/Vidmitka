@@ -14,6 +14,10 @@ interface BeforeInstallPromptEvent extends Event {
 
 type NavigatorWithStandalone = Navigator & { standalone?: boolean };
 
+type PwaControlsProps = {
+  onAvailabilityChange?: (available: boolean) => void;
+};
+
 function isStandalone(): boolean {
   return window.matchMedia("(display-mode: standalone)").matches
     || (navigator as NavigatorWithStandalone).standalone === true;
@@ -24,9 +28,9 @@ function isIOS(): boolean {
     || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 }
 
-export function PwaControls() {
+export function PwaControls({ onAvailabilityChange }: PwaControlsProps = {}) {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [standalone, setStandalone] = useState(false);
+  const [standalone, setStandalone] = useState<boolean | null>(null);
   const [ios, setIos] = useState(false);
   const [notice, setNotice] = useState("");
   const noticeTimer = useRef<number | null>(null);
@@ -67,6 +71,10 @@ export function PwaControls() {
     };
   }, [showNotice]);
 
+  useEffect(() => {
+    onAvailabilityChange?.(standalone === false);
+  }, [onAvailabilityChange, standalone]);
+
   const install = async () => {
     if (installPrompt) {
       await installPrompt.prompt();
@@ -80,7 +88,7 @@ export function PwaControls() {
       : "У меню браузера оберіть «Установити Відмітку» або «Додати на головний екран».");
   };
 
-  if (standalone) return null;
+  if (standalone !== false) return null;
   return <div className={styles.controls}>
     <button
       type="button"

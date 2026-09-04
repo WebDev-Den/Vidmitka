@@ -14,7 +14,7 @@
 - [public-group-context.md](public-group-context.md) — VID-035: загальний розклад без вибору груп і доступне відображення груп біля картки заняття.
 - [public-teacher-filter.md](public-teacher-filter.md) — VID-036: серверний фільтр публічного розкладу за одним викладачем або всіма викладачами.
 - [imported-recurring-schedule.md](imported-recurring-schedule.md) — VID-038: імпортований JSON як повторюваний розклад до 31.12.2026 без службових позначок у публічній картці.
-- [public-schedule-responsive-layout.md](public-schedule-responsive-layout.md) — VID-042: узгоджена ширина header і розкладу та компактна адаптивна панель керування датою й викладачем.
+- [public-schedule-responsive-layout.md](public-schedule-responsive-layout.md) — VID-042/046/049: повноширинний розклад і єдиний компактний header із панеллю дати та викладача.
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.
 - [qa/handoff-template.md](qa/handoff-template.md) — доручення незалежному QA-агенту.
@@ -45,6 +45,7 @@
 - [qa/handoffs/QA-20260904-01.md](qa/handoffs/QA-20260904-01.md) — передрелізне доручення незалежному QA для повноширинного layout VID-046.
 - [qa/reports/QA-20260904-01.md](qa/reports/QA-20260904-01.md) — незалежний PASS VID-046: 1920/1440/820/390 px, overflow, keyboard, console, typecheck, tests і build.
 - [qa/reports/RELEASE-20260904-01.md](qa/reports/RELEASE-20260904-01.md) — production deployment VID-046–VID-047, Vercel READY і read-only smoke повноширинного CSS.
+- [qa/handoffs/QA-20260904-02.md](qa/handoffs/QA-20260904-02.md) — передрелізне доручення незалежному QA для компактного popup і єдиного header VID-048–VID-050.
 - [architecture.md](architecture.md) — функціональна архітектура системи керування розкладом.
 - [data-model.md](data-model.md) — концептуальна модель даних для подальшого проєктування БД без вибору технології або способу зберігання.
 - [database-setup.md](database-setup.md) — підключення Neon Postgres через Vercel, локальні env-файли та перевірка з'єднання.

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { PublicHeader } from "@/components/public-header";
 import { PublicScheduleExplorer } from "@/components/public-schedule-explorer";
 import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 import {
@@ -57,18 +56,13 @@ export default async function PublicSchedulePage({ searchParams }: {
     ? requestedTeacherId
     : "";
   return (
-    <>
-      <div className="public-header-surface">
-        <PublicHeader />
-      </div>
-      <PublicScheduleExplorer
-        periods={periods}
-        days={schedule}
-        navigationDays={navigationWeek(date)}
-        selectedDate={date}
-        selectedTeacherId={selectedTeacherId}
-        teachers={teachers}
-      />
-    </>
+    <PublicScheduleExplorer
+      periods={periods}
+      days={schedule}
+      navigationDays={navigationWeek(date)}
+      selectedDate={date}
+      selectedTeacherId={selectedTeacherId}
+      teachers={teachers}
+    />
   );
 }

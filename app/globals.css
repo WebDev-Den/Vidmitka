@@ -293,6 +293,22 @@ textarea:focus-visible {
   gap: 32px;
 }
 
+.public-header-toolbar {
+  min-width: 0;
+  justify-self: stretch;
+}
+
+.public-header-footer {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.public-header-inner--workspace {
+  min-height: 0;
+  padding-top: 10px;
+  gap: 10px 20px;
+}
+
 .public-header .brand-copy strong,
 .public-header-surface .brand-copy strong {
   color: var(--ink);
@@ -2190,6 +2206,10 @@ textarea:focus-visible {
     grid-template-columns: auto minmax(0, 1fr);
   }
 
+  .public-header-inner--workspace {
+    gap: 10px 16px;
+  }
+
   .public-navigation {
     min-width: 0;
     justify-content: flex-end;
@@ -2346,6 +2366,21 @@ textarea:focus-visible {
     min-height: 68px;
     padding-block: 8px 0;
     gap: 12px;
+  }
+
+  .public-header-inner--workspace {
+    width: 100%;
+    padding-top: 8px;
+  }
+
+  .public-header-inner--workspace > .brand {
+    width: calc(100% - 20px);
+    margin-inline: auto;
+  }
+
+  .public-header-inner--workspace .public-header-toolbar,
+  .public-header-inner--workspace .public-header-footer {
+    width: 100%;
   }
 
   .public-navigation {

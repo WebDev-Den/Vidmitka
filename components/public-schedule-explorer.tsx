@@ -6,6 +6,7 @@ import Link, { useLinkStatus } from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useTransition, type CSSProperties } from "react";
 
+import { PublicHeader } from "@/components/public-header";
 import { periodColorForeground } from "@/lib/class-periods/colors";
 import { calendarDayLabel } from "@/lib/schedule-v2/calendar-override-rules";
 import type {
@@ -262,8 +263,7 @@ export function PublicScheduleExplorer({
   }, []);
   const clock = kyivClock(now);
 
-  return <main className={styles.workspace}>
-    <section className={styles.statusBar} aria-label="Поточний стан розкладу">
+  const toolbar = <section className={styles.statusBar} aria-label="Поточний стан розкладу">
       <div className={styles.clock}><strong suppressHydrationWarning>{clock.time}</strong><span suppressHydrationWarning>{clock.date}</span></div>
       <nav className={styles.dateNavigation} aria-label="Навігація за датою">
         <Link aria-label="Попередній день" href={scheduleHref({ date: addDays(selectedDate, -1), teacherId: selectedTeacherId })}>←<PendingLinkStatus label="попередній день" /></Link>
@@ -279,20 +279,24 @@ export function PublicScheduleExplorer({
       <div className={styles.statusActions}>
         <span className={styles.weekBadge}>{days[0]?.weekType === "denominator" ? "Знаменник" : "Чисельник"}</span>
       </div>
-    </section>
+    </section>;
 
-    <nav className={styles.dayTabs} aria-label="Дні поточного тижня">
+  const dayTabs = <nav className={styles.dayTabs} aria-label="Дні поточного тижня">
       {navigationDays.map((day) => <Link
         key={day.date}
         href={scheduleHref({ date: day.date, teacherId: selectedTeacherId })}
         aria-current={day.date === selectedDate ? "date" : undefined}
       ><span>{day.shortLabel}</span><small>{day.dayLabel}</small><PendingLinkStatus label={`розклад на ${day.dayLabel}`} /></Link>)}
-    </nav>
+    </nav>;
 
+  return <>
+    <PublicHeader toolbar={toolbar} footer={dayTabs} />
+    <main className={styles.workspace}>
     <section className={styles.scheduleArea}>
       <div className={styles.days}>
         {days.map((day) => <DaySchedule key={day.date} day={day} periods={periods} clock={clock} />)}
       </div>
     </section>
-  </main>;
+    </main>
+  </>;
 }

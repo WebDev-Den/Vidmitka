@@ -70,10 +70,10 @@
 | VID-052 | Встановлювана PWA без Web Push і додаткових секретів | Фіча (PWA; Web Push вилучено уточненням) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md) | Опубліковано: 3f77941; Vercel READY |
 | VID-053 | Popup вільних аудиторій для вибраної дати й номера пари | Фіча (публічний розклад / доступність аудиторій) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | Опубліковано: 3f77941; Vercel READY |
 | VID-054 | Перевірити VID-051–VID-053 і задеплоїти PWA без push-секретів | Технічна задача (QA / реліз) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | 3f77941; dpl_G1tB… READY; live smoke PASS |
-| VID-055 | Fixed header і стартове позиціонування публічного розкладу | Баг (viewport / автопрокрутка) | Реалізовано | PASS — [QA-20260904-06](qa/reports/QA-20260904-06.md) retest | Не опубліковано |
-| VID-056 | Одне збереження для змінених рядків довідників і пар | Фіча (UX / пакетне редагування) | Реалізовано | PASS — [QA-20260904-06](qa/reports/QA-20260904-06.md) retest | Не опубліковано |
-| VID-057 | Мобільний публічний розклад із фокусом на дні та парі | Фіча (mobile UX / інформаційна ієрархія) | Реалізовано | PASS — QA-05-03 closed, [QA-20260904-06](qa/reports/QA-20260904-06.md) | Не опубліковано |
-| VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Реалізовано | PASS — code QA; production delivery operationally BLOCKED, [QA-20260904-06](qa/reports/QA-20260904-06.md) | Не опубліковано |
+| VID-055 | Fixed header і стартове позиціонування публічного розкладу | Баг (viewport / автопрокрутка) | Завершено | PASS — [QA-20260904-06](qa/reports/QA-20260904-06.md) retest | Опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY |
+| VID-056 | Одне збереження для змінених рядків довідників і пар | Фіча (UX / пакетне редагування) | Завершено | PASS — [QA-20260904-06](qa/reports/QA-20260904-06.md) retest | Опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY |
+| VID-057 | Мобільний публічний розклад із фокусом на дні та парі | Фіча (mobile UX / інформаційна ієрархія) | Завершено | PASS — QA-05-03 closed, [QA-20260904-06](qa/reports/QA-20260904-06.md) | Опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY |
+| VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Завершено (code) | PASS — code QA; production delivery operationally BLOCKED, [QA-20260904-06](qa/reports/QA-20260904-06.md) | Код опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY; міграції/QStash ще не застосовані |
 
 Наступний новий ID: **VID-059**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
@@ -108,6 +108,8 @@
 **Потребує виправлень; незалежний QA `FAIL`**: [QA-20260904-05](qa/reports/QA-20260904-05.md) зафіксував typecheck/build errors і неробочий штатний unit scanner suite (QA-05-01/02). UI test-button lifecycle пройшов mocked browser QA; реальна доставка `BLOCKED` без production migration 015/016, QStash schedule та справжньої browser subscription. Commit/push/deployment не дозволені.
 
 Виправлення після `QA-20260904-05`: звужено значення налаштувань на client/server межі, приведено unit fixture до реального формату Push-ключа та додано лише test-time alias для server-only marker-а Next.js. Очікується повторний незалежний QA; production-операції не виконувалися.
+
+Реліз 04.09.2026: перевірений product commit `25cb070` завантажено до `main`; Git-triggered Vercel production deployment `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` має `READY`. Read-only smoke `vidmitka.vercel.app`, `web-dev.pp.ua`, manifest, service worker і `GET /api/public/push` пройшов з HTTP 200; VAPID public key доступний у configuration response. Production migrations 015/016, QStash schedule і реальна browser/provider delivery навмисно не виконувалися та лишаються operational blocker-ом.
 
 Повторний незалежний QA: **code QA `PASS`** — [QA-20260904-06](qa/reports/QA-20260904-06.md). QA-05-01/02 закриті: typecheck, 102 unit tests, production build, scanner/rules і mocked test-button lifecycle пройшли; static security/migration review не виявив нового blocker-а. Code release gate відкритий лише для зафіксованого fingerprint. Реальна production delivery лишається operationally `BLOCKED` до окремо дозволених migrations 015/016, QStash schedule та справжньої browser subscription; QA не застосовував ці операції й не видає їх за E2E PASS.
 

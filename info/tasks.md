@@ -75,7 +75,7 @@
 | VID-057 | Мобільний публічний розклад із фокусом на дні та парі | Фіча (mobile UX / інформаційна ієрархія) | Опубліковано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): нове компонування часу/дати, responsive/keyboard/overflow | `2207bb6`; Vercel `dpl_C9Rb51ebNENBD9VXZWVpn5ygKoxA` READY |
 | VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Опубліковано частково | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): availability/error lifecycle і mobile sheet | `2207bb6`; migrations `015`/`016` applied and readiness PASS; QStash scheduler потребує авторизованого доступу |
 | VID-059 | QA, production-реліз і запуск push scheduler-а для накопиченого пакета | Технічна задача (QA / release / операційна готовність) | Частково заблоковано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): code/release QA | Vercel deploy і migrations завершено; створення двох QStash schedules заблоковане відсутнім QStash account/API access |
-| VID-060 | iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу | Баг (mobile UX / visual density) | Реалізовано; QA очікується | BLOCKED — [QA-20260904-10](qa/reports/QA-20260904-10.md): code checks PASS; усі доступні browser paths не мають browser runtime | Поточні скріншоти показують порожній overview, розтягнутий iOS alert і багаторядковий transfer badge |
+| VID-060 | iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу | Баг (mobile UX / visual density) | Опубліковано за явним винятком | BLOCKED — [QA-20260904-10](qa/reports/QA-20260904-10.md): code checks PASS; усі доступні browser paths не мають browser runtime | Код `1d153f1`; Vercel `dpl_4n6X47fXTNUQMbD3yV8iZ6qfgXNC` READY; browser/iPhone критерії лишаються неперевіреними |
 
 Наступний новий ID: **VID-061**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
@@ -177,6 +177,8 @@
 Візуальна теза, контент-план та interaction-thesis доповнено у документації public schedule і push. **Реалізовано; QA `BLOCKED`** — [QA-20260904-09](qa/reports/QA-20260904-09.md) підтвердив статичну реалізацію, typecheck, unit-тести й build, але обов’язковий browser/iPhone сценарій недоступний у локальному automation runtime.
 
 Уточнення 04.09.2026: користувач прямо наказав «пропусти `BLOCKED`». Це одноразовий дозвіл закомітити, відправити у `main` і задеплоїти саме зафіксований пакет VID-060, попри `BLOCKED` у [QA-20260904-10](qa/reports/QA-20260904-10.md). Виняток не перетворює результат на `PASS`, не стверджує, що browser/iPhone сценарії перевірені, і не змінює вимогу незалежного QA для наступних пакетів.
+
+Реліз 04.09.2026: продуктовий commit `1d153f1` і документований виняток `e52aacf` відправлено в `main`. Git deployment Vercel `dpl_4n6X47fXTNUQMbD3yV8iZ6qfgXNC` отримав `READY`; safe HTTP smoke для `https://vidmitka.vercel.app/`, `https://web-dev.pp.ua/` та `GET /api/public/push` повернув HTTP 200. Це не компенсує неперевірені browser/iPhone критерії QA.
 
 ## VID-056 — одне збереження для змінених рядків довідників і пар
 

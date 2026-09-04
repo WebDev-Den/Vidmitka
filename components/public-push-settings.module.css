@@ -1,7 +1,7 @@
 .settings {
   display: grid;
   min-width: 0;
-  gap: 13px;
+  gap: 10px;
   color: var(--ink);
 }
 
@@ -19,10 +19,10 @@
 }
 
 .header p {
-  margin: 3px 0 0;
+  margin: 2px 0 0;
   color: var(--muted);
-  font-size: .73rem;
-  line-height: 1.4;
+  font-size: .71rem;
+  line-height: 1.35;
 }
 
 .permissionBadge {
@@ -45,48 +45,45 @@
   background: #f7e6d3;
 }
 
-.permissionDescription,
+.permissionSummary,
 .iosHint,
 .feedback,
 .empty,
 .selectionHint,
 .configurationHint {
   margin: 0;
-  font-size: .74rem;
-  line-height: 1.45;
+  font-size: .72rem;
+  line-height: 1.4;
 }
 
-.permissionDescription {
-  display: grid;
-  gap: 2px;
-  padding: 9px 10px;
-  color: var(--muted);
-  background: var(--surface-soft);
+.permissionSummary { color: var(--muted); }
+.permissionSummary[data-state="denied"], .iosHint { color: #7a4322; }
+
+.iosHint,
+.configurationHint,
+.feedback {
+  padding: 8px 9px;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
 
-.permissionDescription strong { color: var(--ink); font-size: .72rem; }
-.permissionDescription[data-state="denied"], .iosHint { color: #7a4322; }
-
-.iosHint {
-  padding: 9px 10px;
-  background: #fff7ed;
-  border: 1px solid #f0d5b8;
-  border-radius: 8px;
-}
-
+.iosHint,
 .configurationHint {
-  padding: 9px 10px;
   color: #7a4322;
   background: #fff7ed;
-  border: 1px solid #f0d5b8;
-  border-radius: 8px;
+  border-color: #f0d5b8;
 }
 
 .form {
   display: grid;
-  gap: 12px;
+  min-width: 0;
+  gap: 10px;
+}
+
+.formBody {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
 }
 
 .field {
@@ -99,11 +96,7 @@
 }
 
 .field select,
-.field input[type="time"],
-.field input[type="number"] {
-  width: 100%;
-  min-height: 44px;
-  padding: 0 10px;
+.inlineField input {
   color: var(--ink);
   background: var(--surface);
   border: 1px solid var(--line);
@@ -112,9 +105,22 @@
   font-variant-numeric: tabular-nums;
 }
 
+.field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 10px;
+}
+
+.field select:disabled,
+.inlineField input:disabled {
+  color: var(--muted);
+  background: var(--surface-soft);
+  cursor: not-allowed;
+}
+
 .field select:focus-visible,
-.field input:focus-visible,
-.checkboxRow:focus-within,
+.inlineField input:focus-visible,
+.eventToggle:focus-within,
 .saveButton:focus-visible,
 .testButton:focus-visible,
 .disableButton:focus-visible {
@@ -123,22 +129,22 @@
   border-color: var(--accent-strong);
 }
 
-.field select:disabled,
-.field input:disabled { color: var(--muted); background: var(--surface-soft); cursor: not-allowed; }
-.field small { color: var(--muted); font-size: .68rem; font-weight: 650; line-height: 1.35; }
+.empty,
+.selectionHint { color: var(--muted); }
+.selectionHint:empty { display: none; }
 
 .eventSettings {
   display: grid;
   min-width: 0;
-  gap: 8px;
+  gap: 0;
   margin: 0;
-  padding: 12px 0 0;
+  padding: 10px 0 0;
   border: 0;
   border-top: 1px solid var(--line);
 }
 
 .eventSettings legend {
-  padding: 0;
+  padding: 0 0 3px;
   color: var(--muted);
   font-size: .67rem;
   font-weight: 850;
@@ -146,42 +152,73 @@
   text-transform: uppercase;
 }
 
-.checkboxRow {
+.eventRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  border-bottom: 1px solid var(--line);
+}
+
+.eventRow[data-enabled="true"] { background: color-mix(in srgb, var(--accent-soft) 18%, transparent); }
+
+.eventToggle {
   display: grid;
   grid-template-columns: 20px minmax(0, 1fr);
-  align-items: start;
+  align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 7px 8px;
-  color: var(--ink);
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  padding: 5px 0;
   cursor: pointer;
 }
 
-.checkboxRow input {
+.eventToggle input {
   width: 18px;
   height: 18px;
-  margin: 1px 0 0;
+  margin: 0;
   accent-color: var(--accent-strong);
 }
 
-.checkboxRow input:disabled { cursor: not-allowed; }
-.checkboxRow:has(input:disabled) { color: var(--muted); cursor: not-allowed; }
-.checkboxRow span { display: grid; gap: 2px; min-width: 0; }
-.checkboxRow strong { font-size: .76rem; }
-.checkboxRow small { color: var(--muted); font-size: .68rem; font-weight: 650; line-height: 1.35; }
+.eventToggle input:disabled { cursor: not-allowed; }
+.eventToggle:has(input:disabled) { color: var(--muted); cursor: not-allowed; }
+.eventToggle > span { display: grid; gap: 1px; min-width: 0; }
+.eventToggle strong { font-size: .75rem; }
+.eventToggle small { color: var(--muted); font-size: .66rem; font-weight: 650; line-height: 1.25; }
 
-.dependentField { padding-inline: 8px; }
+.inlineField {
+  display: block;
+  width: 96px;
+  min-width: 0;
+}
 
-.empty,
-.selectionHint { color: var(--muted); }
-.selectionHint:empty { display: none; }
+.inlineField input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 8px;
+}
+
+.inlineNumber {
+  display: grid;
+  grid-template-columns: 58px auto;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 750;
+}
+
+.eventNote {
+  margin: 3px 0 5px 28px;
+  color: var(--muted);
+  font-size: .64rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
 
 .actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 7px;
 }
 
@@ -198,12 +235,19 @@
 }
 
 .saveButton {
+  width: 100%;
   color: #fff;
   background: var(--accent-strong);
   border: 1px solid var(--accent-strong);
 }
 
 .saveButton:hover:not(:disabled) { background: #0b615a; }
+
+.secondaryActions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
 
 .testButton,
 .disableButton {
@@ -212,8 +256,14 @@
   border: 1px solid var(--line);
 }
 
+.testButton { flex: 1 1 auto; }
+.disableButton { flex: 0 0 auto; }
+
 .testButton:hover:not(:disabled),
-.disableButton:hover:not(:disabled) { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
+.disableButton:hover:not(:disabled) {
+  color: var(--accent-strong);
+  border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line));
+}
 
 .saveButton:disabled,
 .testButton:disabled,
@@ -223,21 +273,51 @@
 }
 
 .feedback {
-  padding: 9px 10px;
   color: var(--muted);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
-  border-radius: 8px;
 }
 
 .feedback[data-kind="success"] { color: var(--success); background: color-mix(in srgb, var(--accent-soft) 42%, white); }
 .feedback[data-kind="error"] { color: #7a4322; background: #fff7ed; border-color: #f0d5b8; }
 
+.settings[data-variant="mobile"] {
+  height: 100%;
+  min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 8px;
+}
+
+.settings[data-variant="mobile"] .header,
+.settings[data-variant="mobile"] .permissionSummary { padding-inline: 13px; }
+
+.settings[data-variant="mobile"] .form {
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0;
+}
+
+.settings[data-variant="mobile"] .formBody {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 13px 12px;
+  scroll-padding-bottom: 78px;
+  scrollbar-width: thin;
+}
+
+.settings[data-variant="mobile"] .actions {
+  padding: 10px 13px max(10px, env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
 @media (max-width: 360px) {
   .header { align-items: stretch; flex-direction: column; }
   .permissionBadge { width: fit-content; }
-  .actions { display: grid; grid-template-columns: 1fr; }
-  .saveButton, .testButton, .disableButton { width: 100%; }
+  .eventRow { grid-template-columns: 1fr; gap: 0; padding-block: 3px; }
+  .inlineField { justify-self: start; margin: -1px 0 5px 28px; }
+  .secondaryActions { display: grid; grid-template-columns: 1fr; }
+  .testButton, .disableButton { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

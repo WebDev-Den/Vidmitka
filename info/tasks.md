@@ -72,10 +72,11 @@
 | VID-054 | Перевірити VID-051–VID-053 і задеплоїти PWA без push-секретів | Технічна задача (QA / реліз) | Завершено | PASS — [QA-20260904-04](qa/reports/QA-20260904-04.md), геометричний ретест | 3f77941; dpl_G1tB… READY; live smoke PASS |
 | VID-055 | Fixed header і стартове позиціонування публічного розкладу | Баг (viewport / автопрокрутка) | Завершено | PASS — [QA-20260904-06](qa/reports/QA-20260904-06.md) retest | Опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY |
 | VID-056 | Одне збереження для змінених рядків довідників і пар | Фіча (UX / пакетне редагування) | Завершено | PASS — [QA-20260904-06](qa/reports/QA-20260904-06.md) retest | Опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY |
-| VID-057 | Мобільний публічний розклад із фокусом на дні та парі | Фіча (mobile UX / інформаційна ієрархія) | Завершено | PASS — QA-05-03 closed, [QA-20260904-06](qa/reports/QA-20260904-06.md) | Опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY |
-| VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Завершено (code) | PASS — code QA; production delivery operationally BLOCKED, [QA-20260904-06](qa/reports/QA-20260904-06.md) | Код опубліковано: `25cb070`; Vercel `dpl_5UwVbeUH6Xne1PHJycnjXD76g1Ud` READY; міграції/QStash ще не застосовані |
+| VID-057 | Мобільний публічний розклад із фокусом на дні та парі | Фіча (mobile UX / інформаційна ієрархія) | Реалізовано; QA очікується | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): нове компонування часу/дати, responsive/keyboard/overflow | Опубліковано: `25cb070`; нове уточнення локальне й ще не задеплоєне |
+| VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Реалізовано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): availability/error lifecycle і mobile sheet; реальна delivery лишається операційним кроком | Код `25cb070` опубліковано; dirty correction ще не комічено/не задеплоєно; production migrations/QStash не застосовані |
+| VID-059 | QA, production-реліз і запуск push scheduler-а для накопиченого пакета | Технічна задача (QA / release / операційна готовність) | У роботі | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): exact dirty package після QA bookkeeping | Code/release QA gate відкритий; deployment, migrations і scheduler — наступні операційні кроки |
 
-Наступний новий ID: **VID-059**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
+Наступний новий ID: **VID-060**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
 ## VID-058 — публічні Web Push-сповіщення за розкладом викладача
 
@@ -90,6 +91,12 @@
 Результат аудиту 04.09.2026: з Vercel Production видалено `QSTASH_URL`, `QSTASH_TOKEN`, `ADMIN_EMAILS` і `ADMIN_REGISTRATION_TOKEN` — жодна з них не читається чинним застосунком; значення видалених секретів Vercel не відновлює. Залишено `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, VAPID, `PUSH_SCANNER_URL`, обидва QStash signing keys і Vercel/Neon aliases: останні не читаються runtime-кодом, але належать інтеграції та не були ризиковано видалені. QA, міграції, QStash schedules, коміт і deployment не виконувалися.
 
 Уточнення 04.09.2026: «провір через qa базові тести і задеплой». Користувач прямо дозволив незалежний пакетний QA для VID-055–VID-058, коміт, push у `main` і production deployment лише після актуального `PASS`. Production-міграції та створення QStash schedule не входять до цього дозволу.
+
+Уточнення 04.09.2026: користувач повідомив, що в опублікованому popover налаштувань не зберігаються сповіщення, test неактивний і сам popover не відповідає очікуванню за компактністю. Скріншот показує generic save error після явної дії. Це доповнення VID-058: потрібно встановити точну причину, зробити відмову зрозумілою, переробити інтерфейс без зайвих карток/прокрутки та повернути робочий lifecycle підписки. Production DB migrations і QStash schedule як і раніше потребують окремого дозволу.
+
+Діагностика 04.09.2026: read-only production evidence зафіксував `PUT /api/public/push → 503` під час user save, тоді як `GET /api/public/push → 200` підтверджує VAPID-конфігурацію. Найімовірніша причина — відсутні production migrations `015` (таблиця підписок) і `016` (cooldown test-send); це також пояснює неактивний test. Корекція реалізована локально: API віддає безпечний storage-readiness і stable code для непідготовленої schema, клієнт не створює марну підписку, пояснює причину та передає safe server message, а mobile popover розділено на overview і компактний push-екран зі справжнім modal, видимим feedback і доступним поверненням фокуса. **Реалізовано; QA очікується.** Для реального production save/test потрібен окремий дозвіл застосувати migrations `015` → `016`; QStash schedule потрібен лише для регулярних повідомлень.
+
+Уточнення 04.09.2026: screenshot PWA на телефоні показав, що mobile-налаштування все ще сприймаються як вузький desktop-popover поверх активного розкладу. Це доповнення тієї самої UX-корекції: mobile-налаштування переходять із anchor-popover до повноцінного modal sheet з backdrop, блокуванням фону, безпечною висотою viewport-а та окремим scroll тільки для вмісту. Desktop popover не змінюється. **Реалізовано; QA очікується.**
 
 Попередній тип: **велика фіча (публічна PWA / планувальник)**. Уточнення користувача скасовує попереднє припущення про акаунти: це не персональний кабінет і не авторизація викладача. Будь-який відвідувач у публічному розкладі натискає шестерню, вибирає одного викладача зі вже публічного довідника та добровільно підписує саме свій браузер на події цього розкладу.
 
@@ -132,6 +139,24 @@
 Виправлення після `QA-20260904-05`: на mobile `.statusBar` повернуто в block flow, тому toolbar більше не є неявною вузькою desktop-grid коміркою; три 44 px day-controls і окрема 44 px кнопка налаштувань мають повну доступну ширину. Очікується повторний незалежний QA.
 
 Повторний незалежний QA: **`PASS`** — [QA-20260904-06](qa/reports/QA-20260904-06.md). QA-05-03 закрито: на 390 px date navigation має колонки `44px 222px 44px`, окрема шестерня 44×44 не перекривається й відкриває dialog звичайним pointer click; focus trap, Escape, live-стани, overflow та autoscroll повторно пройшли.
+
+Уточнення 04.09.2026: скриншот desktop/tablet workspace header показує, що великий час і повна дата злипаються в один вузький рядок перед навігацією. Це доповнення VID-057: дата стала коротким верхнім орієнтиром праворуч у блоці годинника, а великий час — окремим нижнім рядком ліворуч. Дані, семантичний порядок, навігація і mobile toolbar не змінюються. План зафіксований у [public-schedule-url-state.md](public-schedule-url-state.md#уточнення-блок-часу-та-дати-у-workspace-header). **Реалізовано; незалежний QA `PASS`**: [QA-20260904-08](qa/reports/QA-20260904-08.md).
+
+## VID-059 — QA, production-реліз і запуск scheduler-а
+
+Первинний запит: «перевір щоб все працювало задеплой важливо щоб все працювало і крон налаштувався і все решта. Я відходжу від ПК тому маєш все перевірити і задеплоїти». Попередній тип: **технічна задача (QA / release / операційна готовність)**.
+
+Користувач прямо дозволив для накопиченого пакета VID-057/VID-058: незалежний QA, commit і push у `main`, production deployment, застосування production migrations `015_public_push_notifications.sql` та `016_public_push_test_cooldown.sql`, а також створення двох QStash schedules для scanner-а. Цей дозвіл не включає не пов'язані зміни, ручне редагування робочих даних або публікацію секретів.
+
+Критерії приймання:
+
+- Незалежний QA має підтвердити точний dirty-пакет, включно з latest workspace-header layout і mobile/push корекціями; typecheck, unit tests, production build, browser/keyboard/console/overflow на 1440/820/390 та UI spacing мають бути `PASS`.
+- До commit потрапляють лише код, документація й QA-звіт цього пакета; у diff немає `.env`, секретів, generated-файлів чи сторонніх змін. Push у `main` і Vercel production deployment відбуваються тільки після актуального PASS.
+- Після готового production deployment migrations `015` і `016` застосовані в production schema в заданому порядку та підтверджені без запису тестових підписок у робочу БД. Production `GET /api/public/push` повертає безпечний стан `storageReady: true` і public VAPID key.
+- У QStash створені рівно два увімкнені schedules з canonical `PUSH_SCANNER_URL`: щохвилини 07:00–19:59 і окремо о 20:00 за `Europe/Kyiv`; їхні target, метод POST і тіло `{\"version\":1}` не розкривають signing keys. Після створення звірити schedule metadata та production scanner readiness без forged або неавторизованого виклику.
+- Результат релізу, deployment URL/SHA, migration і scheduler verification зафіксовані в журналі. Реальна browser notification delivery позначається окремо: її можна підтвердити лише на пристрої з дозволом і збереженою підпискою, не шляхом створення чужої підписки.
+
+Стан: **У роботі; незалежний QA `PASS`** — exact dirty package, mandatory commands, browser UI, spacing, console, overflow, safe readiness і release hygiene підтверджено: [QA-20260904-08](qa/reports/QA-20260904-08.md). Deployment, migrations `015`/`016`, QStash schedules і post-release verification залишаються наступними операційними кроками основного агента.
 
 ## VID-056 — одне збереження для змінених рядків довідників і пар
 

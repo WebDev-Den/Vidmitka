@@ -1,6 +1,7 @@
 "use client";
 
 import { Combobox } from "@base-ui/react/combobox";
+import { Dialog } from "@base-ui/react/dialog";
 import { Popover } from "@base-ui/react/popover";
 import { CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, Search, Settings, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
@@ -422,59 +423,113 @@ function MobileScheduleOptions({
   onTeacherSelect: (teacherId: string) => void;
   onDateSelect: (date: string) => void;
 }) {
-  return <Popover.Root modal="trap-focus">
-    <Popover.Trigger
+  const [open, setOpen] = useState(false);
+  const [screen, setScreen] = useState<"overview" | "push">("overview");
+  const backButtonRef = useRef<HTMLButtonElement>(null);
+  const pushLinkRef = useRef<HTMLButtonElement>(null);
+  const previousScreenRef = useRef(screen);
+
+  useEffect(() => {
+    const previousScreen = previousScreenRef.current;
+    previousScreenRef.current = screen;
+    if (!open) return;
+    if (screen === "push") {
+      backButtonRef.current?.focus();
+    } else if (previousScreen === "push") {
+      pushLinkRef.current?.focus();
+    }
+  }, [open, screen]);
+
+  return <Dialog.Root
+    open={open}
+    onOpenChange={(nextOpen) => {
+      setOpen(nextOpen);
+      if (!nextOpen) setScreen("overview");
+    }}
+    modal
+  >
+    <Dialog.Trigger
       className={styles.mobileOptionsTrigger}
       type="button"
       aria-label="Відкрити налаштування розкладу та сповіщень"
     >
       <Settings aria-hidden="true" />
-    </Popover.Trigger>
-    <Popover.Portal>
-      <Popover.Positioner className={styles.mobileOptionsPositioner} side="bottom" align="end" sideOffset={8} collisionPadding={10}>
-        <Popover.Popup className={styles.mobileOptionsPopup} initialFocus finalFocus>
+    </Dialog.Trigger>
+    <Dialog.Portal>
+      <Dialog.Backdrop className={styles.mobileOptionsBackdrop} />
+      <Dialog.Viewport className={styles.mobileOptionsViewport}>
+        <Dialog.Popup className={styles.mobileOptionsPopup} data-screen={screen} initialFocus finalFocus>
           <header className={styles.mobileOptionsHeader}>
-            <div>
-              <Popover.Title className={styles.mobileOptionsTitle}>Налаштування</Popover.Title>
-              <Popover.Description className={styles.mobileOptionsDescription}>Перегляд, застосунок і сповіщення</Popover.Description>
-            </div>
-            <Popover.Close className={styles.mobileOptionsClose} aria-label="Закрити налаштування перегляду">
+            {screen === "overview" ? <div>
+              <Dialog.Title className={styles.mobileOptionsTitle}>Налаштування</Dialog.Title>
+              <Dialog.Description className={styles.mobileOptionsDescription}>Перегляд і застосунок</Dialog.Description>
+            </div> : <>
+              <Dialog.Title className="sr-only">Налаштування сповіщень</Dialog.Title>
+              <Dialog.Description className="sr-only">Виберіть викладача та події для цього пристрою.</Dialog.Description>
+              <button
+                className={styles.mobileOptionsBack}
+                type="button"
+                onClick={() => setScreen("overview")}
+                ref={backButtonRef}
+              >
+                <ChevronLeft aria-hidden="true" /> Налаштування
+              </button>
+            </>}
+            <Dialog.Close
+              className={styles.mobileOptionsClose}
+              aria-label={screen === "push" ? "Закрити налаштування сповіщень" : "Закрити налаштування"}
+            >
               <X aria-hidden="true" />
-            </Popover.Close>
+            </Dialog.Close>
           </header>
-          <div className={styles.mobileOptionsContent}>
-            <section className={styles.mobileOptionsSection} aria-labelledby="mobile-teacher-filter-label">
-              <h3 id="mobile-teacher-filter-label">Викладач</h3>
-              <TeacherFilter
-                selectedTeacherId={selectedTeacherId}
+          {screen === "overview" ? <div className={styles.mobileOptionsContent}>
+              <section className={styles.mobileOptionsSection} aria-labelledby="mobile-teacher-filter-label">
+                <h3 id="mobile-teacher-filter-label">Викладач</h3>
+                <TeacherFilter
+                  selectedTeacherId={selectedTeacherId}
+                  teachers={teachers}
+                  isPending={isTeacherPending}
+                  onSelect={onTeacherSelect}
+                />
+              </section>
+              <section className={styles.mobileOptionsSection} aria-labelledby="mobile-date-filter-label">
+                <h3 id="mobile-date-filter-label">Інша дата</h3>
+                <form className={styles.dateForm} autoComplete="off" onSubmit={(event) => {
+                  event.preventDefault();
+                  const value = String(new FormData(event.currentTarget).get("date") ?? "");
+                  if (isPublicDateKey(value)) onDateSelect(value);
+                }}>
+                  <label key={selectedDate}><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} required /></label>
+                  <button type="submit">Перейти<PendingControlStatus pending={isDatePending} label="вибрану дату" /></button>
+                </form>
+              </section>
+              <section className={styles.mobileOptionsSection} aria-labelledby="mobile-app-label">
+                <h3 id="mobile-app-label">Застосунок</h3>
+                <div className={styles.mobilePwaControl}><PwaControls /></div>
+              </section>
+              <section className={styles.mobileOptionsSection} aria-label="Налаштування сповіщень">
+                <button
+                  className={styles.mobilePushLink}
+                  type="button"
+                  onClick={() => setScreen("push")}
+                  ref={pushLinkRef}
+                >
+                  <span><strong>Сповіщення</strong><small>Вибрати викладача й події</small></span>
+                  <ChevronRight aria-hidden="true" />
+                </button>
+              </section>
+            </div> : <div className={styles.mobileOptionsPushContent}>
+              <PublicPushSettings
                 teachers={teachers}
-                isPending={isTeacherPending}
-                onSelect={onTeacherSelect}
+                onTeacherSaved={onTeacherSelect}
+                preferredTeacherId={selectedTeacherId}
+                variant="mobile"
               />
-            </section>
-            <section className={styles.mobileOptionsSection} aria-labelledby="mobile-date-filter-label">
-              <h3 id="mobile-date-filter-label">Інша дата</h3>
-              <form className={styles.dateForm} autoComplete="off" onSubmit={(event) => {
-                event.preventDefault();
-                const value = String(new FormData(event.currentTarget).get("date") ?? "");
-                if (isPublicDateKey(value)) onDateSelect(value);
-              }}>
-                <label key={selectedDate}><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} required /></label>
-                <button type="submit">Перейти<PendingControlStatus pending={isDatePending} label="вибрану дату" /></button>
-              </form>
-            </section>
-            <section className={styles.mobileOptionsSection} aria-labelledby="mobile-app-label">
-              <h3 id="mobile-app-label">Застосунок</h3>
-              <div className={styles.mobilePwaControl}><PwaControls /></div>
-            </section>
-            <section className={styles.mobileOptionsSection} aria-label="Налаштування сповіщень">
-              <PublicPushSettings teachers={teachers} onTeacherSaved={onTeacherSelect} />
-            </section>
-          </div>
-        </Popover.Popup>
-      </Popover.Positioner>
-    </Popover.Portal>
-  </Popover.Root>;
+            </div>}
+        </Dialog.Popup>
+      </Dialog.Viewport>
+    </Dialog.Portal>
+  </Dialog.Root>;
 }
 
 function DesktopPushSettings({

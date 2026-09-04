@@ -51,6 +51,12 @@ type StoredEndpointRow = Pick<
   "endpoint_url" | "expiration_time" | "p256dh_key" | "auth_secret"
 >;
 
+type StorageReadinessRow = Readonly<{
+  subscriptions_ready: boolean;
+  deliveries_ready: boolean;
+  test_cooldown_ready: boolean;
+}>;
+
 function endpointHash(endpoint: string): string {
   return createHash("sha256").update(endpoint).digest("hex");
 }
@@ -82,6 +88,30 @@ function storedEndpointFromRow(row: StoredEndpointRow): StoredPushEndpoint {
     p256dh: row.p256dh_key,
     auth: row.auth_secret,
   };
+}
+
+/**
+ * Checks the schema capabilities needed by the public browser lifecycle without
+ * exposing table names or database errors to a visitor.
+ */
+export async function isPublicPushStorageReady(): Promise<boolean> {
+  const sql = getDb();
+  const [row] = await sql`
+    SELECT
+      to_regclass('public_push_subscriptions') IS NOT NULL AS subscriptions_ready,
+      to_regclass('public_push_deliveries') IS NOT NULL AS deliveries_ready,
+      EXISTS(
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = current_schema()
+          AND table_name = 'public_push_subscriptions'
+          AND column_name = 'last_test_notification_at'
+      ) AS test_cooldown_ready
+  ` as unknown as StorageReadinessRow[];
+
+  return row?.subscriptions_ready === true
+    && row.deliveries_ready === true
+    && row.test_cooldown_ready === true;
 }
 
 export async function getPublicPushSettings(

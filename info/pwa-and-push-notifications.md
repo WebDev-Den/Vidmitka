@@ -18,6 +18,22 @@
 
 Візуальна теза: шестерня є тихим компактним керуванням поруч із встановленням PWA; у ній зосереджені вибір одного викладача, два види подій і поточний permission-стан, а сам розклад не перевантажується додатковими блоками. Після основної дії збереження є стримана secondary-кнопка тесту, яка не конкурує з нею візуально. На mobile використовується чинний popup налаштувань перегляду, тому не з’являються вкладені focus trap-и. На desktop та сама форма відкривається окремим доступним popover.
 
+#### UX-корекція 04.09.2026
+
+Візуальна теза: налаштування push — це коротка панель «стан → вибір → одна дія», а не довга форма всередині списку інших налаштувань. Звичайний дозвіл браузера показується компактним рядком під заголовком; попередження утворюють окремий alert лише коли потрібна дія користувача або сервер ще не готовий.
+
+Контент-план: mobile-меню зберігає пошук викладача, дату й PWA на екрані огляду, а пункт «Сповіщення» відкриває окремий екран у тому самому modal popover. Push-екран містить заголовок зі статусом, вибір викладача, два рядки подій з inline часом/кількістю хвилин, feedback над footer і одну повнорозмірну primary-дію. «Надіслати тест» та «Вимкнути» не показуються сірими до успішного save: вони з’являються тільки для збереженої підписки.
+
+Interaction-thesis: back, X і Escape повертають фокус до шестерні; перехід між overview і push не створює вкладеного focus trap. Save лишається єдиною дією, що може запитати permission і створити browser subscription. Помилка persistence читає безпечне server-side пояснення й залишається поруч із повторною дією; SQL, endpoint-и, ключі та інші внутрішні деталі ніколи не виходять у UI.
+
+#### Mobile sheet-корекція 04.09.2026
+
+Візуальна теза: на телефоні налаштування є спокійним майже повноекранним sheet на білій поверхні, а не вузьким desktop-popover поверх активного розкладу. Він залишає тонкий теплий край viewport-а та не конкурує з номером пари, картками занять або toolbar у фоні.
+
+Контент-план: в overview користувач бачить лише три операційні блоки — викладача, іншу дату й застосунок — та один окремий рядок переходу до сповіщень. Push-екран займає доступну висоту, має власний back/X, щільну форму й footer з основною дією. Немає паралельного показу розкладу як нібито доступного контексту.
+
+Interaction-thesis: sheet відкривається тільки зі шестерні, блокує фонові натискання і scroll, а X/Escape повертають фокус до шестерні. Перехід overview → push переводить фокус на back, back повертає його до рядка «Сповіщення»; browser-рух лишається стандартним і вимикається при `prefers-reduced-motion`, без декоративної анімації.
+
 Послідовність взаємодії: відвідувач відкриває шестерню → обирає конкретного викладача → налаштовує події → натискає явну кнопку збереження. Лише ця кнопка може запитати browser permission, створити subscription і надіслати її на сервер. Після збереження доступна «Надіслати тест»: вона не запитує дозвіл, не зберігає незбережені зміни й надсилає один нейтральний payload лише на поточний browser endpoint. Відповідь provider-а `410` відкликає server-side запис і перед наступним save примусово створює нову browser-підписку, а не реактивує застарілий endpoint. Зміна звичайного фільтра розкладу не змінює push-підписку. Після явного збереження вибраний викладач синхронізується з чинним cookie фільтра розкладу. Вимкнення відкликає server-side налаштування й browser subscription. На iPhone/iPad UI пояснює вимогу встановити PWA на початковий екран.
 
 Серверну межу утворює `lib/public-push/`: чисті правила перевіряють Kyiv-час, параметри подій та deterministic delivery key; repository відповідає за endpoint hash, active teacher, атомарне створення/lease/finalize delivery та один test-send на підписку за 60 секунд; scanner групує активні підписки за викладачем і повторно використовує чинний resolver публічного розкладу; sender є єдиним адаптером VAPID/web-push. Вхід QStash перевіряє підпис current/next signing key над raw body та URL. Публічний API не повертає endpoint, ключі або приватні VAPID-дані.
@@ -28,11 +44,12 @@ TDD-межі, обрані в межах постійного дозволу к�
 
 - App Router manifest і встановлення PWA збережені: `start_url=/`, `scope=/`, `standalone`, українська локалізація, canonical icons і компактна 44 px кнопка встановлення.
 - `/sw.js` як і раніше не кешує HTML або API, але тепер безпечно обробляє `push` і `notificationclick`: показує лише server-signed public payload, використовує canonical icons та відкриває тільки `/` того самого origin. Server transport-topic є 32-символьним URL-safe Base64 hash payload tag-а, тоді як сам тег залишається в payload для згортання notification UI.
-- На desktop є окрема 44 px шестерня біля PWA-control. На mobile чинна шестерня «Налаштування» містить ту саму форму, без вкладеного popup. Форма зберігає один публічний вибір викладача на browser endpoint, два види подій і явне вимкнення.
-- `GET` / `POST` / `PUT` / `DELETE` `/api/public/push` віддають лише public VAPID key і стан/збереження налаштувань цього endpoint. `POST action=test` вимагає точного збігу чинної server-side підписки, надсилає лише сталий test payload і не пише schedule delivery ledger. Немає login, cookie-ідентичності, endpoint у відповіді чи секретів у браузері. API перевіряє same-origin, малий JSON body, конкретного active teacher та HTTPS endpoint від підтримуваного browser push provider.
+- На desktop є окрема 44 px шестерня біля PWA-control. На mobile чинна шестерня відкриває майже повноекранний modal sheet з overview (викладач, дата, PWA), а пункт «Сповіщення» переходить до окремого компактного екрана в ньому — без вкладеного popup, активного фону або спільного 420 px скролу. Форма зберігає один публічний вибір викладача на browser endpoint, два види подій і явне вимкнення.
+- `GET` / `POST` / `PUT` / `DELETE` `/api/public/push` віддають лише public VAPID key, безпечний стан готовності push-сховища та стан/збереження налаштувань цього endpoint. `POST action=test` вимагає точного збігу чинної server-side підписки, надсилає лише сталий test payload і не пише schedule delivery ledger. Немає login, cookie-ідентичності, endpoint у відповіді чи секретів у браузері. API перевіряє same-origin, малий JSON body, конкретного active teacher та HTTPS endpoint від підтримуваного browser push provider. Для відсутньої/неповної schema API повертає стабільний safe code `PUSH_STORAGE_NOT_READY`, а журналює тільки action і DB code без даних підписки.
 - Міграція `015_public_push_notifications.sql` додає один запис налаштувань на endpoint та окремий idempotent delivery ledger; `016_public_push_test_cooldown.sql` додає server-side timestamp для атомарного обмеження тесту до одного разу на 60 секунд. Endpoint зберігається на сервері разом із browser crypto keys; унікальність і пошук використовують лише SHA-256 hash. Міграції ще **не застосовано** до production БД.
 - Node-only `POST /api/internal/push/scan` читає raw QStash body, перевіряє current/next signature key **і** canonical `PUSH_SCANNER_URL`, не приймає дату, викладача або endpoint з body, а повторно використовує актуальний public schedule resolver. Неактивні викладачі відсікаються на SQL join до resolver-а.
 - Scanner працює за Europe/Kyiv і запускається за розкладом лише у 07:00–20:00. Він приймає затриманий до 20:01 виклик виключно як one-minute grace для події рівно о 20:00, але не дає обрати 20:01 і ніколи не надсилає раніше. Читання розкладу лишається один раз на викладача, а browser endpoint-и обробляються обмеженою паралельністю (до 8 підписок), тому повільний пристрій не блокує весь scanner. Transient provider/network failure повторюється один раз у межах того самого delivery lease; delivery claim і стабільний notification tag зупиняють дубль як для QStash retry, так і на рівні notification UI; 404/410 деактивує застарілу підписку.
+- UX-корекція після фактичного `503`: UI не створює зайву local subscription, коли server storage ще не готове; показує коротке пояснення поруч із primary-дією, не показує disabled test до успішного save та зберігає feedback над mobile footer.
 
 ## Потік встановлення
 
@@ -66,8 +83,8 @@ TDD-межі, обрані в межах постійного дозволу к�
 ## Підготовлені QA-сценарії
 
 - content type і поля manifest, canonical icons, JavaScript MIME/no-store/CSP service worker, install control та iOS fallback;
-- desktop/mobile шестерня, keyboard/Escape/focus return, 1440/820/390 px, document-level overflow, reduced motion та console;
-- denied/default/granted browser permission, status/save/delete lifecycle, зміна викладача лише після явного save, test disabled до збереженої підписки, test success і відсутність endpoint/keys у UI/API responses;
+- desktop/mobile шестерня, mobile overview → push → back, keyboard/Escape/focus return, 1440/820/390 px, document-level overflow, reduced motion та console;
+- denied/default/granted browser permission, ready/not-ready server storage, status/save/delete lifecycle, зміна викладача лише після явного save, test hidden до збереженої підписки, test success і відсутність endpoint/keys у UI/API responses;
 - same-origin/body/provider validation, inactive teacher, exact-subscription test capability, атомарний 60-second cooldown/429, raw QStash signature + canonical URL, VAPID-missing state, 404/410 cleanup;
 - Kyiv/DST, межі 07:00 та 20:00, відсутність пар, скасоване/перенесене заняття, N=1/60, один хвилинний grace та idempotent concurrent/retry delivery;
 - ізольоване застосування міграцій 015/016, typecheck, tests, production build і browser flow перед будь-яким production push або schedule.

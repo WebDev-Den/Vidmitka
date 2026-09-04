@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   claimPublicPushTest,
   getPublicPushSettings,
+  isPublicPushStorageReady,
   revokePublicPushSubscription,
   savePublicPushSettings,
 } from "@/lib/public-push/repository";
@@ -35,11 +36,38 @@ function response(data: unknown, status = 200): NextResponse {
   return NextResponse.json({ data }, { status, headers: noStoreHeaders });
 }
 
-function problem(message: string, status = 400, extraHeaders?: Readonly<Record<string, string>>): NextResponse {
-  return NextResponse.json({ error: { message } }, {
+function problem(
+  message: string,
+  status = 400,
+  extraHeaders?: Readonly<Record<string, string>>,
+  code?: string,
+): NextResponse {
+  return NextResponse.json({ error: { message, ...(code ? { code } : {}) } }, {
     status,
     headers: { ...noStoreHeaders, ...extraHeaders },
   });
+}
+
+function databaseErrorCode(error: unknown): string | null {
+  if (!error || typeof error !== "object" || !("code" in error)) return null;
+  const code = (error as { code?: unknown }).code;
+  return typeof code === "string" ? code : null;
+}
+
+function pushFailure(action: "read" | "save" | "disable", error: unknown, fallback: string): NextResponse {
+  const databaseCode = databaseErrorCode(error);
+  if (databaseCode === "42P01" || databaseCode === "42703") {
+    console.error("public_push_storage_not_ready", { action, databaseCode });
+    return problem(
+      "Сховище сповіщень на сервері ще не підготовлене. Спробуйте пізніше.",
+      503,
+      undefined,
+      "PUSH_STORAGE_NOT_READY",
+    );
+  }
+
+  console.error("public_push_failed", { action, databaseCode: databaseCode ?? "unknown" });
+  return problem(fallback, 503, undefined, "PUSH_UNAVAILABLE");
 }
 
 function hasSameOrigin(request: NextRequest): boolean {
@@ -75,8 +103,17 @@ function readSubscription(value: unknown): ParsedSubscription {
 }
 
 export async function GET() {
+  let storageReady = false;
+  try {
+    storageReady = await isPublicPushStorageReady();
+  } catch (error) {
+    // The browser only needs a safe availability state here; no DB details belong in this response.
+    console.error("public_push_storage_check_failed", { databaseCode: databaseErrorCode(error) ?? "unknown" });
+  }
+
   return response({
     vapidPublicKey: isWebPushConfigured() ? getPublicVapidKey() : null,
+    storageReady,
   });
 }
 
@@ -112,8 +149,8 @@ export async function POST(request: NextRequest) {
       return problem("Підписка застаріла. Увімкніть і збережіть сповіщення знову.", 410);
     }
     return problem("Не вдалося надіслати тестове сповіщення. Спробуйте пізніше.", 503);
-  } catch {
-    return problem("Не вдалося прочитати налаштування сповіщень.", 503);
+  } catch (error) {
+    return pushFailure("read", error, "Не вдалося прочитати налаштування сповіщень.");
   }
 }
 
@@ -136,8 +173,8 @@ export async function PUT(request: NextRequest) {
     });
     if (!saved) return problem("Оберіть активного викладача.");
     return response({ saved: true });
-  } catch {
-    return problem("Не вдалося зберегти налаштування сповіщень.", 503);
+  } catch (error) {
+    return pushFailure("save", error, "Не вдалося зберегти налаштування сповіщень.");
   }
 }
 
@@ -150,7 +187,7 @@ export async function DELETE(request: NextRequest) {
     if (!parsedSubscription.ok) return parsedSubscription.response;
     await revokePublicPushSubscription(parsedSubscription.value);
     return new NextResponse(null, { status: 204, headers: noStoreHeaders });
-  } catch {
-    return problem("Не вдалося вимкнути сповіщення.", 503);
+  } catch (error) {
+    return pushFailure("disable", error, "Не вдалося вимкнути сповіщення.");
   }
 }

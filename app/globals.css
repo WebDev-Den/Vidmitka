@@ -286,7 +286,7 @@ textarea:focus-visible {
 .public-header-inner {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  width: min(1480px, calc(100% - 32px));
+  width: calc(100% - 32px);
   min-height: 76px;
   margin: 0 auto;
   align-items: center;
@@ -2186,7 +2186,7 @@ textarea:focus-visible {
   }
 
   .public-header-inner {
-    width: min(100% - 24px, 1480px);
+    width: calc(100% - 24px);
     grid-template-columns: auto minmax(0, 1fr);
   }
 

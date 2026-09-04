@@ -1,4 +1,4 @@
-.workspace { width: min(100% - 32px, 1480px); margin: 0 auto; padding: 20px 0 56px; }
+.workspace { width: calc(100% - 32px); margin: 0 auto; padding: 20px 0 56px; }
 .statusBar { display: grid; grid-template-columns: auto auto minmax(220px, 1fr) auto auto; grid-template-areas: "clock navigation teacher date week"; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0; }
 .clock { grid-area: clock; display: flex; align-items: baseline; gap: 10px; min-width: 0; }
 .clock strong { color: var(--ink); font-size: 1.55rem; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
@@ -83,7 +83,7 @@
 @keyframes pending-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 900px) {
-  .workspace { width: min(100% - 24px, 1480px); }
+  .workspace { width: calc(100% - 24px); }
   .statusBar { grid-template-columns: auto minmax(210px, 1fr) auto; grid-template-areas: "clock teacher week" "navigation date date"; }
   .dateForm { justify-self: end; }
   .lessonCell { grid-template-columns: 1fr; }

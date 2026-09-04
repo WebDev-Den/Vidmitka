@@ -2771,87 +2771,6 @@ textarea:focus-visible {
   font-size: 13px;
 }
 
-.scheduler-manager { max-width: 1180px; }
-
-.scheduler-summary {
-  max-width: 920px;
-  margin: 0;
-  padding: 13px 15px;
-  color: #7a4a18;
-  background: #fff8ed;
-  border: 1px solid #eed0a7;
-  border-radius: 10px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.scheduler-summary.is-ready {
-  color: #245b56;
-  background: var(--accent-soft);
-  border-color: #b8d9d3;
-}
-
-.scheduler-schedule-name,
-.scheduler-schedule-id {
-  display: block;
-}
-
-.scheduler-schedule-name { font-weight: 700; }
-
-.scheduler-schedule-id {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.scheduler-cron {
-  color: var(--ink);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-.scheduler-timestamp {
-  min-width: 154px;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.scheduler-status.is-ready {
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-}
-
-.scheduler-status.is-missing,
-.scheduler-status.is-outdated,
-.scheduler-status.is-not-configured {
-  color: #7a4a18;
-  background: #fff1dc;
-}
-
-.scheduler-status.is-paused,
-.scheduler-status.is-unavailable {
-  color: var(--danger);
-  background: #fde9e7;
-}
-
-.scheduler-actions {
-  align-items: center;
-}
-
-.scheduler-actions .button svg.is-spinning {
-  animation: navigation-spin 800ms linear infinite;
-}
-
-.scheduler-action-copy {
-  max-width: 440px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.45;
-}
-
 .management-table-scroll {
   /* Keep absolutely positioned accessible text inside this scrollport. */
   position: relative;
@@ -3059,7 +2978,6 @@ textarea:focus-visible {
   .management-page .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .management-page .dashboard-card:nth-child(2) { border-right: 0; }
   .management-page .dashboard-card:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
-  .scheduler-action-copy { width: 100%; }
   .lesson-editor.compact-form { grid-template-columns: minmax(0, 1fr); padding: 12px; gap: 12px; }
   .compact-form fieldset { padding: 8px; }
   .management-table input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),

@@ -7,7 +7,6 @@ const mainSections = [
   ["Розклад", "/admin/schedule", "Заняття та їхній стан"],
   ["Переноси", "/admin/exceptions", "Разові зміни й скасування"],
   ["Імпорт JSON", "/admin/import", "Перевірка та імпорт файлу"],
-  ["Push cron", "/admin/cron", "Статус і запуск QStash"],
   ["Навчальні тижні", "/admin/week-settings", "Семестр і чергування тижнів"],
 ] as const;
 

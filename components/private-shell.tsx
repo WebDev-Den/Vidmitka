@@ -3,7 +3,6 @@
 import {
   BookOpen,
   Building2,
-  CalendarClock,
   CalendarDays,
   ChevronDown,
   Clock3,
@@ -42,7 +41,6 @@ const iconByName: Record<NavigationIcon, LucideIcon> = {
   periods: Clock3,
   groups: GraduationCap,
   settings: Settings2,
-  cron: CalendarClock,
 };
 
 const directoryNavigationIds = new Set([

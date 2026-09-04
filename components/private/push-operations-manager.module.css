@@ -1,0 +1,100 @@
+.stack {
+  display: grid;
+  gap: 24px;
+  max-width: 1240px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 14px;
+  color: #245b56;
+  background: var(--accent-soft);
+  border: 1px solid #b8d9d3;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.statusError {
+  color: #7a4a18;
+  background: #fff8ed;
+  border-color: #eed0a7;
+}
+
+.section {
+  display: grid;
+  gap: 10px;
+}
+
+.heading {
+  display: grid;
+  gap: 3px;
+  max-width: 760px;
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.heading p,
+.muted,
+.rowFeedback {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.events {
+  display: grid;
+  gap: 3px;
+}
+
+.events strong { color: var(--ink); }
+
+.playForm {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  min-width: 156px;
+}
+
+.playButton {
+  min-width: 132px;
+  justify-content: center;
+}
+
+.spinner {
+  animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.rowFeedback {
+  max-width: 220px;
+}
+
+.rowFeedback.isSuccess { color: var(--accent-strong); }
+.rowFeedback.isError { color: var(--danger); }
+
+.statusCell {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .stack { gap: 20px; }
+  .status { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; }
+}

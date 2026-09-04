@@ -17,6 +17,7 @@
 - [public-schedule-responsive-layout.md](public-schedule-responsive-layout.md) — VID-042/046/049: повноширинний розклад і єдиний компактний header із панеллю дати та викладача.
 - [public-schedule-url-state.md](public-schedule-url-state.md) — VID-051: розклад на `/`, cookie викладача, локальна дата без URL-параметрів і відкладені QA-сценарії.
 - [pwa-and-push-notifications.md](pwa-and-push-notifications.md) — VID-052/058: PWA, публічна Web Push-підписка одного пристрою, QStash scanner і QA-сценарії.
+- [admin-push-operations.md](admin-push-operations.md) — VID-062: захищений журнал QStash scanner-а, безпечний список підписок і manual replay найближчого розкладного push.
 - [public-free-rooms.md](public-free-rooms.md) — VID-053: popup активних вільних аудиторій за вибраною датою й номером пари.
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.

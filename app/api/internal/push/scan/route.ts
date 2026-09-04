@@ -2,6 +2,7 @@ import { Receiver } from "@upstash/qstash";
 import { NextRequest, NextResponse } from "next/server";
 
 import { runPublicPushScanner } from "@/lib/public-push/scanner";
+import { recordPublicPushScanRun } from "@/lib/public-push/repository";
 import { isWebPushConfigured } from "@/lib/public-push/sender";
 
 export const runtime = "nodejs";
@@ -26,6 +27,15 @@ function isExpectedBody(value: unknown): boolean {
     && typeof value === "object"
     && !Array.isArray(value)
     && (value as Record<string, unknown>).version === 1;
+}
+
+async function recordScanRun(input: Parameters<typeof recordPublicPushScanRun>[0]): Promise<void> {
+  try {
+    await recordPublicPushScanRun(input);
+  } catch {
+    // A new operational ledger must never turn a valid QStash delivery into a retry storm.
+    console.error("public_push_scan_run_log_failed");
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -71,16 +81,36 @@ export async function POST(request: NextRequest) {
   }
 
   if (!isWebPushConfigured()) {
+    await recordScanRun({
+      status: "failed", scanned: false, subscriptions: 0, claimed: 0, sent: 0,
+      invalid: 0, failed: 0, skipped: 0, scheduleErrors: 0, failureCode: "web_push_unavailable",
+    });
     return NextResponse.json({ error: "Web Push configuration is unavailable." }, { status: 503 });
   }
 
   try {
     const result = await runPublicPushScanner();
+    await recordScanRun({
+      status: result.scheduleErrors > 0 ? "failed" : result.scanned ? "completed" : "ignored",
+      scanned: result.scanned,
+      subscriptions: result.subscriptions,
+      claimed: result.claimed,
+      sent: result.sent,
+      invalid: result.invalid,
+      failed: result.failed,
+      skipped: result.skipped,
+      scheduleErrors: result.scheduleErrors,
+      failureCode: result.scheduleErrors > 0 ? "schedule_error" : null,
+    });
     if (result.scheduleErrors > 0) {
       return NextResponse.json({ error: "Schedule scanner did not finish." }, { status: 503 });
     }
     return NextResponse.json({ data: result }, { headers: { "Cache-Control": "no-store" } });
   } catch {
+    await recordScanRun({
+      status: "failed", scanned: false, subscriptions: 0, claimed: 0, sent: 0,
+      invalid: 0, failed: 0, skipped: 0, scheduleErrors: 0, failureCode: "scanner_unavailable",
+    });
     return NextResponse.json({ error: "Push scanner is unavailable." }, { status: 503 });
   }
 }

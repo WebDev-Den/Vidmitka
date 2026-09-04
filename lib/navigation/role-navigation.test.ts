@@ -17,6 +17,7 @@ describe("getRoleNavigation", () => {
     expect(ids).toContain("settings");
     expect(ids).toContain("exceptions");
     expect(ids).toContain("import");
+    expect(ids).toContain("push");
     expect(new Set(ids).size).toBe(ids.length);
   });
 

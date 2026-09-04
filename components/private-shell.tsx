@@ -2,6 +2,7 @@
 
 import {
   BookOpen,
+  BellRing,
   Building2,
   CalendarDays,
   ChevronDown,
@@ -41,6 +42,7 @@ const iconByName: Record<NavigationIcon, LucideIcon> = {
   periods: Clock3,
   groups: GraduationCap,
   settings: Settings2,
+  push: BellRing,
 };
 
 const directoryNavigationIds = new Set([

@@ -77,8 +77,9 @@
 | VID-059 | QA, production-реліз і запуск push scheduler-а для накопиченого пакета | Технічна задача (QA / release / операційна готовність) | Частково заблоковано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): code/release QA | Vercel deploy і migrations завершено; створення двох QStash schedules заблоковане відсутнім QStash account/API access |
 | VID-060 | iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу | Баг (mobile UX / visual density) | Опубліковано за явним винятком | BLOCKED — [QA-20260904-10](qa/reports/QA-20260904-10.md): code checks PASS; усі доступні browser paths не мають browser runtime | Код `1d153f1`; Vercel `dpl_4n6X47fXTNUQMbD3yV8iZ6qfgXNC` READY; browser/iPhone критерії лишаються неперевіреними |
 | VID-061 | Адмінський статус і ініціалізація QStash cron | Фіча (адміністрування / scheduler) | Уточнено: UI має бути вилучено; реалізація очікується | PASS — [QA-20260904-12](qa/reports/QA-20260904-12.md): cron UI/adapter removed | Browser/UI/spacing waived explicitly only for VID-061; scanner, public push, QStash variables and external schedules unchanged |
+| VID-062 | Адмінський журнал Push і ручне відтворення доставки | Фіча (адміністрування / операційний контроль) | Реалізовано; QA пройдено | PASS — [QA-20260905-01](qa/reports/QA-20260905-01.md) | 107 tests, typecheck, build, repeatable isolated migration/DATE probe PASS; visual/browser повторно N/A за прямим waiver користувача |
 
-Наступний новий ID: **VID-062**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
+Наступний новий ID: **VID-063**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
 ## VID-058 — публічні Web Push-сповіщення за розкладом викладача
 
@@ -185,6 +186,36 @@ QA-20260904-11 виявив `FAIL`: nullable type guard зупиняв `tsc` і 
 Уточнення 04.09.2026: користувач наказав «прибери перевірку browser QA». Це явний одноразовий дозвіл не робити browser/UI/spacing QA релізним gate для VID-061 і продовжити commit, push у `main`, production deployment та контрольований QStash smoke попри `BLOCKED` у QA-20260904-11. Виняток не скасовує browser QA для інших задач, не змінює `BLOCKED` на `PASS` і не видає browser save/push delivery за перевірені.
 
 Уточнення 04.09.2026: скриншот із закресленою сторінкою `/admin/cron` супроводжено запитом «це прибери». Воно замінює UI-частину VID-061: прибрати пункт навігації, картку на admin overview, route, форму/Server Action, QStash adapter та пов’язані стилі й тести. Не змінювати QStash variables у Vercel, уже наявні зовнішні schedules, scanner route або push-підписки. Планувальник, якщо потрібен надалі, налаштовується зовнішньо в QStash Console/API. **Реалізовано; QA очікується.**
+
+Уточнення 05.09.2026: користувач обрав один QStash schedule замість двох. Зовнішня конфігурація: `Upstash-Cron: * 7-20 * * *`, часовий пояс `Europe/Chisinau` як доступний у Console поточний еквівалент київського часу, POST до canonical scanner URL з body `{"version":1}`. Це 840 scheduler delivery на добу. Виклики 20:01–20:59 отримують успішний scanner no-op: сповіщення не надсилаються, оскільки чинне доменне правило приймає події тільки до 20:00 і один grace-minute для затриманого 20:00. Попередня пара schedules `07:00–19:59` + `20:00` замінена цим одним schedule. Код scanner-а не змінюється. **Реалізовано; QA не потрібен для документаційної зміни.**
+
+## VID-062 — адмінський журнал Push і ручне відтворення доставки
+
+Уточнення релізу 05.09.2026: «пропусти qt візуальне тестування» — явний виняток для visual/browser-spacing QA поточного релізу VID-062. Невиконане не позначати PASS; перевірки коду, міграції та знайдені дефекти залишаються обов'язковими. Виправлено тестові fixtures/очікування та UTC-зсув PostgreSQL DATE у журналі (читання `scheduled_date::TEXT`).
+
+Уточнення 05.09.2026: «задеплой» — дозвіл на незалежний QA поточного пакета, необхідну адитивну міграцію `017`, commit/push і production deployment після перевірки.
+
+Первинний запит: «зроби в адмінці логи для крон а також список тих хто піжписався на пущ щоб я міг до прикладу в ручну запустити(для тесту) має бути запис + кнопка плей і повідомлення полетіло яке б було коли прийшов крон». Попередній тип: **фіча (адміністрування / операційний контроль)**.
+
+Робоче трактування: новий захищений розділ admin показує останні спроби реальних delivery scanner-а та короткий список активних browser-підписок. Кожен рядок має доступну кнопку Play. Вона приймає лише server-validated ID підписки, повторно читає поточні налаштування й публічний розклад, знаходить найближчу заплановану подію цього пристрою та негайно надсилає її звичний видимий текст. Тобто це не нейтральний test push: daily digest або reminder береться з того самого schedule resolver-а, який використає майбутній cron. Manual payload має окремий tag і окремий log, тому не блокує, не дублює й не замінює майбутню ідемпотентну cron delivery. Якщо в пристрою увімкнені лише нагадування та в доступному розкладі немає майбутньої пари, дія нічого не надсилає й пояснює це адміністратору. Лише адмін може виконати дію. Жоден endpoint, browser crypto key або VAPID secret не повертається в UI, log чи Server Action result.
+
+Візуальна теза: щільний операційний журнал на теплій робочій площині — таблиці, короткі статуси та одна помітна, але стримана Play-дія. Контент-план: актуальний стан scanner-а, список активних підписок із викладачем і подіями, потім хронологічний delivery log. Interaction thesis: pending Play замінює піктограму на короткий стан відправлення; після результату рядок отримує живий feedback; hover/focus Play чітко підсвічує одну відповідну дію без декоративного руху.
+
+TDD seams, дозволені постійним погодженням проєкту: (1) глибокий admin-push module — list/log/manual payload and send для одного subscription ID через injected repository/sender/resolver adapters; (2) Server Action — admin authorization, UUID validation, constrained safe result і path revalidation. UI є відображенням цього interface, а не джерелом даних або payload.
+
+Критерії приймання:
+
+- Адміністратор бачить пункт «Push-сповіщення» та сторінку з таблицею активних підписок: викладач, увімкнені події, час ранкового огляду, lead minutes і остання зміна; endpoint і crypto keys відсутні.
+- Сторінка показує recent delivery log із часом за Києвом, типом повідомлення, викладачем, результатом і без персональних endpoint/ключів. Відсутній журнал має чіткий порожній стан.
+- Play доступний з клавіатури, має `aria-label`, pending/успіх/помилку; він не приймає payload, endpoint чи teacher з браузера. Для обраної активної підписки він відправляє лише payload найближчої майбутньої події, який scanner сформує у її київську хвилину; за відсутності належної події не робить delivery.
+- Server Action повторно перевіряє admin session і форму ID; inactive/nonexistent subscription, невірний ID, missing VAPID, send failure і відсутня належна подія повертають безпечні українські результати. Ручна доставка записується в delivery log окремо від cron delivery й не підмінює ідемпотентний scanner ledger.
+- Тонкі межі, canonical palette, 44 px control, local table overflow, keyboard/focus/reduced motion і 1440/820/390 px входять до фінального незалежного QA; page не створює document-level overflow.
+
+**Реалізовано; QA очікується (`NOT_RUN`).** Додано захищений `/admin/push`, server-only module ручної доставки, окремі таблиці `public_push_scan_runs` / `public_push_manual_deliveries` у міграції `017`, запис scan result після кожного автентичного QStash запуску, а також unit-сценарії selection, відсутньої події, cleanup 410 і transient retry. Тести, build, browser/spacing QA, міграція `017`, ручне надсилання, commit і deployment не виконувалися.
+
+**Потребує виправлень; QA `FAIL` — [QA-20260905-01](qa/reports/QA-20260905-01.md).** Обов'язковий `pnpm test` має 3 failures у нових test contracts, а isolated browser/DB probe показав зсув `scheduled_date` на попередній день у manual delivery log. Release gate закритий до пакетного виправлення й повторного nonvisual QA; подальший visual QA користувач дозволив пропустити для цього релізу.
+
+**Виправлено; QA `PASS` — [QA-20260905-01](qa/reports/QA-20260905-01.md).** Full test contracts і exact PostgreSQL DATE виправлено. Повторний nonvisual прогін: typecheck, 107 виконаних unit tests, production build та isolated 015→017/repository probe пройдені; тимчасову schema видалено. Visual/browser-spacing повторно не виконувався за прямим винятком користувача. Актуальний QA-gate для дозволеного release відкритий.
 
 ## VID-060 — iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу
 

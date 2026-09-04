@@ -4,6 +4,11 @@ import { createHash, randomUUID } from "node:crypto";
 
 import { getDb } from "@/lib/db";
 
+import type {
+  AdminPushManualDelivery,
+  AdminPushScanRun,
+  AdminPushSubscription,
+} from "./admin-types";
 import type { BrowserPushSubscription, PublicPushPreferences } from "./rules";
 import type { PublicPushPayload, StoredPushEndpoint } from "./sender";
 
@@ -22,6 +27,7 @@ export type ActivePublicPushSubscription = Readonly<{
 export type DeliveryClaim = Readonly<{ id: string; leaseToken: string }>;
 export type DeliveryKind = "daily_digest" | "class_reminder";
 export type DeliveryOutcome = "sent" | "failed" | "invalid";
+export type ManualDeliveryOutcome = DeliveryOutcome;
 export type PublicPushTestClaim =
   | Readonly<{ kind: "claimed"; endpoint: StoredPushEndpoint }>
   | Readonly<{ kind: "cooldown" }>
@@ -57,6 +63,47 @@ type StorageReadinessRow = Readonly<{
   test_cooldown_ready: boolean;
 }>;
 
+type AdminOperationsReadinessRow = Readonly<{
+  subscriptions_ready: boolean;
+  deliveries_ready: boolean;
+  scan_runs_ready: boolean;
+  manual_deliveries_ready: boolean;
+}>;
+
+type AdminSubscriptionRow = Readonly<{
+  id: string;
+  teacher_name: string;
+  daily_digest_time: string | null;
+  class_reminder_minutes: number | null;
+  last_seen_at: string | Date;
+}>;
+
+type ScanRunRow = Readonly<{
+  id: string;
+  status: AdminPushScanRun["status"];
+  scanned: boolean;
+  subscriptions_count: number;
+  claimed_count: number;
+  sent_count: number;
+  invalid_count: number;
+  failed_count: number;
+  skipped_count: number;
+  schedule_error_count: number;
+  failure_code: string | null;
+  created_at: string | Date;
+}>;
+
+type ManualDeliveryRow = Readonly<{
+  id: string;
+  teacher_name: string;
+  notification_kind: AdminPushManualDelivery["kind"];
+  scheduled_date: string;
+  scheduled_time: string;
+  status: AdminPushManualDelivery["status"];
+  provider_status: number | null;
+  created_at: string | Date;
+}>;
+
 function endpointHash(endpoint: string): string {
   return createHash("sha256").update(endpoint).digest("hex");
 }
@@ -81,12 +128,29 @@ function toIsoTime(value: number | null): string | null {
   return Number.isFinite(date.getTime()) ? date.toISOString() : null;
 }
 
+function toIsoDate(value: string | Date): string {
+  const parsed = new Date(value);
+  return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : "";
+}
+
 function storedEndpointFromRow(row: StoredEndpointRow): StoredPushEndpoint {
   return {
     endpoint: row.endpoint_url,
     expirationTime: row.expiration_time ? new Date(row.expiration_time).toISOString() : null,
     p256dh: row.p256dh_key,
     auth: row.auth_secret,
+  };
+}
+
+function activeSubscriptionFromRow(row: ActiveSubscriptionRow): ActivePublicPushSubscription {
+  return {
+    id: row.id,
+    configVersion: Number(row.config_version),
+    teacherId: row.teacher_id,
+    teacherName: row.teacher_name,
+    morningTime: timeValue(row.daily_digest_time),
+    lessonLeadMinutes: row.class_reminder_minutes === null ? null : Number(row.class_reminder_minutes),
+    endpoint: storedEndpointFromRow(row),
   };
 }
 
@@ -112,6 +176,21 @@ export async function isPublicPushStorageReady(): Promise<boolean> {
   return row?.subscriptions_ready === true
     && row.deliveries_ready === true
     && row.test_cooldown_ready === true;
+}
+
+export async function isAdminPublicPushOperationsReady(): Promise<boolean> {
+  const sql = getDb();
+  const [row] = await sql`
+    SELECT
+      to_regclass('public_push_subscriptions') IS NOT NULL AS subscriptions_ready,
+      to_regclass('public_push_deliveries') IS NOT NULL AS deliveries_ready,
+      to_regclass('public_push_scan_runs') IS NOT NULL AS scan_runs_ready,
+      to_regclass('public_push_manual_deliveries') IS NOT NULL AS manual_deliveries_ready
+  ` as unknown as AdminOperationsReadinessRow[];
+  return row?.subscriptions_ready === true
+    && row.deliveries_ready === true
+    && row.scan_runs_ready === true
+    && row.manual_deliveries_ready === true;
 }
 
 export async function getPublicPushSettings(
@@ -282,15 +361,176 @@ export async function listActivePublicPushSubscriptions(): Promise<ActivePublicP
     ORDER BY subscription.teacher_id, subscription.id
   ` as unknown as ActiveSubscriptionRow[];
 
+  return rows.map(activeSubscriptionFromRow);
+}
+
+export async function findActivePublicPushSubscriptionById(
+  subscriptionId: string,
+): Promise<ActivePublicPushSubscription | null> {
+  const sql = getDb();
+  const [row] = await sql`
+    SELECT
+      subscription.id::TEXT,
+      subscription.config_version,
+      subscription.teacher_id::TEXT,
+      teacher.display_name AS teacher_name,
+      subscription.daily_digest_time::TEXT,
+      subscription.class_reminder_minutes,
+      subscription.endpoint_url,
+      subscription.expiration_time,
+      subscription.p256dh_key,
+      subscription.auth_secret
+    FROM public_push_subscriptions AS subscription
+    JOIN teachers AS teacher ON teacher.id = subscription.teacher_id AND teacher.is_active
+    WHERE subscription.id = ${subscriptionId}::UUID
+      AND subscription.is_active
+      AND (subscription.daily_digest_time IS NOT NULL OR subscription.class_reminder_minutes IS NOT NULL)
+    LIMIT 1
+  ` as unknown as ActiveSubscriptionRow[];
+  return row ? activeSubscriptionFromRow(row) : null;
+}
+
+export async function listAdminPublicPushSubscriptions(): Promise<AdminPushSubscription[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT
+      subscription.id::TEXT,
+      teacher.display_name AS teacher_name,
+      subscription.daily_digest_time::TEXT,
+      subscription.class_reminder_minutes,
+      subscription.last_seen_at
+    FROM public_push_subscriptions AS subscription
+    JOIN teachers AS teacher ON teacher.id = subscription.teacher_id AND teacher.is_active
+    WHERE subscription.is_active
+      AND (subscription.daily_digest_time IS NOT NULL OR subscription.class_reminder_minutes IS NOT NULL)
+    ORDER BY teacher.display_name, subscription.last_seen_at DESC, subscription.id
+    LIMIT 250
+  ` as unknown as AdminSubscriptionRow[];
   return rows.map((row) => ({
     id: row.id,
-    configVersion: Number(row.config_version),
-    teacherId: row.teacher_id,
     teacherName: row.teacher_name,
     morningTime: timeValue(row.daily_digest_time),
     lessonLeadMinutes: row.class_reminder_minutes === null ? null : Number(row.class_reminder_minutes),
-    endpoint: storedEndpointFromRow(row),
+    lastSeenAt: toIsoDate(row.last_seen_at),
   }));
+}
+
+export async function listRecentPublicPushScanRuns(limit = 50): Promise<AdminPushScanRun[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT
+      id::TEXT, status, scanned,
+      subscriptions_count, claimed_count, sent_count, invalid_count, failed_count,
+      skipped_count, schedule_error_count, failure_code, created_at
+    FROM public_push_scan_runs
+    ORDER BY created_at DESC
+    LIMIT ${Math.min(Math.max(limit, 1), 100)}
+  ` as unknown as ScanRunRow[];
+  return rows.map((row) => ({
+    id: row.id,
+    status: row.status,
+    scanned: row.scanned,
+    subscriptions: Number(row.subscriptions_count),
+    claimed: Number(row.claimed_count),
+    sent: Number(row.sent_count),
+    invalid: Number(row.invalid_count),
+    failed: Number(row.failed_count),
+    skipped: Number(row.skipped_count),
+    scheduleErrors: Number(row.schedule_error_count),
+    failureCode: row.failure_code,
+    createdAt: toIsoDate(row.created_at),
+  }));
+}
+
+export async function listRecentPublicPushManualDeliveries(limit = 50): Promise<AdminPushManualDelivery[]> {
+  const sql = getDb();
+  const rows = await sql`
+    SELECT
+      delivery.id::TEXT,
+      teacher.display_name AS teacher_name,
+      delivery.notification_kind,
+      delivery.scheduled_date::TEXT,
+      delivery.scheduled_time::TEXT,
+      delivery.status,
+      delivery.provider_status,
+      delivery.created_at
+    FROM public_push_manual_deliveries AS delivery
+    JOIN public_push_subscriptions AS subscription ON subscription.id = delivery.subscription_id
+    JOIN teachers AS teacher ON teacher.id = subscription.teacher_id
+    ORDER BY delivery.created_at DESC
+    LIMIT ${Math.min(Math.max(limit, 1), 100)}
+  ` as unknown as ManualDeliveryRow[];
+  return rows.map((row) => ({
+    id: row.id,
+    teacherName: row.teacher_name,
+    kind: row.notification_kind,
+    scheduledDate: row.scheduled_date,
+    scheduledTime: timeValue(row.scheduled_time) ?? "",
+    status: row.status,
+    providerStatus: row.provider_status === null ? null : Number(row.provider_status),
+    createdAt: toIsoDate(row.created_at),
+  }));
+}
+
+export async function recordPublicPushScanRun(input: {
+  status: AdminPushScanRun["status"];
+  scanned: boolean;
+  subscriptions: number;
+  claimed: number;
+  sent: number;
+  invalid: number;
+  failed: number;
+  skipped: number;
+  scheduleErrors: number;
+  failureCode?: string | null;
+}): Promise<void> {
+  const sql = getDb();
+  await sql`
+    INSERT INTO public_push_scan_runs (
+      status, scanned, subscriptions_count, claimed_count, sent_count,
+      invalid_count, failed_count, skipped_count, schedule_error_count, failure_code
+    ) VALUES (
+      ${input.status}, ${input.scanned}, ${input.subscriptions}, ${input.claimed}, ${input.sent},
+      ${input.invalid}, ${input.failed}, ${input.skipped}, ${input.scheduleErrors}, ${input.failureCode ?? null}
+    )
+  `;
+}
+
+export async function startPublicPushManualDelivery(input: {
+  subscriptionId: string;
+  kind: DeliveryKind;
+  scheduledDate: string;
+  scheduledTime: string;
+}): Promise<string | null> {
+  const sql = getDb();
+  const [row] = await sql`
+    INSERT INTO public_push_manual_deliveries (
+      subscription_id, notification_kind, scheduled_date, scheduled_time
+    ) VALUES (
+      ${input.subscriptionId}::UUID, ${input.kind}, ${input.scheduledDate}::DATE, ${input.scheduledTime}::TIME
+    )
+    RETURNING id::TEXT
+  ` as unknown as Array<{ id: string }>;
+  return row?.id ?? null;
+}
+
+export async function finalizePublicPushManualDelivery(input: {
+  deliveryId: string;
+  outcome: ManualDeliveryOutcome;
+  providerStatus: number | null;
+}): Promise<void> {
+  const sql = getDb();
+  await sql`
+    UPDATE public_push_manual_deliveries
+    SET
+      status = ${input.outcome},
+      provider_status = ${input.providerStatus},
+      failure_code = ${input.outcome === "failed" ? "provider_error" : null},
+      sent_at = CASE WHEN ${input.outcome} = 'sent' THEN NOW() ELSE NULL END,
+      updated_at = NOW()
+    WHERE id = ${input.deliveryId}::UUID
+      AND status = 'pending'
+  `;
 }
 
 export async function claimPublicPushDelivery(input: {

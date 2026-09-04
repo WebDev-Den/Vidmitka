@@ -23,11 +23,11 @@ import {
   type DeliveryClaim,
   type DeliveryKind,
 } from "./repository";
+import { sendWebPushWithRetry } from "./send-attempt";
 import { sendWebPush, type PushSendResult } from "./sender";
 
 type ScannerSchedule = Awaited<ReturnType<typeof getPublicScheduleDay>>;
 type DeliveryAttemptOutcome = "sent" | "invalid" | "failed" | "skipped";
-const PUSH_SEND_MAX_ATTEMPTS = 2;
 const PUSH_SEND_CONCURRENCY = 8;
 
 export type PublicPushScannerDependencies = Readonly<{
@@ -100,13 +100,9 @@ async function sendClaimedDelivery(input: {
   if (!claim) return "skipped";
 
   try {
-    let result = await input.dependencies.send(input.subscription.endpoint, input.payload);
-    // A transient provider/network failure is retried once while the same
-    // delivery lease is held. The stable notification tag lets the browser
-    // replace, rather than duplicate, an uncertain first display.
-    if (result.kind === "failed" && PUSH_SEND_MAX_ATTEMPTS > 1) {
-      result = await input.dependencies.send(input.subscription.endpoint, input.payload);
-    }
+    // The stable notification tag lets the browser replace, rather than
+    // duplicate, an uncertain first display when a transient send is retried.
+    const result = await sendWebPushWithRetry(input.subscription.endpoint, input.payload, input.dependencies.send);
     if (result.kind === "sent") {
       await input.dependencies.finalize({
         deliveryId: claim.id,

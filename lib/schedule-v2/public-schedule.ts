@@ -7,6 +7,7 @@ import { getDateKeyInTimeZone } from "@/lib/schedule-week/rules";
 import { getCalendarDayContext } from "./calendar-overrides";
 import type { CalendarWeekType } from "./calendar-override-rules";
 import { shouldShowBaseOccurrence } from "./occurrence-rules";
+import type { PublicRoom } from "./free-rooms";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -75,6 +76,16 @@ export async function listPublicTeachers(): Promise<PublicTeacher[]> {
     ORDER BY display_name
   ` as unknown as PublicTeacher[];
   return rows;
+}
+
+export async function listPublicRooms(): Promise<PublicRoom[]> {
+  const sql = getDb();
+  return await sql`
+    SELECT id::TEXT, name
+    FROM schedule_rooms
+    WHERE is_active
+    ORDER BY name
+  ` as unknown as PublicRoom[];
 }
 
 export async function listPublicPeriods(): Promise<PublicPeriod[]> {

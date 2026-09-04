@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { ManagementTable } from "@/components/private/management-table";
+import { PublicScheduleDateLink } from "@/components/public-schedule-date-link";
 import {
   calendarDayLabel,
   calendarWeekLabel,
@@ -42,7 +41,7 @@ export async function TransfersTable() {
             <th scope="row"><time dateTime={item.date}>{item.date.split("-").reverse().join(".")}</time></th>
             <td>{calendarDayLabel(item.dayOfWeek)}</td>
             <td><span className="management-status is-active">{calendarWeekLabel(item.weekType)}</span></td>
-            <td><Link className="button button-light" href={`/schedule?date=${encodeURIComponent(item.date)}`}>Переглянути</Link></td>
+            <td><PublicScheduleDateLink className="button button-light" date={item.date}>Переглянути</PublicScheduleDateLink></td>
           </tr>)}
         </tbody>
       </ManagementTable>
@@ -63,7 +62,7 @@ export async function TransfersTable() {
             <td>{item.baseLabel ?? "Разове заняття"}</td>
             <td>{item.newDate ? <time dateTime={item.newDate}>{item.newDate.split("-").reverse().join(".")}</time> : "—"}</td>
             <td>{item.reason || item.note || "—"}</td>
-            <td><Link className="button button-light" href={`/schedule?date=${encodeURIComponent(item.newDate ?? item.originalDate)}`}>Переглянути</Link></td>
+            <td><PublicScheduleDateLink className="button button-light" date={item.newDate ?? item.originalDate}>Переглянути</PublicScheduleDateLink></td>
           </tr>;
         })}</tbody>
       </ManagementTable>

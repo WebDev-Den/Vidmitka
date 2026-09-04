@@ -3,12 +3,19 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  applicationName: "Відмітка",
   title: {
     default: "Відмітка — розклад навчальних занять",
     template: "%s · Відмітка",
   },
   description:
     "Єдиний простір для перегляду та керування розкладом навчальних занять.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Відмітка",
+  },
+  formatDetection: { telephone: false },
   icons: {
     icon: [
       { url: "/favicon.ico?v=vidmitka-1", type: "image/x-icon", sizes: "16x16 32x32 48x48" },

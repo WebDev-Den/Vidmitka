@@ -1,0 +1,10 @@
+.controls { position: relative; display: flex; align-items: center; }
+.controlButton { display: grid; width: 44px; height: 44px; padding: 0; place-items: center; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; }
+.controlButton:hover { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
+.controlButton:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; }
+.controlButton svg { width: 17px; height: 17px; }
+.notice { position: absolute; z-index: 70; top: calc(100% + 8px); right: 0; width: max-content; max-width: min(320px, calc(100vw - 20px)); padding: 9px 11px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: 0 10px 26px rgba(24, 40, 61, .14); font-size: .75rem; font-weight: 650; line-height: 1.4; }
+
+@media (prefers-reduced-motion: reduce) {
+  .controlButton { transition: none; }
+}

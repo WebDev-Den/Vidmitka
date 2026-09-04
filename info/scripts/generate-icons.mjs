@@ -34,11 +34,34 @@ const apple = await sharp(svg, { density: 384 })
   .flatten({ background: "#F5F2EB" })
   .png()
   .toBuffer();
+const pwa192 = await sharp(svg, { density: 384 })
+  .resize(192, 192)
+  .flatten({ background: "#F5F2EB" })
+  .png()
+  .toBuffer();
+const pwa512 = await sharp(svg, { density: 384 })
+  .resize(512, 512)
+  .flatten({ background: "#F5F2EB" })
+  .png()
+  .toBuffer();
+const maskable512 = await sharp({
+  create: { width: 512, height: 512, channels: 4, background: "#F5F2EB" },
+})
+  .composite([{
+    input: await sharp(svg, { density: 384 }).resize(336, 336).png().toBuffer(),
+    left: 88,
+    top: 88,
+  }])
+  .png()
+  .toBuffer();
 const outputs = [
   ["favicon.ico", Buffer.concat([directory, ...images])],
   ["icon-light-32x32.png", images[1]],
   ["icon-dark-32x32.png", images[1]],
   ["apple-icon.png", apple],
+  ["icon-192x192.png", pwa192],
+  ["icon-512x512.png", pwa512],
+  ["icon-maskable-512x512.png", maskable512],
 ];
 
 for (const [name, bytes] of outputs) {

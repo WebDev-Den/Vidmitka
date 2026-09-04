@@ -4,7 +4,7 @@ import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/schedule", label: "Розклад" },
+  { href: "/", label: "Розклад" },
   { href: "/transfers", label: "Перенесення пар" },
 ] as const;
 

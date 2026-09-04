@@ -15,6 +15,9 @@
 - [public-teacher-filter.md](public-teacher-filter.md) — VID-036: серверний фільтр публічного розкладу за одним викладачем або всіма викладачами.
 - [imported-recurring-schedule.md](imported-recurring-schedule.md) — VID-038: імпортований JSON як повторюваний розклад до 31.12.2026 без службових позначок у публічній картці.
 - [public-schedule-responsive-layout.md](public-schedule-responsive-layout.md) — VID-042/046/049: повноширинний розклад і єдиний компактний header із панеллю дати та викладача.
+- [public-schedule-url-state.md](public-schedule-url-state.md) — VID-051: розклад на `/`, cookie викладача, локальна дата без URL-параметрів і відкладені QA-сценарії.
+- [pwa-and-push-notifications.md](pwa-and-push-notifications.md) — VID-052: встановлювана PWA без Web Push, cron, додаткових секретів або міграцій.
+- [public-free-rooms.md](public-free-rooms.md) — VID-053: popup активних вільних аудиторій за вибраною датою й номером пари.
 - [tasks.md](tasks.md) — журнал запитів, критерії приймання, реалізація й окремі QA-статуси.
 - [qa/process.md](qa/process.md) — фінальний пакетний QA окремим агентом лише за запитом або перед релізом.
 - [qa/handoff-template.md](qa/handoff-template.md) — доручення незалежному QA-агенту.
@@ -48,6 +51,10 @@
 - [qa/handoffs/QA-20260904-02.md](qa/handoffs/QA-20260904-02.md) — передрелізне доручення незалежному QA для компактного popup і єдиного header VID-048–VID-050.
 - [qa/reports/QA-20260904-02.md](qa/reports/QA-20260904-02.md) — незалежний PASS VID-048–VID-050 після ретесту 44 px touch target: команди й browser QA 1920/1440/820/390.
 - [qa/reports/RELEASE-20260904-02.md](qa/reports/RELEASE-20260904-02.md) — production deployment компактного popup і єдиного header, Vercel READY та read-only smoke обох аліасів.
+- [qa/handoffs/QA-20260904-03.md](qa/handoffs/QA-20260904-03.md) — незалежне QA-доручення для canonical `/`, cookie викладача, fixed shell і автопозиціонування VID-051.
+- [qa/reports/QA-20260904-03.md](qa/reports/QA-20260904-03.md) — незалежний PASS VID-051 після виправлень автопрокрутки й low-height/200%-proxy overflow.
+- [qa/handoffs/QA-20260904-04.md](qa/handoffs/QA-20260904-04.md) — передрелізне доручення незалежному QA для canonical `/`, PWA без Web Push і popup вільних аудиторій VID-051–VID-054.
+- [qa/reports/QA-20260904-04.md](qa/reports/QA-20260904-04.md) — незалежний PASS VID-051–VID-054 після геометричного ретесту всіх popup-тригерів на 390/820 px.
 - [architecture.md](architecture.md) — функціональна архітектура системи керування розкладом.
 - [data-model.md](data-model.md) — концептуальна модель даних для подальшого проєктування БД без вибору технології або способу зберігання.
 - [database-setup.md](database-setup.md) — підключення Neon Postgres через Vercel, локальні env-файли та перевірка з'єднання.

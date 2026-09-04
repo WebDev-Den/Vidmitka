@@ -316,6 +316,45 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     expect(response.status).toBe(200);
     const payload = await response.json() as Record<string, unknown>;
     expect(JSON.stringify(payload)).not.toMatch(/password|email|created_by|updated_by/iu);
+
+    const teacherResponse = await GET(new NextRequest(
+      `http://localhost/api/public/schedule?date=2026-09-02&teacherId=${database.fixture.teacherId}`,
+    ));
+    expect(teacherResponse.status).toBe(200);
+    const teacherPayload = await teacherResponse.json() as { data: { items: Array<{ teachers: string[] }> } };
+    expect(teacherPayload.data.items.every((item) => item.teachers.includes("Тестовий Викладач"))).toBe(true);
+
+    const invalidTeacherResponse = await GET(new NextRequest(
+      "http://localhost/api/public/schedule?date=2026-09-02&teacherId=invalid",
+    ));
+    expect(invalidTeacherResponse.status).toBe(400);
+  });
+
+  it("returns only active rooms that are free in the complete schedule period", async () => {
+    const freeRoomId = randomUUID();
+    await database.sql`
+      INSERT INTO schedule_rooms (id, name, name_normalized)
+      VALUES (${freeRoomId}, 'QA-303', 'qa-303')
+    `;
+
+    const { GET } = await import("@/app/api/public/free-rooms/route");
+    const { NextRequest } = await import("next/server");
+    const response = await GET(new NextRequest(
+      "http://localhost/api/public/free-rooms?date=2026-09-02&periodNumber=2",
+    ));
+    expect(response.status).toBe(200);
+    const payload = await response.json() as {
+      data: { rooms: Array<{ id: string; name: string }>; availableCount: number; totalCount: number };
+    };
+    expect(payload.data.rooms).toContainEqual({ id: freeRoomId, name: "QA-303" });
+    expect(payload.data.rooms.some((room) => room.id === database.fixture.roomId)).toBe(false);
+    expect(payload.data.availableCount).toBe(payload.data.rooms.length);
+    expect(payload.data.totalCount).toBeGreaterThan(payload.data.availableCount);
+
+    const invalidPeriod = await GET(new NextRequest(
+      "http://localhost/api/public/free-rooms?date=2026-09-02&periodNumber=0",
+    ));
+    expect(invalidPeriod.status).toBe(400);
   });
 
   it("applies a calendar transfer to the public schedule without copying the base entry", async () => {

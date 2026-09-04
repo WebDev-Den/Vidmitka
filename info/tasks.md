@@ -76,8 +76,9 @@
 | VID-058 | Публічні Web Push-сповіщення за розкладом викладача | Фіча (публічна PWA / QStash / планувальник) | Опубліковано частково | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): availability/error lifecycle і mobile sheet | `2207bb6`; migrations `015`/`016` applied and readiness PASS; QStash scheduler потребує авторизованого доступу |
 | VID-059 | QA, production-реліз і запуск push scheduler-а для накопиченого пакета | Технічна задача (QA / release / операційна готовність) | Частково заблоковано | PASS — [QA-20260904-08](qa/reports/QA-20260904-08.md): code/release QA | Vercel deploy і migrations завершено; створення двох QStash schedules заблоковане відсутнім QStash account/API access |
 | VID-060 | iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу | Баг (mobile UX / visual density) | Опубліковано за явним винятком | BLOCKED — [QA-20260904-10](qa/reports/QA-20260904-10.md): code checks PASS; усі доступні browser paths не мають browser runtime | Код `1d153f1`; Vercel `dpl_4n6X47fXTNUQMbD3yV8iZ6qfgXNC` READY; browser/iPhone критерії лишаються неперевіреними |
+| VID-061 | Адмінський статус і ініціалізація QStash cron | Фіча (адміністрування / scheduler) | Дозволено до публікації за явним винятком | BLOCKED — [QA-20260904-11](qa/reports/QA-20260904-11.md): code checks PASS, browser QA unavailable | Користувач 04.09.2026 прямо прибрав browser QA як release gate лише для цього пакета; QA-11-01/02/03 виправлено |
 
-Наступний новий ID: **VID-061**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
+Наступний новий ID: **VID-062**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
 
 ## VID-058 — публічні Web Push-сповіщення за розкладом викладача
 
@@ -160,6 +161,28 @@
 Виконання 04.09.2026: QA-08 дав актуальний `PASS`; commit `2207bb6` успішно відправлено в `main`, а Vercel deployment `dpl_C9Rb51ebNENBD9VXZWVpn5ygKoxA` отримав `READY` та aliases `https://vidmitka.vercel.app` / `https://web-dev.pp.ua`. Production migrations `015` → `016` застосовано в порядку; read-only DB verification підтвердила обидві таблиці й cooldown column, а `GET /api/public/push` повертає `200`, `storageReady: true` та наявний public VAPID key. Жодної нової browser subscription або delivery не створювали; в таблиці виявлено один уже наявний subscription і його не змінювали.
 
 Єдиний незавершений критерій: два QStash schedules не створено. Vercel не зберігає QStash API token (його раніше навмисно видалено як runtime-unneeded), а QStash Console відкрила неавторизовану форму входу; повторний GitHub SSO не дав сеанс. Без явного доступу до QStash account або нового API token, переданого захищеним способом, створювати або перевіряти schedules неможливо. **Частково заблоковано: QA `PASS`, deploy і migrations завершено; scheduler очікує QStash access.**
+
+## VID-061 — Адмінський статус і ініціалізація QStash cron
+
+Первинний запит: «я додам в env необхідні дані а ти в адмінці створи вкладку крон де буде первірятись і писати коли було звернення і кнопка ініціалізувати крон». Попередній тип: **фіча (адміністрування / scheduler)**.
+
+Робоче трактування: тільки авторизований адміністратор бачить нову вкладку `Push cron`. Вона читає metadata двох фіксованих QStash schedules, показує час останнього **запланованого запуску QStash** і наступного запуску за київським часом та містить одну явну дію «Ініціалізувати / оновити cron». Це не видає metadata QStash за підтвердження успішної відповіді scanner-а. Дія ідемпотентно перезаписує рівно два schedules за сталими ID, без форм для token, URL чи довільного target.
+
+Критерії приймання:
+
+- Адмінська навігація і `/admin/cron` захищені чинним `requireAdminPanelUser`; Server Action повторно перевіряє право, не приймає секретів або URL з браузера й не повертає їх у відповідь.
+- Екран безпечно відображає стан конфігурації та двох schedules: назву, cron, увімкнення/паузу, останній запланований і наступний запуск у `Europe/Kyiv`. За відсутніх або некоректних env сторінка лишається доступною, а QStash не викликається.
+- «Ініціалізувати / оновити cron» створює або оновлює лише `vidmitka-push-scan-day` (`CRON_TZ=Europe/Kyiv * 7-19 * * *`) і `vidmitka-push-scan-20` (`CRON_TZ=Europe/Kyiv 0 20 * * *`) з POST до canonical `PUSH_SCANNER_URL` та тілом `{"version":1}`. Повторне натискання не створює дублів.
+- `QSTASH_URL` і `QSTASH_TOKEN` користувач додає як нові, ротовані Vercel **Production** variables. Вони, signing keys та VAPID private key не зберігаються в БД, коді, тестових fixtures, UI або логах.
+- Є ізольовані тести конфігурації, read status, ідемпотентного create/update та безпечної помилки upstream. UI дотримується канонічної таблиці, доступних 44 px дій, keyboard/focus і не створює document-level overflow; усе входить до наступного незалежного QA на 1440 / 820 / 390 / 430 px.
+
+Обрані TDD seams: server-only адаптер QStash із injected `fetch` та env для детермінованих unit-тестів; короткий Server Action як authorization/mutation boundary; server page для початкового read, client форма тільки для pending/feedback. **Реалізовано; QA очікується (`NOT_RUN`).**
+
+Уточнення 04.09.2026: користувач дозволив для VID-061 незалежний QA, commit, push у `main`, production deployment і контрольований operational smoke. Після release допустимо створити один тимчасовий QStash schedule на найближчу хвилину тільки для canonical scanner-а, звірити факт QStash delivery та видалити schedule. Такий probe не змінює push-підписки або робочі дані й сам по собі не доводить показ notification на пристрої: для цього потрібна чинна browser subscription із подією, що збігається з часом scanner-а.
+
+QA-20260904-11 виявив `FAIL`: nullable type guard зупиняв `tsc` і production build; allowlist приймав довільний `.upstash.io` host; scanner URL приймав інший HTTPS origin. Виправлено в одному пакеті: body parser має явний null guard, QStash дозволено тільки для `qstash.upstash.io`, `qstash-eu-central-1.upstash.io` або `qstash-us-east-1.upstash.io`, а target обмежено exact canonical production scanner URL. Додано negative тести для довільного Upstash subdomain і неканонічного scanner URL. **Реалізовано повторно; QA очікується.**
+
+Уточнення 04.09.2026: користувач наказав «прибери перевірку browser QA». Це явний одноразовий дозвіл не робити browser/UI/spacing QA релізним gate для VID-061 і продовжити commit, push у `main`, production deployment та контрольований QStash smoke попри `BLOCKED` у QA-20260904-11. Виняток не скасовує browser QA для інших задач, не змінює `BLOCKED` на `PASS` і не видає browser save/push delivery за перевірені.
 
 ## VID-060 — iPhone 15 Pro Max: щільність mobile sheet і заголовка розкладу
 

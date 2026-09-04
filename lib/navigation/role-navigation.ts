@@ -9,7 +9,8 @@ export type NavigationIcon =
   | "rooms"
   | "periods"
   | "groups"
-  | "settings";
+  | "settings"
+  | "cron";
 
 export type NavigationItem = Readonly<{
   id: string;
@@ -49,6 +50,7 @@ const administratorNavigation: readonly NavigationItem[] = [
   },
   { id: "exceptions", label: "Переноси та винятки", href: "/admin/exceptions", icon: "schedule" },
   { id: "import", label: "Імпорт JSON", href: "/admin/import", icon: "import" },
+  { id: "cron", label: "Push cron", href: "/admin/cron", icon: "cron" },
   { id: "settings", label: "Навчальні тижні", href: "/admin/week-settings", icon: "settings" },
 ];
 

@@ -68,25 +68,31 @@ TDD-межі, обрані в межах постійного дозволу к�
 
 ## Production-конфігурація після дозволеного релізу
 
-Поточний код не читає `QSTASH_URL` і `QSTASH_TOKEN`: 04.09.2026 їх прибрано з Vercel Production як невикористані runtime-змінні; для створення schedules достатній доступ до QStash Console/API поза застосунком. `QSTASH_CURRENT_SIGNING_KEY` і `QSTASH_NEXT_SIGNING_KEY` лишаються потрібними scanner-у. Того ж дня усі наведені нижче **Production** environment variables додано у Vercel як encrypted; VAPID-пару згенеровано одноразово і її значення не зберігаються в репозиторії або документації. Це саме по собі не робить deployment, не застосовує міграції й не створює QStash schedules.
+### VID-061 — Адмінська ініціалізація QStash cron
+
+Серверна вкладка `/admin/cron` читає лише metadata QStash і доступна тільки через чинний admin session. Вона не має форми для token, signing key або URL: Server Action повторно перевіряє `requireAdminPanelUser`, зчитує server-only variables, ідемпотентно перезаписує два schedules за сталими ID та повертає тільки безпечний результат. Adapter приймає лише офіційні QStash API hostnames EU/US і exact canonical `https://vidmitka.vercel.app/api/internal/push/scan`, тому не може передати bearer token довільному host або створити schedule для іншого endpoint-а. Значення «Останній запуск QStash» — це `lastScheduleTime` від QStash, тобто останній плановий trigger, а не підтвердження відповіді scanner-а. `nextScheduleTime` і обидва timestamps показуються в `Europe/Kyiv`.
+
+Нові, ротовані `QSTASH_URL` і `QSTASH_TOKEN` необхідні як encrypted **Production** variables у Vercel саме для цієї адмінської функції. Вони не потрапляють у DB, клієнтський bundle, Server Action form data, UI, тестові fixtures або логи. `QSTASH_CURRENT_SIGNING_KEY` і `QSTASH_NEXT_SIGNING_KEY` лишаються потрібними scanner-у. VAPID-пару згенеровано одноразово і її значення не зберігаються в репозиторії або документації. Додавання variables саме по собі не створює schedules: після deployment адміністратор явно натискає «Ініціалізувати / оновити cron».
 
 | Змінна | Значення / призначення |
 | --- | --- |
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Публічна частина один раз згенерованої VAPID-пари; route віддає її browser-у лише коли повна VAPID-конфігурація наявна. |
 | `VAPID_PRIVATE_KEY` | Приватна частина тієї самої пари; лише server-side, secret. |
 | `VAPID_SUBJECT` | `mailto:admin@web-devops.uno` — надане користувачем значення. |
+| `QSTASH_URL` | HTTPS endpoint QStash, наприклад регіональний `https://qstash-eu-central-1.upstash.io`; лише server-side для admin status/ініціалізації. |
+| `QSTASH_TOKEN` | Новий ротований QStash API token; лише server-side для admin status/ініціалізації. |
 | `QSTASH_CURRENT_SIGNING_KEY` | Already-added QStash signing key для перевірки входу. |
 | `QSTASH_NEXT_SIGNING_KEY` | Already-added QStash signing key для безпечної ротації. |
 | `PUSH_SCANNER_URL` | Точна canonical production URL: `https://vidmitka.vercel.app/api/internal/push/scan`. Вона має повністю збігатися з target QStash schedule. |
 
-Після production deployment, окремого QA PASS та застосування міграцій 015 і 016 у QStash Console створюються два POST schedule до `PUSH_SCANNER_URL` з JSON body `{"version":1}`:
+Після production deployment, окремого QA PASS та застосування міграцій 015 і 016 адміністратор створює або оновлює у вкладці `Push cron` два POST schedule до `PUSH_SCANNER_URL` з JSON body `{"version":1}`:
 
 | Стабільний ID | Cron |
 | --- | --- |
 | `vidmitka-push-scan-day` | `CRON_TZ=Europe/Kyiv * 7-19 * * *` |
 | `vidmitka-push-scan-20` | `CRON_TZ=Europe/Kyiv 0 20 * * *` |
 
-Це рівно `780 + 1 = 781` scheduler delivery за добу. Schedules не створюються з коду або в preview-середовищі: до публічного endpoint-а вони мають лишатися вимкненими.
+Це рівно `780 + 1 = 781` scheduler delivery за добу. Schedule action доступна тільки на production з необхідними server variables; preview не отримує production-секрети.
 
 ## Підготовлені QA-сценарії
 

@@ -46,6 +46,8 @@
 - [qa/reports/QA-20260904-01.md](qa/reports/QA-20260904-01.md) — незалежний PASS VID-046: 1920/1440/820/390 px, overflow, keyboard, console, typecheck, tests і build.
 - [qa/reports/RELEASE-20260904-01.md](qa/reports/RELEASE-20260904-01.md) — production deployment VID-046–VID-047, Vercel READY і read-only smoke повноширинного CSS.
 - [qa/handoffs/QA-20260904-02.md](qa/handoffs/QA-20260904-02.md) — передрелізне доручення незалежному QA для компактного popup і єдиного header VID-048–VID-050.
+- [qa/reports/QA-20260904-02.md](qa/reports/QA-20260904-02.md) — незалежний PASS VID-048–VID-050 після ретесту 44 px touch target: команди й browser QA 1920/1440/820/390.
+- [qa/reports/RELEASE-20260904-02.md](qa/reports/RELEASE-20260904-02.md) — production deployment компактного popup і єдиного header, Vercel READY та read-only smoke обох аліасів.
 - [architecture.md](architecture.md) — функціональна архітектура системи керування розкладом.
 - [data-model.md](data-model.md) — концептуальна модель даних для подальшого проєктування БД без вибору технології або способу зберігання.
 - [database-setup.md](database-setup.md) — підключення Neon Postgres через Vercel, локальні env-файли та перевірка з'єднання.

@@ -27,7 +27,7 @@ export type ScheduleEntryView = Readonly<{
   rooms: readonly Readonly<{ id: string; name: string }>[];
 }>;
 
-export type ScheduleEntryMutationResult = Readonly<{ success: boolean; message: string }>;
+export type ScheduleEntryMutationResult = Readonly<{ success: boolean; message: string; id?: string }>;
 
 type EntryRow = {
   id: string; discipline_id: string; lesson_type_id: string; class_period_id: string | number;
@@ -187,7 +187,7 @@ export async function createScheduleEntry(administratorId: string, formData: For
         ${value.validFrom}, ${value.validUntil}, ${value.note || null}, ${administratorId}, ${administratorId})`,
     ...junctionQueries(id, value.groupIds, value.teacherIds, value.roomIds),
   ]);
-  return { success: true, message: "Запис розкладу створено." };
+  return { success: true, message: "Запис розкладу створено.", id };
 }
 
 export async function updateScheduleEntry(administratorId: string, id: string, formData: FormData): Promise<ScheduleEntryMutationResult> {
@@ -211,6 +211,19 @@ export async function updateScheduleEntry(administratorId: string, id: string, f
 
 export async function setScheduleEntryActive(administratorId: string, id: string, active: boolean): Promise<ScheduleEntryMutationResult> {
   if (!UUID_PATTERN.test(id)) return { success: false, message: "Некоректний ідентифікатор запису." };
+  if (active) {
+    const entry = (await listScheduleEntries()).find((item) => item.id === id);
+    if (!entry) return { success: false, message: "Запис не знайдено." };
+    const form = new FormData();
+    for (const [name, value] of Object.entries({ disciplineId: entry.disciplineId, lessonTypeId: entry.lessonTypeId,
+      periodId: entry.periodId, dayOfWeek: String(entry.dayOfWeek), weekPattern: entry.weekPattern,
+      validFrom: entry.validFrom ?? "", validUntil: entry.validUntil ?? "", note: entry.note })) form.set(name, value);
+    for (const group of entry.groups) form.append("groupIds", group.id);
+    for (const teacher of entry.teachers) form.append("teacherIds", teacher.id);
+    for (const room of entry.rooms) form.append("roomIds", room.id);
+    const validation = await validateEntry(form, id);
+    if (!validation.ok) return { success: false, message: validation.message };
+  }
   const sql = getDb();
   const rows = await sql`UPDATE schedule_entries SET is_active=${active}, updated_by_user_id=${administratorId}, updated_at=NOW()
     WHERE id=${id} RETURNING id` as unknown as Array<{ id: string }>;

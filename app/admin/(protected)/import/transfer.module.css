@@ -1,0 +1,37 @@
+.page { min-width: 0; }
+.stack { display: grid; gap: 20px; min-width: 0; max-width: 1060px; }
+.export { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 4px 24px; border-bottom: 1px solid var(--border, #DED9CD); }
+.export > div { flex: 1 1 380px; }
+.export h2, .panel h2 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 18px; font-weight: 650; }
+.export p, .panel > p, .confirm > p { margin: 8px 0 0; color: var(--muted, #71807B); line-height: 1.5; font-size: 14px; }
+.panel { min-width: 0; padding: 20px; border: 1px solid var(--border, #DED9CD); border-radius: 12px; background: white; }
+.fileLabel { display: block; font-size: 14px; font-weight: 650; margin-block: 20px 8px; }
+.fileInput { display: block; width: 100%; min-width: 0; padding: 8px; min-height: 48px; border: 1px solid var(--border, #DED9CD); border-radius: 8px; font: inherit; background: #F5F2EB; }
+.fileInput::file-selector-button { border: 0; border-radius: 6px; padding: 10px 12px; margin-right: 12px; background: white; color: #18283D; font: inherit; cursor: pointer; }
+.help { font-size: 13px !important; }
+.selectedFile { display: flex; gap: 8px; align-items: center; overflow-wrap: anywhere; }
+.selectedFile svg, .notice svg { flex-shrink: 0; }
+.actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; }
+.notice { display: flex; align-items: flex-start; gap: 10px; border-left: 3px solid #0F766E; padding: 12px 16px; background: #EAF6F3; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.error { color: #A13E0C !important; }
+.tableScroll { max-width: 100%; overflow-x: auto; margin-top: 16px; border: 1px solid var(--border, #DED9CD); border-radius: 8px; }
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th, .table td { padding: 10px 12px; border-bottom: 1px solid var(--border, #DED9CD); text-align: right; }
+.table th:first-child { text-align: left; }
+.table thead { background: #EFECE6; }
+.table tbody th { font-weight: 500; }
+.table tr:last-child > * { border-bottom: 0; }
+.issues { margin: 16px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.issues li + li { margin-top: 8px; }
+.confirm { display: grid; justify-items: start; gap: 12px; border-top: 1px solid var(--border, #DED9CD); padding-top: 20px; }
+.checkbox { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; }
+.checkbox input { width: 20px; height: 20px; flex: 0 0 20px; accent-color: #0F766E; }
+.stack button { min-height: 44px; white-space: normal; }
+.fileInput:focus-visible, .tableScroll:focus-visible { outline: 2px solid #0F766E; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .stack { gap: 16px; }
+  .panel { padding: 14px; }
+  .export button, .actions button, .confirm button { width: 100%; }
+  .table { font-size: 13px; }
+  .table th, .table td { padding: 8px; }
+}

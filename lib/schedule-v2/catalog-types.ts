@@ -9,4 +9,4 @@ export type ScheduleCatalogEntry = Readonly<{
   color?: HexColor;
 }>;
 
-export type CatalogMutationResult = Readonly<{ success: boolean; message: string }>;
+export type CatalogMutationResult = Readonly<{ success: boolean; message: string; id?: string }>;

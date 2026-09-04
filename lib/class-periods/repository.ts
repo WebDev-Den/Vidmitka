@@ -23,6 +23,7 @@ export type ClassPeriod = ComparableClassPeriod &
 export type ClassPeriodMutationResult = Readonly<{
   success: boolean;
   message: string;
+  id?: string;
 }>;
 
 export type ClassPeriodBatchInput = Readonly<{
@@ -127,15 +128,24 @@ export async function createClassPeriod(
   const { number, startMinute, endMinute, color } = validation.value;
 
   try {
-    await sql`
+    const [row] = await sql`
       INSERT INTO class_periods (number, start_minute, end_minute, color)
       VALUES (${number}, ${startMinute}, ${endMinute}, ${color})
+      RETURNING id::TEXT
     `;
+    return { success: true, message: `${number} пару додано.`, id: String(row.id) };
   } catch (error) {
     return mutationError(error);
   }
 
-  return { success: true, message: `${number} пару додано.` };
+}
+
+/** Foreign keys preserve schedule/history references; deleting a used period is rejected. */
+export async function deleteClassPeriod(id: string): Promise<ClassPeriodMutationResult> {
+  if (!/^\d+$/u.test(id)) return { success: false, message: "Некоректний ідентифікатор пари." };
+  const sql = getDb();
+  const rows = await sql`DELETE FROM class_periods WHERE id=${id} RETURNING id`;
+  return rows.length ? { success: true, message: "Пару видалено." } : { success: false, message: "Пару не знайдено." };
 }
 
 export async function updateClassPeriod(

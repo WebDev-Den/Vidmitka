@@ -8,7 +8,7 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 const KINDS = ["move", "reschedule", "room_change", "teacher_change", "discipline_change", "type_change", "cancel", "one_time"] as const;
 export type ScheduleExceptionKind = typeof KINDS[number];
-export type ScheduleExceptionMutationResult = Readonly<{ success: boolean; message: string }>;
+export type ScheduleExceptionMutationResult = Readonly<{ success: boolean; message: string; id?: string }>;
 export type ScheduleExceptionView = Readonly<{
   id: string; baseEntryId: string | null; kind: ScheduleExceptionKind; originalDate: string; newDate: string | null;
   periodId: string | null; customStartTime: string | null; customEndTime: string | null;
@@ -154,7 +154,7 @@ export async function createScheduleException(administratorId: string, formData:
         ${administratorId}, ${administratorId})`,
     ...exceptionLinks(id, value.groupIds, value.teacherIds, value.roomIds),
   ]);
-  return { success: true, message: "Виняток створено." };
+  return { success: true, message: "Виняток створено.", id };
 }
 
 export async function updateScheduleException(administratorId: string, id: string, formData: FormData): Promise<ScheduleExceptionMutationResult> {

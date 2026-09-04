@@ -79,7 +79,57 @@
 | VID-061 | Адмінський статус і ініціалізація QStash cron | Фіча (адміністрування / scheduler) | Уточнено: UI має бути вилучено; реалізація очікується | PASS — [QA-20260904-12](qa/reports/QA-20260904-12.md): cron UI/adapter removed | Browser/UI/spacing waived explicitly only for VID-061; scanner, public push, QStash variables and external schedules unchanged |
 | VID-062 | Адмінський журнал Push і ручне відтворення доставки | Фіча (адміністрування / операційний контроль) | Реалізовано; QA пройдено | PASS — [QA-20260905-01](qa/reports/QA-20260905-01.md) | 107 tests, typecheck, build, repeatable isolated migration/DATE probe PASS; visual/browser повторно N/A за прямим waiver користувача |
 
-Наступний новий ID: **VID-063**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
+| VID-063 | REST API повного керування розкладом | Фіча (інтеграції / API) | Реалізовано; QA пройдено | PASS — [QA-20260905-02](qa/reports/QA-20260905-02.md) | Фінал: REST isolated 5/5, включно з auth, CRUD, FK `23001`→409, calendar/weeks/import |
+| VID-064 | Експорт поточного розкладу, імпорт файлу та dry-run | Фіча (обмін даними / UI) | Реалізовано; QA пройдено | PASS — [QA-20260905-02](qa/reports/QA-20260905-02.md) | Transfer 5/5; export/dry-run/reselection/commit/negative files; no-store; UI 1440/820/390 PASS |
+| VID-065 | Перевірити VID-063/064, задеплоїти після успіху й вимкнути ПК | Технічна задача (QA / реліз) | QA пройдено; реліз очікується | PASS — [QA-20260905-02](qa/reports/QA-20260905-02.md) | QA-gate відкритий для перевіреного fingerprint; deploy і вимкнення ПК ще не виконані |
+
+Наступний новий ID: **VID-066**. Релізний пакет VID-001–VID-008 опублікований за запитом VID-009; незалежний QA — `QA-20260828-01`. Історія VID-010–VID-018 і нові уточнення збережені нижче; старий висновок не покриває новий diff.
+
+## VID-065 — QA, реліз і вимкнення ПК
+
+Оригінальний запит: «якщо все ок перевір задеплой і вимкни пк». Пакет: незакомічені VID-063/064 від HEAD `26d5c4c`. Незалежний QA має перевірити typecheck/tests/build, ізольовані REST API / export-import DB-сценарії та змінений UI. Після актуального PASS дозволені commit/push і production deployment, read-only production smoke. Секрети не публікувати; робочі записи розкладу не змінювати. Вимкнення локального ПК — лише після підтвердженого успішного релізу, без примусового закриття незбережених програм; завчасно повідомити користувача.
+
+Після первинного FAIL QA-20260905-02 виправлено TEXT-ID auth (без UUID-cast; allowlisted server-config ID) та явний `string` для негативного admin ID у transfer integration helper. Env example / API docs уточнені. Самостійні тести не запускалися; обидва виправлення передані тому самому QA-агенту на повний ретест із UI. Історичний FAIL збережено до його висновку.
+
+Другий пакет виправлень QA D04/D05: SQLSTATE `23001` (ON DELETE RESTRICT) повертає 409 CONFLICT без SQL деталей; розширено boundary test та узгоджено FK assertion integration. Неавторизований export redirect тепер явно має `private, no-store`; auth errors також проходять безпечний error response. Підтверджений QA UI flow не змінено. Передано наступний ретест, без самостійного PASS.
+
+QA 05.09.2026: `FAIL` — [QA-20260905-02](qa/reports/QA-20260905-02.md). Релізний gate закритий; deployment і вимкнення ПК не виконувалися.
+
+Повторний QA 05.09.2026: typecheck, unit, build і transfer integration виправлені/пройшли; REST integration 4/5 через неврахований SQLSTATE `23001`, а unauthenticated export redirect не має `Cache-Control: no-store`. Gate лишається `FAIL`; deployment і вимкнення ПК не виконувалися.
+
+Фінальний QA 05.09.2026: `PASS` — [QA-20260905-02](qa/reports/QA-20260905-02.md). Typecheck, 122 unit tests, build, REST 5/5, transfer 5/5 і real-browser export/import regression пройшли; isolated schema та server прибрані. Gate відкритий лише для зафіксованого fingerprint; deployment і вимкнення ПК ще не виконувалися.
+
+## VID-064 — експорт та dry-run імпорту
+
+Оригінальний запит: «тут має бути експорт поточного розкладу і імпорт файлу і має бути dry тестування імпорту»; скриншот `/admin/import`.
+
+Критерії: адміністратор завантажує JSON актуального збереженого розкладу (заняття, винятки, довідники, пари, календар і тижні); файл придатний для зворотного імпорту. Старий teacher-schedule JSON підтримується. Dry-run показує створення / оновлення / незмінені записи, помилки та попередження без записів у БД. Застосування окреме, лише для перевіреного файлу; зміна файлу скидає підтвердження. Наявні записи поза файлом не видаляються. Запис транзакційний, доступ лише approved administrator, експорт не містить користувачів, секретів, журналів відвідуваності чи push-підписок. UI компактний, доступний, без overflow; 1440/820/390 у черзі фінального QA. Реалізація і підготовка тестів без запуску QA, build або production-операцій.
+
+**Реалізовано; QA очікується (`NOT_RUN`)**: native JSON v1 export, readonly dry-run, таблиця змін, двофазне підтвердження з file hash / DB fingerprint і атомарне merge-застосування. Старий імпорт збережено; оновлено назву розділу в навігації. Додано pure та isolated DB integration-сценарії й `pnpm test:schedule-transfer-integration`, без запуску. Реалізація, межі й UI QA — [schedule-transfer.md](schedule-transfer.md). Перевірено лише код і diff; typecheck/tests/build/browser/QA/deploy не запускалися. У робочому дереві також збережено незакомічену VID-063.
+
+QA 05.09.2026: `FAIL` — [QA-20260905-02](qa/reports/QA-20260905-02.md). Ізольований transfer suite пройшов 5/5, але новий негативний тест не компілюється під `tsc`, тому production build падає; browser/UI перевірка перенесена до повного ретесту після виправлень.
+
+Повторний QA 05.09.2026: compile/build і transfer suite 5/5 PASS; browser export→dry-run→reselection→warning-confirm→commit та negative file guards PASS, spacing/overflow 1440/820/390 PASS. Залишковий дефект: 307 redirect unauthenticated export на login не містить `Cache-Control: no-store`; QA лишається `FAIL` до виправлення й ретесту.
+
+Фінальний QA 05.09.2026: unauthenticated export повертає 307 `/admin/login` із `private, no-store`; authenticated download і повний isolated browser flow пройшли повторно. VID-064 — `PASS`.
+
+## VID-063 — REST API керування розкладом
+
+Первинний запит: «необхідно реалізувати reatAPI щоб я міг через нього керувати розкладом додавати видаляти оновлювати ВСЕ. Це багато часу займе?»
+
+Обсяг: `/api/v1` — CRUD записів розкладу, груп, викладачів, дисциплін, аудиторій, типів занять, пар; активація/деактивація; CRUD винятків і календарних перенесень, навчальні тижні, JSON import preview/commit, читання фактичного денного розкладу. «Все» стосується керування розкладом; керування акаунтами, секретами і push-пристроями не додається.
+
+Доступ: server-to-server Bearer API key із env, прив'язаний до схваленого адміністратора через server env ID; авторство неможливо передати з JSON. Missing config відмовляє закрито. Нові production secrets не встановлюються під час розробки.
+
+Критерії: версійний JSON API, documented HTTP methods/status/errors, точні ID створених записів і Location; allowlisted поля й типи без mass assignment; дійсні календарні дати/UUID/масиви; чинна бізнес-валидація, FK-захист видалення і calendar version; пагінація GET; актуалізація публічного розкладу; OpenAPI 3.1 та curl-приклади. Інтеграційні сценарії готуються через HTTP/сервісні межі, QA виконується окремим пакетом за запитом. UI не змінюється. Тести/production міграції/деплой цим запитом не запускаються.
+
+Реалізовано: `lib/rest-api/`, catch-all data route, публічна OpenAPI specification, повернення ID чинними create services, FK-захищене видалення пар, повторна перевірка конфліктів при активації заняття; підготовлено unit і isolated DB integration та `pnpm test:rest-api-integration`. Деталі й приклади — [rest-api.md](rest-api.md). **Реалізовано; QA очікується (`NOT_RUN`)**. Нова міграція не потрібна; API keys не генеровано, production env не змінено, tests/build/QA/deploy не запускалися.
+
+QA 05.09.2026: `FAIL` — [QA-20260905-02](qa/reports/QA-20260905-02.md). Isolated REST suite отримав 503 у всіх 5 сценаріях через не-UUID fixture; окремо статично підтверджена несумісність SQL auth (`app_users.id` має тип TEXT, а параметр кастується до UUID), що робить configured API непрацездатним.
+
+Повторний QA 05.09.2026: TEXT-ID auth пройшов і CRUD suite виконав 4/5 сценаріїв. Видалення використаної пари повертає безпечний 500 замість документованого 409, бо PostgreSQL/Neon дає SQLSTATE `23001` (`restrict_violation`), якого немає в conflict mapping handler-а; QA лишається `FAIL`.
+
+Фінальний QA 05.09.2026: SQLSTATE `23001` мапиться на 409; REST isolated suite пройшов 5/5, включно з FK-захистом видалення пари й заняття. VID-063 — `PASS`.
 
 ## VID-058 — публічні Web Push-сповіщення за розкладом викладача
 

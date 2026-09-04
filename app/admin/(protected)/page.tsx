@@ -6,7 +6,7 @@ import { PageIntro } from "@/components/page-intro";
 const mainSections = [
   ["Розклад", "/admin/schedule", "Заняття та їхній стан"],
   ["Переноси", "/admin/exceptions", "Разові зміни й скасування"],
-  ["Імпорт JSON", "/admin/import", "Перевірка та імпорт файлу"],
+  ["Імпорт / експорт", "/admin/import", "Експорт розкладу та dry-run імпорту"],
   ["Push-сповіщення", "/admin/push", "Cron-журнал і ручне відтворення"],
   ["Навчальні тижні", "/admin/week-settings", "Семестр і чергування тижнів"],
 ] as const;

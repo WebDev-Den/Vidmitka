@@ -4,6 +4,7 @@
 
 ## Документи
 
+- [schedule-transfer.md](schedule-transfer.md) — VID-064: експорт поточного розкладу, імпорт JSON і безпечний dry-run.
 - [concept-redesign-analysis.md](concept-redesign-analysis.md) — аналіз, ризики та поетапний план нової концепції VID-029.
 - [concept-redesign-data-model.md](concept-redesign-data-model.md) — модель розкладу v2 і безпечна additive-first міграція.
 - [teacher-schedule-json-mapping.md](teacher-schedule-json-mapping.md) — фактична структура й mapping наданого JSON.
@@ -86,6 +87,8 @@
 - [agent.md](agent.md) — розширений довідник робочих правил проєкту.
 
 ## Правило розміщення
+
+- [rest-api.md](rest-api.md) — VID-063: ресурси REST API v1, Bearer-доступ, запити та сценарії перевірки.
 
 Нові допоміжні документи про предметну область, вимоги, тестові сценарії, дизайн, архітектуру, дані та випуск продукту потрібно додавати до `info` і включати до цього покажчика.
 

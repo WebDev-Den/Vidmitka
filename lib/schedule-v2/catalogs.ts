@@ -1,5 +1,7 @@
 import "server-only";
 
+import { randomUUID } from "node:crypto";
+
 import { getDb } from "@/lib/db";
 import { parseHexColor, type HexColor } from "@/lib/ui/colors";
 
@@ -48,19 +50,20 @@ export async function createScheduleCatalogEntry(kind: ScheduleCatalogKind, form
   const name = normalize(formData.get("name"));
   if (!validName(kind, name)) return { success: false, message: "Перевірте довжину та заповнення назви." };
   const nameKey = normalizedKey(name);
+  const id = randomUUID();
   const color = kind === "lesson-types" ? parseHexColor(formData.get("color")) : null;
   if (kind === "lesson-types" && !color) return { success: false, message: "Оберіть коректний колір типу заняття." };
   const sql = getDb();
 
   try {
     switch (kind) {
-      case "groups": await sql`INSERT INTO academic_groups (code, code_normalized) VALUES (${name}, ${nameKey})`; break;
-      case "disciplines": await sql`INSERT INTO disciplines (name, name_normalized) VALUES (${name}, ${nameKey})`; break;
-      case "rooms": await sql`INSERT INTO schedule_rooms (name, name_normalized) VALUES (${name}, ${nameKey})`; break;
-      case "teachers": await sql`INSERT INTO teachers (display_name, display_name_normalized) VALUES (${name}, ${nameKey})`; break;
-      case "lesson-types": await sql`INSERT INTO schedule_lesson_types (name, name_normalized, color) VALUES (${name}, ${nameKey}, ${color})`; break;
+      case "groups": await sql`INSERT INTO academic_groups (id, code, code_normalized) VALUES (${id}, ${name}, ${nameKey})`; break;
+      case "disciplines": await sql`INSERT INTO disciplines (id, name, name_normalized) VALUES (${id}, ${name}, ${nameKey})`; break;
+      case "rooms": await sql`INSERT INTO schedule_rooms (id, name, name_normalized) VALUES (${id}, ${name}, ${nameKey})`; break;
+      case "teachers": await sql`INSERT INTO teachers (id, display_name, display_name_normalized) VALUES (${id}, ${name}, ${nameKey})`; break;
+      case "lesson-types": await sql`INSERT INTO schedule_lesson_types (id, name, name_normalized, color) VALUES (${id}, ${name}, ${nameKey}, ${color})`; break;
     }
-    return { success: true, message: `Запис «${name}» додано.` };
+    return { success: true, message: `Запис «${name}» додано.`, id };
   } catch (error) {
     if ((error as { code?: string }).code === "23505") return { success: false, message: "Запис із такою назвою вже існує." };
     throw error;

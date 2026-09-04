@@ -12,8 +12,9 @@ import {
 import type { ImportCommitResult, ImportDatabasePreview } from "@/lib/schedule-import-v2/repository";
 
 import type { AdminImportState } from "./form-state";
+import { processSnapshot } from "./snapshot-action";
+import { MAX_TRANSFER_BYTES, SnapshotFormatError } from "@/lib/schedule-transfer/schema";
 
-const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 const MAX_VISIBLE_ISSUES = 100;
 
 function failed(message: string, errors: AdminImportState["errors"] = []): AdminImportState {
@@ -21,7 +22,7 @@ function failed(message: string, errors: AdminImportState["errors"] = []): Admin
 }
 
 export async function processScheduleImportAction(
-  _previousState: AdminImportState,
+  previousState: AdminImportState,
   formData: FormData,
 ): Promise<AdminImportState> {
   const administrator = await requireAdminPanelUser();
@@ -29,13 +30,25 @@ export async function processScheduleImportAction(
   const operation = formData.get("operation");
 
   if (!(file instanceof File) || file.size === 0) return failed("Оберіть непорожній JSON-файл.");
-  if (file.size > MAX_FILE_SIZE_BYTES) return failed("Файл завеликий. Максимальний розмір — 5 МБ.");
+  if (file.size > MAX_TRANSFER_BYTES) return failed("Файл завеликий. Максимальний розмір — 3 МБ.");
   if (!file.name.toLocaleLowerCase("en-US").endsWith(".json")) return failed("Підтримуються лише файли з розширенням .json.");
   if (file.type && !["application/json", "text/json"].includes(file.type)) {
     return failed("Тип файла не відповідає JSON.");
   }
 
   const content = await file.text();
+  const fileHash = createHash("sha256").update(content).digest("hex");
+  let value: unknown;
+  try { value = JSON.parse(content); } catch { return failed("Файл містить некоректний JSON. Жодних змін не внесено."); }
+  if (!Array.isArray(value)) {
+    try {
+      return await processSnapshot({ value, previous: previousState, formData, administratorId: administrator.id, file, fileHash });
+    } catch (error) {
+      // Parser errors are safe local messages; provider errors must not leak SQL or credentials.
+      if (error instanceof SnapshotFormatError) return failed(error.message);
+      return failed("Не вдалося звірити файл із базою. Жодних змін не внесено; спробуйте ще раз.");
+    }
+  }
   const analysis = analyzeTeacherScheduleJson(content);
   if (!analysis.ok) return failed("Не вдалося проаналізувати JSON.", analysis.errors);
 
@@ -56,6 +69,7 @@ export async function processScheduleImportAction(
     errors: analysis.errors.slice(0, MAX_VISIBLE_ISSUES),
     warnings: analysis.warnings.slice(0, MAX_VISIBLE_ISSUES),
     fileName: file.name,
+    fileHash,
   } as const;
   const hasBlockingErrors = analysis.errors.length > 0 || database.missingPeriods.length > 0;
 
@@ -63,14 +77,17 @@ export async function processScheduleImportAction(
     return {
       status: hasBlockingErrors ? "error" : "preview",
       message: hasBlockingErrors
-        ? "Попередній аналіз завершено: виправте помилки перед імпортом."
-        : "Попередній аналіз завершено. Перевірте підсумок і підтвердьте імпорт.",
+        ? "Dry-run завершено: виправте помилки перед імпортом. Жодних змін не внесено."
+        : "Dry-run завершено. Жодних змін не внесено. Перевірте підсумок і підтвердьте імпорт.",
       ...baseState,
     };
   }
 
   if (hasBlockingErrors) {
     return { status: "error", message: "Імпорт заблоковано помилками preview.", ...baseState };
+  }
+  if (previousState.status !== "preview" || previousState.fileHash !== fileHash) {
+    return { status: "preview", message: "Dry-run оновлено для цього файлу. Перевірте підсумок і підтвердьте імпорт ще раз.", ...baseState };
   }
   if (analysis.warnings.length > 0 && formData.get("confirmWarnings") !== "on") {
     return {

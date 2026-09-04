@@ -1,0 +1,245 @@
+.settings {
+  display: grid;
+  min-width: 0;
+  gap: 13px;
+  color: var(--ink);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: .94rem;
+  font-weight: 850;
+}
+
+.header p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: .73rem;
+  line-height: 1.4;
+}
+
+.permissionBadge {
+  display: inline-flex;
+  min-height: 26px;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 8px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  font-size: .66rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.permissionBadge[data-state="denied"],
+.permissionBadge[data-state="unsupported"] {
+  color: #7a4322;
+  background: #f7e6d3;
+}
+
+.permissionDescription,
+.iosHint,
+.feedback,
+.empty,
+.selectionHint,
+.configurationHint {
+  margin: 0;
+  font-size: .74rem;
+  line-height: 1.45;
+}
+
+.permissionDescription {
+  display: grid;
+  gap: 2px;
+  padding: 9px 10px;
+  color: var(--muted);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.permissionDescription strong { color: var(--ink); font-size: .72rem; }
+.permissionDescription[data-state="denied"], .iosHint { color: #7a4322; }
+
+.iosHint {
+  padding: 9px 10px;
+  background: #fff7ed;
+  border: 1px solid #f0d5b8;
+  border-radius: 8px;
+}
+
+.configurationHint {
+  padding: 9px 10px;
+  color: #7a4322;
+  background: #fff7ed;
+  border: 1px solid #f0d5b8;
+  border-radius: 8px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  color: var(--ink);
+  font-size: .74rem;
+  font-weight: 800;
+}
+
+.field select,
+.field input[type="time"],
+.field input[type="number"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.field select:focus-visible,
+.field input:focus-visible,
+.checkboxRow:focus-within,
+.saveButton:focus-visible,
+.testButton:focus-visible,
+.disableButton:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent);
+  outline-offset: 2px;
+  border-color: var(--accent-strong);
+}
+
+.field select:disabled,
+.field input:disabled { color: var(--muted); background: var(--surface-soft); cursor: not-allowed; }
+.field small { color: var(--muted); font-size: .68rem; font-weight: 650; line-height: 1.35; }
+
+.eventSettings {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.eventSettings legend {
+  padding: 0;
+  color: var(--muted);
+  font-size: .67rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.checkboxRow {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-height: 44px;
+  padding: 7px 8px;
+  color: var(--ink);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.checkboxRow input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--accent-strong);
+}
+
+.checkboxRow input:disabled { cursor: not-allowed; }
+.checkboxRow:has(input:disabled) { color: var(--muted); cursor: not-allowed; }
+.checkboxRow span { display: grid; gap: 2px; min-width: 0; }
+.checkboxRow strong { font-size: .76rem; }
+.checkboxRow small { color: var(--muted); font-size: .68rem; font-weight: 650; line-height: 1.35; }
+
+.dependentField { padding-inline: 8px; }
+
+.empty,
+.selectionHint { color: var(--muted); }
+.selectionHint:empty { display: none; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.saveButton,
+.testButton,
+.disableButton {
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: .76rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.saveButton {
+  color: #fff;
+  background: var(--accent-strong);
+  border: 1px solid var(--accent-strong);
+}
+
+.saveButton:hover:not(:disabled) { background: #0b615a; }
+
+.testButton,
+.disableButton {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.testButton:hover:not(:disabled),
+.disableButton:hover:not(:disabled) { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
+
+.saveButton:disabled,
+.testButton:disabled,
+.disableButton:disabled {
+  cursor: not-allowed;
+  opacity: .52;
+}
+
+.feedback {
+  padding: 9px 10px;
+  color: var(--muted);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.feedback[data-kind="success"] { color: var(--success); background: color-mix(in srgb, var(--accent-soft) 42%, white); }
+.feedback[data-kind="error"] { color: #7a4322; background: #fff7ed; border-color: #f0d5b8; }
+
+@media (max-width: 360px) {
+  .header { align-items: stretch; flex-direction: column; }
+  .permissionBadge { width: fit-content; }
+  .actions { display: grid; grid-template-columns: 1fr; }
+  .saveButton, .testButton, .disableButton { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .saveButton, .testButton, .disableButton { transition: none; }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 import { parseHexColor, type HexColor } from "@/lib/ui/colors";
@@ -13,17 +13,21 @@ export function ColorField({
   form,
   disabled = false,
   hideLabel = false,
+  onValueChange,
 }: {
   color?: HexColor;
   label?: string;
   form?: string;
   disabled?: boolean;
   hideLabel?: boolean;
+  onValueChange?: (color: HexColor) => void;
 }) {
   const inputId = useId();
   const [selected, setSelected] = useState(color);
   const { pending: formPending } = useFormStatus();
   const pending = formPending || disabled;
+
+  useEffect(() => setSelected(color), [color]);
 
   return (
     <div className={styles.field}>
@@ -37,7 +41,9 @@ export function ColorField({
         value={selected.toLowerCase()}
         onChange={(event) => {
           const next = parseHexColor(event.currentTarget.value);
-          if (next) setSelected(next);
+          if (!next) return;
+          setSelected(next);
+          onValueChange?.(next);
         }}
         aria-label={label}
         disabled={pending}

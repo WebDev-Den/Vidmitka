@@ -1,11 +1,13 @@
 "use client";
 
 import { Combobox } from "@base-ui/react/combobox";
-import { Check, ChevronDown, Search } from "lucide-react";
+import { Popover } from "@base-ui/react/popover";
+import { CalendarDays, Check, ChevronDown, ChevronLeft, ChevronRight, Search, Settings, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 import { FreeRoomPopover } from "@/components/free-room-popover";
 import { PwaControls } from "@/components/pwa-controls";
+import { PublicPushSettings } from "@/components/public-push-settings";
 import { PublicHeader } from "@/components/public-header";
 import { periodColorForeground } from "@/lib/class-periods/colors";
 import { calendarDayLabel } from "@/lib/schedule-v2/calendar-override-rules";
@@ -74,6 +76,16 @@ function dateLabel(date: string): string {
   }).format(new Date(`${date}T00:00:00Z`));
 }
 
+function compactMobileDateLabel(date: string, todayDate: string): string {
+  if (date === todayDate) return "Сьогодні";
+  return new Intl.DateTimeFormat("uk-UA", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  }).format(new Date(`${date}T00:00:00Z`)).replace(".", "");
+}
+
 function kyivClock(now: Date | null): { time: string; date: string; dateKey: string; minutes: number } {
   if (!now) return { time: "--:--", date: "Завантаження дати", dateKey: "", minutes: -1 };
   const dateKey = new Intl.DateTimeFormat("en-CA", {
@@ -114,6 +126,49 @@ function periodStatus(period: PublicPeriod, dayDate: string, clock: ReturnType<t
   const end = toMinutes(period.endTime);
   if (clock.minutes >= start && clock.minutes <= end) return "current";
   return clock.minutes > end ? "past" : "upcoming";
+}
+
+type LiveDayStatus = Readonly<{
+  kind: "current" | "break" | "upcoming" | "finished";
+  title: string;
+  detail: string;
+}>;
+
+function durationLabel(minutes: number): string {
+  const totalMinutes = Math.max(0, Math.ceil(minutes));
+  if (totalMinutes === 0) return "менше хвилини";
+  const hours = Math.floor(totalMinutes / 60);
+  const remainder = totalMinutes % 60;
+  return [hours ? `${hours} год` : "", remainder ? `${remainder} хв` : ""].filter(Boolean).join(" ");
+}
+
+function liveDayStatus(dayDate: string, periods: readonly PublicPeriod[], clock: ReturnType<typeof kyivClock>): LiveDayStatus | null {
+  if (!clock.dateKey || dayDate !== clock.dateKey || !periods.length) return null;
+  const timeline = [...periods].sort((left, right) => toMinutes(left.startTime) - toMinutes(right.startTime));
+  const current = timeline.find((period) => {
+    const start = toMinutes(period.startTime);
+    const end = toMinutes(period.endTime);
+    return clock.minutes >= start && clock.minutes <= end;
+  });
+  if (current) {
+    return {
+      kind: "current",
+      title: `Зараз ${current.number} пара`,
+      detail: `ще ${durationLabel(toMinutes(current.endTime) - clock.minutes)}`,
+    };
+  }
+
+  const next = timeline.find((period) => toMinutes(period.startTime) > clock.minutes);
+  if (!next) {
+    return { kind: "finished", title: "Заняття на сьогодні завершені", detail: "Усі пари вже минули" };
+  }
+
+  const untilNext = durationLabel(toMinutes(next.startTime) - clock.minutes);
+  const hasFinishedPeriod = timeline.some((period) => toMinutes(period.endTime) < clock.minutes);
+  if (hasFinishedPeriod) {
+    return { kind: "break", title: "Перерва", detail: `Наступна ${next.number} пара через ${untilNext}` };
+  }
+  return { kind: "upcoming", title: "Заняття ще не почались", detail: `До ${next.number} пари ${untilNext}` };
 }
 
 function LessonCard({ item }: { item: PublicScheduleItem }) {
@@ -160,6 +215,7 @@ function DaySchedule({ day, periods, clock }: {
     currentDate: clock.dateKey,
     currentMinutes: clock.minutes,
   });
+  const liveStatus = liveDayStatus(day.date, periods, clock);
 
   const updateReturnToCurrentVisibility = useCallback(() => {
     const grid = periodGridRef.current;
@@ -198,14 +254,20 @@ function DaySchedule({ day, periods, clock }: {
 
   useEffect(() => {
     if (didAutoScroll.current || scrollTargetPeriod === null) return;
-    const frame = window.requestAnimationFrame(() => {
-      const target = scrollTargetRef.current;
-      if (!target) return;
-      scrollToCurrentPeriod();
-      didAutoScroll.current = true;
-      updateReturnToCurrentVisibility();
+    let positioningFrame: number | null = null;
+    const layoutFrame = window.requestAnimationFrame(() => {
+      positioningFrame = window.requestAnimationFrame(() => {
+        const target = scrollTargetRef.current;
+        if (!target) return;
+        scrollToCurrentPeriod();
+        didAutoScroll.current = true;
+        updateReturnToCurrentVisibility();
+      });
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      window.cancelAnimationFrame(layoutFrame);
+      if (positioningFrame !== null) window.cancelAnimationFrame(positioningFrame);
+    };
   }, [scrollTargetPeriod, scrollToCurrentPeriod, updateReturnToCurrentVisibility]);
 
   useEffect(() => {
@@ -226,7 +288,11 @@ function DaySchedule({ day, periods, clock }: {
 
   return <section className={styles.dayPanel} aria-labelledby={`day-${day.date}`}>
     <header className={styles.dayHeader}>
-      <div><span className={styles.dayEyebrow}>Розклад занять</span><h2 id={`day-${day.date}`}>{dateLabel(day.date)}</h2></div>
+      <div><span className={styles.dayEyebrow}>Розклад занять</span><h2 id={`day-${day.date}`}>{dateLabel(day.date)}</h2>
+        {liveStatus ? <p className={styles.liveStatus} data-state={liveStatus.kind} role="status" aria-live="polite">
+          <strong>{liveStatus.title}</strong><span>{liveStatus.detail}</span>
+        </p> : null}
+      </div>
       <div className={styles.dayFlags}>
         {day.isTransfer ? <span className={styles.transferBadge}>За розкладом: {calendarDayLabel(day.scheduleDayOfWeek)}</span> : null}
         <span className={styles.dayWeek}>{day.weekType === "numerator" ? "Чисельник" : "Знаменник"}</span>
@@ -337,6 +403,104 @@ function TeacherFilter({
       {isPending ? "Завантаження розкладу викладача…" : ""}
     </span>
   </div>;
+}
+
+function MobileScheduleOptions({
+  selectedTeacherId,
+  teachers,
+  isTeacherPending,
+  selectedDate,
+  isDatePending,
+  onTeacherSelect,
+  onDateSelect,
+}: {
+  selectedTeacherId: string;
+  teachers: readonly PublicTeacher[];
+  isTeacherPending: boolean;
+  selectedDate: string;
+  isDatePending: boolean;
+  onTeacherSelect: (teacherId: string) => void;
+  onDateSelect: (date: string) => void;
+}) {
+  return <Popover.Root modal="trap-focus">
+    <Popover.Trigger
+      className={styles.mobileOptionsTrigger}
+      type="button"
+      aria-label="Відкрити налаштування розкладу та сповіщень"
+    >
+      <Settings aria-hidden="true" />
+    </Popover.Trigger>
+    <Popover.Portal>
+      <Popover.Positioner className={styles.mobileOptionsPositioner} side="bottom" align="end" sideOffset={8} collisionPadding={10}>
+        <Popover.Popup className={styles.mobileOptionsPopup} initialFocus finalFocus>
+          <header className={styles.mobileOptionsHeader}>
+            <div>
+              <Popover.Title className={styles.mobileOptionsTitle}>Налаштування</Popover.Title>
+              <Popover.Description className={styles.mobileOptionsDescription}>Перегляд, застосунок і сповіщення</Popover.Description>
+            </div>
+            <Popover.Close className={styles.mobileOptionsClose} aria-label="Закрити налаштування перегляду">
+              <X aria-hidden="true" />
+            </Popover.Close>
+          </header>
+          <div className={styles.mobileOptionsContent}>
+            <section className={styles.mobileOptionsSection} aria-labelledby="mobile-teacher-filter-label">
+              <h3 id="mobile-teacher-filter-label">Викладач</h3>
+              <TeacherFilter
+                selectedTeacherId={selectedTeacherId}
+                teachers={teachers}
+                isPending={isTeacherPending}
+                onSelect={onTeacherSelect}
+              />
+            </section>
+            <section className={styles.mobileOptionsSection} aria-labelledby="mobile-date-filter-label">
+              <h3 id="mobile-date-filter-label">Інша дата</h3>
+              <form className={styles.dateForm} autoComplete="off" onSubmit={(event) => {
+                event.preventDefault();
+                const value = String(new FormData(event.currentTarget).get("date") ?? "");
+                if (isPublicDateKey(value)) onDateSelect(value);
+              }}>
+                <label key={selectedDate}><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} required /></label>
+                <button type="submit">Перейти<PendingControlStatus pending={isDatePending} label="вибрану дату" /></button>
+              </form>
+            </section>
+            <section className={styles.mobileOptionsSection} aria-labelledby="mobile-app-label">
+              <h3 id="mobile-app-label">Застосунок</h3>
+              <div className={styles.mobilePwaControl}><PwaControls /></div>
+            </section>
+            <section className={styles.mobileOptionsSection} aria-label="Налаштування сповіщень">
+              <PublicPushSettings teachers={teachers} onTeacherSaved={onTeacherSelect} />
+            </section>
+          </div>
+        </Popover.Popup>
+      </Popover.Positioner>
+    </Popover.Portal>
+  </Popover.Root>;
+}
+
+function DesktopPushSettings({
+  teachers,
+  onTeacherSaved,
+}: {
+  teachers: readonly PublicTeacher[];
+  onTeacherSaved: (teacherId: string) => void;
+}) {
+  return <Popover.Root>
+    <Popover.Trigger
+      className={styles.pushSettingsTrigger}
+      type="button"
+      aria-label="Відкрити налаштування сповіщень"
+      title="Налаштувати сповіщення"
+    ><Settings aria-hidden="true" /></Popover.Trigger>
+    <Popover.Portal>
+      <Popover.Positioner className={styles.pushSettingsPositioner} side="bottom" align="end" sideOffset={8} collisionPadding={10}>
+        <Popover.Popup className={styles.pushSettingsPopup} initialFocus finalFocus>
+          <Popover.Title className="sr-only">Налаштування сповіщень</Popover.Title>
+          <Popover.Description className="sr-only">Виберіть викладача та події для цього пристрою.</Popover.Description>
+          <PublicPushSettings teachers={teachers} onTeacherSaved={onTeacherSaved} />
+        </Popover.Popup>
+      </Popover.Positioner>
+    </Popover.Portal>
+  </Popover.Root>;
 }
 
 export function PublicScheduleExplorer({
@@ -453,7 +617,11 @@ export function PublicScheduleExplorer({
   const nextDate = addPublicScheduleDays(navigationBaseDate, 1);
   const isTeacherPending = pendingSelection !== null && pendingSelection.teacherId !== selectedTeacherId;
 
+  const selectTeacher = (teacherId: string) => void loadSchedule({ date: navigationBaseDate, teacherId }, true);
+  const selectExactDate = (date: string) => navigateToDate(date);
+
   const toolbar = <section className={styles.statusBar} aria-label="Поточний стан розкладу">
+    <div className={styles.desktopToolbar}>
       <div className={styles.clock}><strong suppressHydrationWarning>{clock.time}</strong><span suppressHydrationWarning>{clock.date}</span></div>
       <nav className={styles.dateNavigation} aria-label="Навігація за датою">
         <button type="button" aria-label="Попередній день" onClick={() => navigateToDate(previousDate)}>←<PendingControlStatus pending={pendingDate === previousDate} label="попередній день" /></button>
@@ -464,20 +632,47 @@ export function PublicScheduleExplorer({
         selectedTeacherId={selectedTeacherId}
         teachers={teachers}
         isPending={isTeacherPending}
-        onSelect={(teacherId) => void loadSchedule({ date: navigationBaseDate, teacherId }, true)}
+        onSelect={selectTeacher}
       />
       <form className={styles.dateForm} autoComplete="off" onSubmit={(event) => {
         event.preventDefault();
         const value = String(new FormData(event.currentTarget).get("date") ?? "");
-        if (isPublicDateKey(value)) navigateToDate(value);
+        if (isPublicDateKey(value)) selectExactDate(value);
       }}>
         <label key={selectedDate}><span className="sr-only">Дата розкладу</span><input type="date" name="date" defaultValue={selectedDate} required /></label>
         <button type="submit">Перейти<PendingControlStatus pending={pendingSelection !== null && !isTeacherPending} label="вибрану дату" /></button>
       </form>
       <div className={styles.statusActions}>
         <PwaControls />
+        <DesktopPushSettings teachers={teachers} onTeacherSaved={selectTeacher} />
         <span className={styles.weekBadge}>{day.weekType === "denominator" ? "Знаменник" : "Чисельник"}</span>
       </div>
+    </div>
+    <div className={styles.mobileToolbar}>
+      <nav className={styles.mobileDateNavigation} aria-label="Навігація за датою">
+        <button type="button" aria-label="Попередній день" onClick={() => navigateToDate(previousDate)}>
+          <ChevronLeft aria-hidden="true" /><PendingControlStatus pending={pendingDate === previousDate} label="попередній день" />
+        </button>
+        <button type="button" className={styles.mobileDayButton} aria-label="Перейти до сьогоднішнього дня" onClick={() => navigateToDate(todayDate)}>
+          <CalendarDays aria-hidden="true" />
+          <span>{compactMobileDateLabel(navigationBaseDate, todayDate)}</span>
+          <small>{day.weekType === "denominator" ? "Знаменник" : "Чисельник"}</small>
+          <PendingControlStatus pending={pendingDate === todayDate} label="розклад на сьогодні" />
+        </button>
+        <button type="button" aria-label="Наступний день" onClick={() => navigateToDate(nextDate)}>
+          <ChevronRight aria-hidden="true" /><PendingControlStatus pending={pendingDate === nextDate} label="наступний день" />
+        </button>
+      </nav>
+      <MobileScheduleOptions
+        selectedTeacherId={selectedTeacherId}
+        teachers={teachers}
+        isTeacherPending={isTeacherPending}
+        selectedDate={selectedDate}
+        isDatePending={pendingSelection !== null && !isTeacherPending}
+        onTeacherSelect={selectTeacher}
+        onDateSelect={selectExactDate}
+      />
+    </div>
     </section>;
 
   const dayTabs = <nav className={styles.dayTabs} aria-label="Дні поточного тижня">

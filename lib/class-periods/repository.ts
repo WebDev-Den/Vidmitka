@@ -25,6 +25,14 @@ export type ClassPeriodMutationResult = Readonly<{
   message: string;
 }>;
 
+export type ClassPeriodBatchInput = Readonly<{
+  id: string;
+  number: string;
+  startTime: string;
+  endTime: string;
+  color: string;
+}>;
+
 type PeriodRow = {
   id: string | number;
   number: number;
@@ -165,6 +173,59 @@ export async function updateClassPeriod(
   }
 
   return { success: true, message: `${number} пару оновлено.` };
+}
+
+export async function updateClassPeriods(
+  changes: readonly ClassPeriodBatchInput[],
+): Promise<ClassPeriodMutationResult> {
+  if (!changes.length) return { success: false, message: "Немає змінених пар для збереження." };
+  if (changes.length > 99) return { success: false, message: "За один раз можна зберегти до 99 пар." };
+
+  const existing = await getPeriodRows();
+  const existingById = new Map(existing.map((period) => [period.id, period]));
+  const seen = new Set<string>();
+  const drafts: Array<Readonly<{ id: string; input: ClassPeriodInput; value: ClassPeriodDraft }>> = [];
+  for (const change of changes) {
+    if (!/^\d+$/u.test(change.id) || seen.has(change.id) || !existingById.has(change.id)) {
+      return { success: false, message: "Одна зі змінених пар більше не існує. Оновіть сторінку." };
+    }
+    seen.add(change.id);
+    const input: ClassPeriodInput = {
+      number: change.number,
+      startTime: change.startTime,
+      endTime: change.endTime,
+      color: change.color,
+    };
+    const parsed = validateClassPeriod(input, [], change.id);
+    if (!parsed.ok) return { success: false, message: parsed.message };
+    drafts.push({ id: change.id, input, value: parsed.value });
+  }
+
+  const draftById = new Map(drafts.map((draft) => [draft.id, draft.value]));
+  const proposedPeriods = existing.map((period) => {
+    const draft = draftById.get(period.id);
+    return draft
+      ? { ...period, number: draft.number, startMinute: draft.startMinute, endMinute: draft.endMinute }
+      : period;
+  });
+  for (const draft of drafts) {
+    const validation = validateClassPeriod(draft.input, proposedPeriods, draft.id);
+    if (!validation.ok) return { success: false, message: validation.message };
+  }
+
+  const sql = getDb();
+  try {
+    await sql.transaction(drafts.map((draft) => sql`
+      UPDATE class_periods
+      SET number=${draft.value.number}, start_minute=${draft.value.startMinute}, end_minute=${draft.value.endMinute},
+        color=${draft.value.color}, updated_at=NOW()
+      WHERE id=${draft.id}
+    `));
+  } catch (error) {
+    return mutationError(error);
+  }
+
+  return { success: true, message: `Оновлено пар: ${drafts.length}.` };
 }
 
 export async function setClassPeriodActive(

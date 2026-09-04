@@ -19,6 +19,7 @@ const integration = enabled ? describe.sequential : describe.skip;
 
 type ImportRepository = typeof import("@/lib/schedule-import-v2/repository");
 type CatalogRepository = typeof import("@/lib/schedule-v2/catalogs");
+type PeriodRepository = typeof import("@/lib/class-periods/repository");
 type EntryRepository = typeof import("@/lib/schedule-v2/entries");
 type ExceptionRepository = typeof import("@/lib/schedule-v2/exceptions");
 type CalendarRepository = typeof import("@/lib/schedule-v2/calendar-overrides");
@@ -30,6 +31,7 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
   let database: Awaited<ReturnType<typeof createScheduleV2TestDatabase>>;
   let importRepository: ImportRepository;
   let catalogRepository: CatalogRepository;
+  let periodRepository: PeriodRepository;
   let entryRepository: EntryRepository;
   let exceptionRepository: ExceptionRepository;
   let calendarRepository: CalendarRepository;
@@ -41,9 +43,10 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     process.env.DATABASE_URL = database.connectionString;
     process.env.QA_TEST_SCHEMA = database.schemaName;
     vi.resetModules();
-    [importRepository, catalogRepository, entryRepository, exceptionRepository, calendarRepository, publicRepository, authRepository] = await Promise.all([
+    [importRepository, catalogRepository, periodRepository, entryRepository, exceptionRepository, calendarRepository, publicRepository, authRepository] = await Promise.all([
       import("@/lib/schedule-import-v2/repository"),
       import("@/lib/schedule-v2/catalogs"),
+      import("@/lib/class-periods/repository"),
       import("@/lib/schedule-v2/entries"),
       import("@/lib/schedule-v2/exceptions"),
       import("@/lib/schedule-v2/calendar-overrides"),
@@ -174,19 +177,49 @@ integration("schedule v2 isolated PostgreSQL integration", () => {
     expect(after).toEqual(before);
   }, 120_000);
 
-  it("performs CRUD for every catalog kind without breaking dependencies", async () => {
+  it("saves changed catalog rows together and rejects an invalid batch without partial writes", async () => {
     const kinds = ["groups", "disciplines", "rooms", "teachers", "lesson-types"] as const;
     for (const kind of kinds) {
       const suffix = kind.replace("-", " ");
       const create = new FormData(); create.set("name", `QA ${suffix}`); if (kind === "lesson-types") create.set("color", "#48C5B5");
       expect((await catalogRepository.createScheduleCatalogEntry(kind, create)).success).toBe(true);
-      const created = (await catalogRepository.listScheduleCatalog(kind)).find((item) => item.name === `QA ${suffix}`);
-      expect(created).toBeDefined();
-      const update = new FormData(); update.set("name", `QA ${suffix} updated`); if (kind === "lesson-types") update.set("color", "#0F766E");
-      expect((await catalogRepository.updateScheduleCatalogEntry(kind, created!.id, update)).success).toBe(true);
-      expect((await catalogRepository.setScheduleCatalogEntryActive(kind, created!.id, false)).success).toBe(true);
-      expect((await catalogRepository.deleteScheduleCatalogEntry(kind, created!.id)).success).toBe(true);
+      const second = new FormData(); second.set("name", `QA ${suffix} second`); if (kind === "lesson-types") second.set("color", "#0F766E");
+      expect((await catalogRepository.createScheduleCatalogEntry(kind, second)).success).toBe(true);
+      const created = (await catalogRepository.listScheduleCatalog(kind)).filter((item) => item.name.startsWith(`QA ${suffix}`));
+      expect(created).toHaveLength(2);
+      const first = created.find((item) => item.name === `QA ${suffix}`)!;
+      const other = created.find((item) => item.name === `QA ${suffix} second`)!;
+      expect(await catalogRepository.updateScheduleCatalogEntries(kind, [
+        { id: first.id, name: `QA ${suffix} updated`, ...(kind === "lesson-types" ? { color: "#16835B" } : {}) },
+        { id: other.id, name: `QA ${suffix} second updated`, ...(kind === "lesson-types" ? { color: "#073C40" } : {}) },
+      ])).toMatchObject({ success: true });
+      const afterBatch = await catalogRepository.listScheduleCatalog(kind);
+      expect(afterBatch.find((item) => item.id === first.id)?.name).toBe(`QA ${suffix} updated`);
+      expect(await catalogRepository.updateScheduleCatalogEntries(kind, [
+        { id: first.id, name: "Однакова назва", ...(kind === "lesson-types" ? { color: "#16835B" } : {}) },
+        { id: other.id, name: "Однакова назва", ...(kind === "lesson-types" ? { color: "#073C40" } : {}) },
+      ])).toMatchObject({ success: false });
+      expect((await catalogRepository.listScheduleCatalog(kind)).find((item) => item.id === first.id)?.name).toBe(`QA ${suffix} updated`);
+      expect((await catalogRepository.setScheduleCatalogEntryActive(kind, first.id, false)).success).toBe(true);
+      expect((await catalogRepository.deleteScheduleCatalogEntry(kind, first.id)).success).toBe(true);
+      expect((await catalogRepository.deleteScheduleCatalogEntry(kind, other.id)).success).toBe(true);
     }
+  });
+
+  it("saves multiple changed class periods atomically", async () => {
+    const [first, second] = await periodRepository.listClassPeriods();
+    expect(first).toBeDefined();
+    expect(second).toBeDefined();
+    const before = await periodRepository.listClassPeriods();
+    expect(await periodRepository.updateClassPeriods([
+      { id: first!.id, number: String(first!.number), startTime: first!.startTime, endTime: first!.endTime, color: "#16835B" },
+      { id: second!.id, number: String(second!.number), startTime: second!.startTime, endTime: second!.endTime, color: "#073C40" },
+    ])).toMatchObject({ success: true });
+    expect(await periodRepository.updateClassPeriods([
+      { id: first!.id, number: String(second!.number), startTime: first!.startTime, endTime: first!.endTime, color: "#16835B" },
+      { id: second!.id, number: String(second!.number), startTime: second!.startTime, endTime: second!.endTime, color: "#073C40" },
+    ])).toMatchObject({ success: false });
+    expect((await periodRepository.listClassPeriods()).map((period) => period.number)).toEqual(before.map((period) => period.number));
   });
 
   it("returns active groups and the ordered public bell timetable", async () => {

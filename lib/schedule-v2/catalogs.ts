@@ -1,11 +1,12 @@
 import "server-only";
 
 import { getDb } from "@/lib/db";
-import { parseHexColor } from "@/lib/ui/colors";
+import { parseHexColor, type HexColor } from "@/lib/ui/colors";
 
 import type { CatalogMutationResult, ScheduleCatalogEntry, ScheduleCatalogKind } from "./catalog-types";
 
 type CatalogRow = { id: string; name: string; is_active: boolean; color?: string };
+type ValidCatalogBatchChange = Readonly<{ id: string; name: string; nameKey: string; color?: HexColor }>;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
 
 function normalize(value: FormDataEntryValue | null): string {
@@ -89,6 +90,62 @@ export async function updateScheduleCatalogEntry(kind: ScheduleCatalogKind, id: 
     if ((error as { code?: string }).code === "23505") return { success: false, message: "Запис із такою назвою вже існує." };
     throw error;
   }
+}
+
+export async function updateScheduleCatalogEntries(
+  kind: ScheduleCatalogKind,
+  changes: readonly Readonly<{ id: string; name: string; color?: string }>[],
+): Promise<CatalogMutationResult> {
+  if (!changes.length) return { success: false, message: "Немає змінених записів для збереження." };
+  if (changes.length > 25) return { success: false, message: "За один раз можна зберегти до 25 записів." };
+
+  const ids = new Set<string>();
+  const validChanges: ValidCatalogBatchChange[] = [];
+  for (const change of changes) {
+    if (!UUID_PATTERN.test(change.id) || ids.has(change.id)) {
+      return { success: false, message: "Перелік змінених записів некоректний." };
+    }
+    ids.add(change.id);
+    const name = normalize(change.name);
+    if (!validName(kind, name)) return { success: false, message: "Перевірте довжину та заповнення назви в усіх змінених рядках." };
+    const color = kind === "lesson-types" ? parseHexColor(change.color ?? null) : undefined;
+    if (kind === "lesson-types" && !color) return { success: false, message: "Оберіть коректний колір у всіх змінених типах занять." };
+    validChanges.push({ id: change.id, name, nameKey: normalizedKey(name), ...(color ? { color } : {}) });
+  }
+
+  const currentEntries = await listScheduleCatalog(kind);
+  const currentById = new Map(currentEntries.map((entry) => [entry.id, entry]));
+  if (validChanges.some((change) => !currentById.has(change.id))) {
+    return { success: false, message: "Один зі змінених записів більше не існує. Оновіть сторінку." };
+  }
+
+  const proposedNames = new Map<string, string>();
+  for (const entry of currentEntries) proposedNames.set(normalizedKey(entry.name), entry.id);
+  for (const change of validChanges) {
+    const previous = currentById.get(change.id)!;
+    proposedNames.delete(normalizedKey(previous.name));
+    const duplicateId = proposedNames.get(change.nameKey);
+    if (duplicateId && duplicateId !== change.id) return { success: false, message: "Записи з однаковою назвою не можна зберегти." };
+    proposedNames.set(change.nameKey, change.id);
+  }
+
+  const sql = getDb();
+  try {
+    await sql.transaction(validChanges.map((change) => {
+      switch (kind) {
+        case "groups": return sql`UPDATE academic_groups SET code=${change.name}, code_normalized=${change.nameKey}, updated_at=NOW() WHERE id=${change.id}`;
+        case "disciplines": return sql`UPDATE disciplines SET name=${change.name}, name_normalized=${change.nameKey}, updated_at=NOW() WHERE id=${change.id}`;
+        case "rooms": return sql`UPDATE schedule_rooms SET name=${change.name}, name_normalized=${change.nameKey}, updated_at=NOW() WHERE id=${change.id}`;
+        case "teachers": return sql`UPDATE teachers SET display_name=${change.name}, display_name_normalized=${change.nameKey}, updated_at=NOW() WHERE id=${change.id}`;
+        case "lesson-types": return sql`UPDATE schedule_lesson_types SET name=${change.name}, name_normalized=${change.nameKey}, color=${change.color!}, updated_at=NOW() WHERE id=${change.id}`;
+      }
+    }));
+  } catch (error) {
+    if ((error as { code?: string }).code === "23505") return { success: false, message: "Записи з однаковою назвою не можна зберегти." };
+    throw error;
+  }
+
+  return { success: true, message: `Оновлено записів: ${validChanges.length}.` };
 }
 
 export async function setScheduleCatalogEntryActive(kind: ScheduleCatalogKind, id: string, active: boolean): Promise<CatalogMutationResult> {

@@ -3,6 +3,8 @@
 import { Download } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { ensureServiceWorker } from "@/lib/pwa/service-worker";
+
 import styles from "./pwa-controls.module.css";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -40,7 +42,7 @@ export function PwaControls() {
     setStandalone(isStandalone());
     setIos(isIOS());
     if ("serviceWorker" in navigator) {
-      void navigator.serviceWorker.register("/sw.js", { scope: "/", updateViaCache: "none" })
+      void ensureServiceWorker()
         .catch(() => {
           if (!disposed) showNotice("Не вдалося підготувати встановлення застосунку.");
         });

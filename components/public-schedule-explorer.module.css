@@ -1,4 +1,5 @@
 .scheduleShell { display: grid; grid-template-rows: auto minmax(0, 1fr); width: 100%; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; background: var(--paper); }
+:global(.public-header--workspace) { position: sticky; top: 0; z-index: 20; }
 .workspace { width: calc(100% - 32px); height: 100%; min-height: 0; margin: 0 auto; padding: 10px 0; overflow: hidden; }
 .statusBar { display: grid; grid-template-columns: auto auto minmax(220px, 1fr) auto auto; grid-template-areas: "clock navigation teacher date week"; align-items: center; gap: 10px; min-width: 0; }
 .clock { grid-area: clock; display: flex; align-items: baseline; gap: 10px; min-width: 0; }
@@ -7,6 +8,14 @@
 .dayEyebrow { color: var(--muted); font-size: .65rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .statusActions { grid-area: week; display: flex; align-items: center; justify-self: end; gap: 6px; }
 .weekBadge { display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px; color: var(--accent-strong); background: var(--accent-soft); border-radius: 999px; font-size: .72rem; font-weight: 800; }
+.pushSettingsTrigger { display: grid; width: 44px; height: 44px; padding: 0; place-items: center; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; }
+.pushSettingsTrigger:hover, .pushSettingsTrigger[data-popup-open] { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); background: color-mix(in srgb, var(--accent-soft) 35%, white); }
+.pushSettingsTrigger:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; }
+.pushSettingsTrigger svg { width: 18px; height: 18px; }
+.pushSettingsPositioner { z-index: 70; width: min(390px, calc(100vw - 20px)); }
+.pushSettingsPopup { max-height: min(650px, var(--available-height)); overflow-y: auto; overscroll-behavior: contain; padding: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: 0 14px 34px rgba(24, 40, 61, .16); scrollbar-width: thin; }
+.desktopToolbar { display: contents; }
+.mobileToolbar { display: none; }
 .dayTabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-bottom: 0; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
 .dayTabs button { position: relative; display: grid; justify-items: center; gap: 2px; min-height: 50px; padding: 7px 4px; color: var(--muted); background: var(--surface); border: 0; font: inherit; font-size: .75rem; font-weight: 800; text-transform: capitalize; cursor: pointer; }
 .dayTabs button:hover { color: var(--accent-strong); background: color-mix(in srgb, var(--accent-soft) 45%, white); }
@@ -41,11 +50,35 @@
 .dateForm { grid-area: date; display: flex; min-width: 0; gap: 6px; }
 .dateForm label { min-width: 0; }
 .dateForm input { width: 100%; min-width: 0; min-height: 44px; padding: 0 10px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); font: inherit; font-variant-numeric: tabular-nums; }
+.mobileOptionsTrigger { display: grid; width: 44px; height: 44px; padding: 0; place-items: center; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; }
+.mobileOptionsTrigger:hover, .mobileOptionsTrigger[data-popup-open] { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); background: color-mix(in srgb, var(--accent-soft) 35%, white); }
+.mobileOptionsTrigger:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; }
+.mobileOptionsTrigger svg { width: 18px; height: 18px; }
+.mobileOptionsPositioner { z-index: 70; width: min(352px, calc(100vw - 20px)); }
+.mobileOptionsPopup { width: 100%; overflow: hidden; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: 0 14px 34px rgba(24, 40, 61, .16); }
+.mobileOptionsHeader { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: start; gap: 8px; padding: 11px 8px 10px 13px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
+.mobileOptionsTitle { margin: 0; font-size: .9rem; font-weight: 850; }
+.mobileOptionsDescription { margin: 3px 0 0; color: var(--muted); font-size: .72rem; }
+.mobileOptionsClose { display: grid; width: 44px; height: 44px; padding: 0; place-items: center; color: var(--muted); background: transparent; border: 0; border-radius: 8px; cursor: pointer; }
+.mobileOptionsClose:hover { color: var(--accent-strong); background: var(--accent-soft); }
+.mobileOptionsClose:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: -2px; }
+.mobileOptionsClose svg { width: 17px; height: 17px; }
+.mobileOptionsContent { display: grid; gap: 14px; max-height: min(420px, var(--available-height)); overflow-y: auto; overscroll-behavior: contain; padding: 13px; scrollbar-width: thin; }
+.mobileOptionsSection { display: grid; gap: 7px; min-width: 0; }
+.mobileOptionsSection + .mobileOptionsSection { padding-top: 13px; border-top: 1px solid var(--line); }
+.mobileOptionsSection h3 { margin: 0; color: var(--muted); font-size: .67rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+.mobileOptionsSection .teacherFilter { min-width: 0; }
+.mobileOptionsSection .dateForm { display: grid; grid-area: auto; grid-template-columns: minmax(0, 1fr) auto; }
+.mobilePwaControl { display: flex; align-items: center; min-height: 44px; }
 .days { display: grid; flex: 1; min-height: 0; gap: 14px; }
 .dayPanel { position: relative; display: grid; grid-template-rows: auto minmax(0, 1fr); min-width: 0; min-height: 0; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: 0 10px 26px rgba(24, 40, 61, .04); }
 .dayHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--surface-soft); border-bottom: 1px solid var(--line); }
 .dayHeader > div { display: grid; gap: 3px; }
 .dayHeader h2 { margin: 0; font-size: 1rem; font-weight: 750; text-transform: capitalize; }
+.liveStatus { display: flex; flex-wrap: wrap; gap: 4px 7px; margin: 3px 0 0; color: var(--muted); font-size: .71rem; line-height: 1.3; }
+.liveStatus strong { color: var(--accent-strong); font-weight: 850; }
+.liveStatus[data-state="break"] strong { color: #7a4322; }
+.liveStatus[data-state="finished"] strong, .liveStatus[data-state="upcoming"] strong { color: var(--ink); }
 .dayWeek { color: var(--accent-strong); font-size: .72rem; font-weight: 800; }
 .dayHeader > .dayFlags { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 7px; }
 .transferBadge { display: inline-flex; align-items: center; min-height: 28px; padding: 0 9px; color: var(--accent-strong); background: var(--accent-soft); border-radius: 999px; font-size: .7rem; font-weight: 800; }
@@ -107,25 +140,41 @@
 
 @media (max-width: 700px) {
   .workspace { width: 100%; padding: 10px 0; }
-  .statusBar { padding: 0 10px; }
-  .clock { display: grid; gap: 1px; }
-  .clock strong { font-size: 1.3rem; }
-  .dayTabs { grid-template-columns: repeat(7, 66px); overflow-x: auto; border-inline: 0; border-radius: 0; scrollbar-width: thin; }
+  :global(.public-header-inner--workspace) { gap: 8px; }
+  :global(.public-header-inner--workspace) :global(.public-header-footer) { display: none; }
+  .desktopToolbar { display: none; }
+  .statusBar { display: block; }
+  .pushSettingsPositioner { width: min(352px, calc(100vw - 20px)); }
+  .mobileToolbar { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: stretch; gap: 8px; padding: 0 10px; }
   .scheduleArea { padding: 0 10px; }
-  .statusBar { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "clock week" "navigation navigation" "teacher teacher" "date date"; }
-  .dateNavigation { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; }
-  .teacherFilter { min-width: 0; }
-  .dateForm { display: grid; grid-template-columns: minmax(0, 1fr) auto; justify-self: stretch; }
+  .mobileDateNavigation { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 5px; min-width: 0; }
+  .mobileDateNavigation > button { position: relative; display: grid; min-width: 44px; min-height: 44px; padding: 0; place-items: center; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; }
+  .mobileDateNavigation > button:hover { color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent-strong) 35%, var(--line)); }
+  .mobileDateNavigation > button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent-strong) 28%, transparent); outline-offset: 2px; }
+  .mobileDateNavigation > button > svg { width: 18px; height: 18px; }
+  .mobileDateNavigation > .mobileDayButton { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); column-gap: 7px; justify-items: start; padding: 5px 10px; text-align: left; }
+  .mobileDayButton > svg { grid-row: 1 / -1; color: var(--accent-strong); }
+  .mobileDayButton > span { min-width: 0; overflow: hidden; font-size: .8rem; font-weight: 850; text-overflow: ellipsis; text-transform: capitalize; white-space: nowrap; }
+  .mobileDayButton > small { color: var(--muted); font-size: .64rem; font-weight: 750; }
   .dayPanel { border-radius: 10px; }
+  .dayHeader { align-items: flex-start; padding: 13px 14px; }
+  .dayEyebrow { display: none; }
+  .dayHeader h2 { font-size: 1.14rem; line-height: 1.2; }
+  .liveStatus { gap: 4px 8px; margin-top: 7px; font-size: .78rem; }
+  .liveStatus strong { display: inline-flex; align-items: center; min-height: 25px; padding: 0 7px; background: var(--accent-soft); border-radius: 999px; }
+  .liveStatus[data-state="break"] strong { background: #f7e6d3; }
+  .liveStatus[data-state="finished"] strong, .liveStatus[data-state="upcoming"] strong { background: var(--surface); border: 1px solid var(--line); }
+  .liveStatus span { align-self: center; font-variant-numeric: tabular-nums; font-weight: 750; }
+  .dayHeader > .dayFlags { max-width: 108px; }
+  .dayWeek { display: inline-flex; min-height: 26px; align-items: center; padding: 0 8px; background: var(--accent-soft); border-radius: 999px; }
   .periodRow { grid-template-columns: 72px minmax(0, 1fr); min-height: 88px; }
   .periodCell { padding-inline: 5px; }
   .lessonCell { padding: 7px; }
 }
 
 @media (max-width: 430px) {
-  .statusBar { padding: 0 10px; }
-  .statusActions { gap: 6px; }
-  .weekBadge { padding-inline: 8px; }
+  .mobileToolbar { gap: 6px; padding-inline: 10px; }
+  .mobileOptionsPositioner { width: min(320px, calc(100vw - 16px)); }
   .lessonTop { align-items: flex-start; flex-direction: column; gap: 3px; }
   .lessonType { max-width: 100%; }
   .lessonRoom, .lessonTeacher { white-space: normal; }
@@ -142,6 +191,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dayTabs button, .dateNavigation button { scroll-behavior: auto; transition: none; }
+  .dayTabs button, .dateNavigation button, .mobileOptionsTrigger { scroll-behavior: auto; transition: none; }
   .pendingSpinner { animation: none; border-top-color: transparent; }
 }
